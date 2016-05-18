@@ -1,16 +1,13 @@
 package com.innoble.stocknbarrel;
 
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.Toast;
+import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements RegisterFragment.Callback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,38 +16,20 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-        transaction.add(R.id.container,new LoginFragment()).commit();
-
-
+        transaction.add(R.id.container,new RegisterFragment()).commit();
 
     }
 
+    @Override
+    public void onUserRegister(Map<String, String> data) {
+        if(data == null) return;
+        //Do something with the data once it has been returned ( Persist data to local db)
+        String name = data.get("name");
+        String email = data.get("email");
+        Double budget = Double.parseDouble(data.get("budget"));
 
-
-
-    public static class LoginFragment extends Fragment{
-         public LoginFragment(){
-
-         }
-
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-            View rootView = inflater.inflate(R.layout.login_fragment,container,false);
-
-            Button registerBtn = (Button)rootView.findViewById(R.id.registerButton);
-
-            registerBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-
-            return rootView;
-
-        }
+        Toast t = Toast.makeText(getApplicationContext(),name+"\n"+email+"\n"+budget,Toast.LENGTH_LONG);
+        t.show();
     }
 
 }
