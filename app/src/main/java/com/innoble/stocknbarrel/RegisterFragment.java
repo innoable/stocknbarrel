@@ -1,6 +1,5 @@
 
 package com.innoble.stocknbarrel;
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,7 +11,7 @@ import android.widget.EditText;
 import java.util.Map;
 import java.util.TreeMap;
 
-public  class RegisterFragment extends Fragment implements View.OnClickListener{
+public  class RegisterFragment extends android.support.v4.app.Fragment implements View.OnClickListener{
     private final String LOG_TAG = getClass().getSimpleName();
     private View rootView;
     private Map<String,String> userData;
@@ -35,12 +34,13 @@ public  class RegisterFragment extends Fragment implements View.OnClickListener{
 
 
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         userData= new TreeMap<>();
 
-        rootView = inflater.inflate(R.layout.login_fragment,container,false);
+        rootView = inflater.inflate(R.layout.register_fragment,container,false);
 
         ((Button)rootView.findViewById(R.id.registerButton)).setOnClickListener(this);
         return rootView;
