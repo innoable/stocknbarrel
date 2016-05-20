@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/shopping_item_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1" />
+
+                <ImageView android:layout_width="match_parent"
+                    android:id ="@+id/shopping_item_img"
+                    android:layout_height="25dp"
+                    android:layout_weight="6" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Qty"
+                    android:id="@+id/textView11"
+                    android:layout_gravity="center" />
+
+                <NumberPicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="49dp"
+                    android:id="@+id/shopping_item_qty_picker"
+                    android:showDividers="middle" />
+
+                <Space
+                    android:layout_width="148dp"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$45.00"
+                    android:id="@+id/shopping_item_cost_textView"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+        </LinearLayout>
+
+</LinearLayout>
