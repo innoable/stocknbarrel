@@ -4,19 +4,25 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
+
+import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
+
 import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements RegisterFragment.Callback {
 
+    StockNBarrelDatabaseHelper myDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        myDB = new StockNBarrelDatabaseHelper(this);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         transaction.add(R.id.container,new RegisterFragment()).commit();
+
 
     }
 
