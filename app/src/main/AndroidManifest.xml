@@ -44,7 +44,8 @@
 
         <provider
             android:name=".database.StockNBarrelContentProvider"
-            android:authorities="com.innoble.stocknbarrel.contentprovider" >
+            android:authorities="com.innoble.stocknbarrel.contentprovider"
+            android:exported="true"  >
         </provider>
     </application>
 
