@@ -22,6 +22,9 @@ import okhttp3.Response;
  * Created by Kemron on 19/05/2016.
  */
 public class CitySuggestionProvider extends ContentProvider {
+
+    List<String> cities;
+
     @Nullable
     @Override
     public String getType(Uri uri) {
@@ -44,7 +47,6 @@ public class CitySuggestionProvider extends ContentProvider {
         return 0;
     }
 
-    List<String> cities;
 
     @Override
     public boolean onCreate() {
