@@ -2,4 +2,9 @@
     <string name="app_name">StockNBarrel</string>
 
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="hint_search">Enter your items</string>
+    <string name="search_title">Search</string>
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>
