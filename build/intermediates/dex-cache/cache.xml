@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\Kemron\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.6.0\98476622f10715998eacf9240d6b479f12c66143\okio-1.6.0.jar"
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\classes.jar"
         jumboMode="true"
         revision="23.0.2"
-        sha1="98476622f10715998eacf9240d6b479f12c66143">
-        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\okio-1.6.0_ec33c5c5122f8768e6b5bc29975c62808e0f3d44.jar" />
+        sha1="6cbc7773921fcfedbe55657578f0cbfe614778dc">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.1.1_dc6737e5ba57f02d5c0a46900c1dddb7b7f617a1.jar" />
     </item>
     <item
         jar="C:\Users\Kemron\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.1.1\support-annotations-23.1.1.jar"
@@ -16,17 +16,17 @@
         <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\support-annotations-23.1.1_de82648e89cc8d428823607e3d269029b1536cb0.jar" />
     </item>
     <item
-        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\classes.jar"
+        jar="C:\Users\Kemron\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.6.0\98476622f10715998eacf9240d6b479f12c66143\okio-1.6.0.jar"
         jumboMode="true"
         revision="23.0.2"
-        sha1="6cbc7773921fcfedbe55657578f0cbfe614778dc">
-        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.1.1_dc6737e5ba57f02d5c0a46900c1dddb7b7f617a1.jar" />
+        sha1="98476622f10715998eacf9240d6b479f12c66143">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\okio-1.6.0_ec33c5c5122f8768e6b5bc29975c62808e0f3d44.jar" />
     </item>
     <item
         jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         revision="23.0.2"
-        sha1="cf55ab21aaede1883453ff8cb4e6cc8c86204315">
+        sha1="7b775c8a5ef0e99b55e3fa705e83c39e510cc193">
         <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\instant-run_dce01bc39690d661847e59f66e761607014b6c71.jar" />
     </item>
     <item
@@ -40,7 +40,7 @@
         jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         revision="23.0.2"
-        sha1="e7e1c303cc11e3cfd72dc3e8314fae0518959cf5">
+        sha1="efd17daed5934c601936bcf157469b42e518f3f7">
         <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\instant-run-bootstrap_e12fcb9e1955162bf9dfceb67902efd15b9a0aee.jar" />
     </item>
     <item

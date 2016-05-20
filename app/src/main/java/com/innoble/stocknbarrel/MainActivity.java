@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements RegisterFragment.
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(
-                new ComponentName(this,SearchableActivity.class)));
+                new ComponentName(this,SearchResultActivity.class)));
         searchView.setIconifiedByDefault(false);
 
         return true;
