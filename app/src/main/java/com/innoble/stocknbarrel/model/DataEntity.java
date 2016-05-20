@@ -22,5 +22,8 @@ public class DataEntity {
     public static final String COLUMN_NAME = "name";
 
 
+    public void insert (SQLiteDatabase database) {
+
+    }
 
 }

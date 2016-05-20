@@ -20,18 +20,17 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements RegisterFragment.Callback {
 
-    StockNBarrelDatabaseHelper myDB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        myDB = new StockNBarrelDatabaseHelper(this);
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         if(false) {
             transaction.add(R.id.container, new RegisterFragment()).commit();
-
         }
         else{
            transaction.add(R.id.container,new ShoppingListFragment()).commit();

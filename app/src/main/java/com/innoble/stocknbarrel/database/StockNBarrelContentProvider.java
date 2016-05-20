@@ -4,8 +4,12 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+
+import com.innoble.stocknbarrel.model.Product;
 
 /**
  * Created by At3r on 5/19/2016.
@@ -14,9 +18,10 @@ public class StockNBarrelContentProvider extends ContentProvider {
 
     private StockNBarrelDatabaseHelper database;
 
-    public static final String STOCK_ITEMS_PATH = "stockitems";
-    private static final int  STOCK_ITEMS = 10;
-    private static final int STOCK_ITEM_ID = 20;
+    public static final String PRODUCTS_PATH = "products";
+    private static final int  PRODUCTS = 10;
+    private static final int PRODUCT_ID = 20;
+    private static final int PRODUCT_SEARCH = 25;
 
     public static final String GROCERY_PATH = "groceries";
     private static final int  GROCERIES = 30;
@@ -45,8 +50,9 @@ public class StockNBarrelContentProvider extends ContentProvider {
 
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
-        sURIMatcher.addURI(AUTHORITY, STOCK_ITEMS_PATH, STOCK_ITEMS);
-        sURIMatcher.addURI(AUTHORITY, STOCK_ITEMS_PATH + "/#", STOCK_ITEM_ID);
+        sURIMatcher.addURI(AUTHORITY, PRODUCTS_PATH, PRODUCTS);
+        sURIMatcher.addURI(AUTHORITY, PRODUCTS_PATH + "/#", PRODUCT_ID);
+        sURIMatcher.addURI(AUTHORITY, PRODUCTS_PATH + "/search_suggest_query/*", PRODUCT_SEARCH);
         sURIMatcher.addURI(AUTHORITY, GROCERY_PATH, GROCERIES);
         sURIMatcher.addURI(AUTHORITY, GROCERY_PATH + "/#", GROCERY_ID);
         sURIMatcher.addURI(AUTHORITY, USERS_PATH, USERS);
@@ -68,8 +74,40 @@ public class StockNBarrelContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        return null;
+
+        // Uisng SQLiteQueryBuilder instead of query() method
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+
+        // check if the caller has requested a column which does not exists
+        //checkColumns(projection);
+
+
+        DatabaseObject dbObj = new DatabaseObject(uri);
+        queryBuilder.setTables(dbObj.tableName);          // Set the table
+        if(dbObj.isTable == DatabaseQueryType.ROW ) {
+            queryBuilder.appendWhere(dbObj.tableIdColumnName + "=" + dbObj.rowId );
+        }
+        else if(dbObj.isTable == DatabaseQueryType.SEARCH){
+            projection = dbObj.projection;
+            queryBuilder.appendWhere(dbObj.whereClause);
+        }
+
+        SQLiteDatabase db = database.getReadableDatabase();
+
+        Cursor cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
+        // make sure that potential listeners are getting notified
+        //cursor.moveToFirst();
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) {
+            cursor.close();
+            return null;
+        }
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        return cursor;
     }
+
+
 
     @Nullable
     @Override
@@ -108,5 +146,47 @@ public class StockNBarrelContentProvider extends ContentProvider {
             }
         }
     }*/
+
+    enum DatabaseQueryType {
+        TABLE, ROW, SEARCH
+    }
+
+
+    private class DatabaseObject {
+
+        String tableName;
+        String rowId;
+        String tableIdColumnName;
+        DatabaseQueryType isTable = DatabaseQueryType.TABLE;
+        String whereClause;
+        String[] projection;
+
+        public DatabaseObject(Uri uri) {
+            int uriType = sURIMatcher.match(uri);
+            switch (uriType) {
+                case PRODUCTS:
+                    tableName = Product.TABLE_PRODUCT;
+                    break;
+                case PRODUCT_ID:
+                    tableName = Product.TABLE_PRODUCT;
+                    tableIdColumnName =  Product.COLUMN_ID;
+                    rowId = uri.getLastPathSegment();
+                    isTable = DatabaseQueryType.ROW;
+                    break;
+                case PRODUCT_SEARCH:
+                    tableName = Product.TABLE_PRODUCT;
+                    String searchData = uri.getLastPathSegment();
+                    projection = new String[]{ Product.COLUMN_NAME};
+                    whereClause = Product.COLUMN_NAME + " LIKE '" + searchData + "%'";
+                    isTable = DatabaseQueryType.SEARCH;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown URI: " + uri);
+            }
+        }
+
+
+
+    }
 
 }
