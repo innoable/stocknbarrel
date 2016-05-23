@@ -8,7 +8,6 @@
     android:layout_alignParentTop="true"
     android:layout_centerHorizontal="true"
     android:layout_marginTop="162dp"
-    android:id ="@+id/container_register"
     android:weightSum="1">
 
 

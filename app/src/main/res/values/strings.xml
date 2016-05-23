@@ -6,5 +6,8 @@
 
     <string name="hint_search">Enter your items</string>
     <string name="search_title">Search</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="title_register_activity">Register</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
