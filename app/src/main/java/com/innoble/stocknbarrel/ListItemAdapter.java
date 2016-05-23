@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -54,14 +53,9 @@ public class ListItemAdapter extends ArrayAdapter <String>{
 
         TextView txtTitle = (TextView) rootView.findViewById(R.id.shopping_item_name);
 
-        ImageView imageView = (ImageView) rootView.findViewById(R.id.shopping_item_img);
 
         txtTitle.setText(models[position].title);
 
-        Integer imageId = (models[position].inShoppingList)?
-                R.drawable.ic_action_remove : R.drawable.ic_action_add;
-
-        imageView.setImageResource(imageId);
 
         NumberPicker qty = (NumberPicker) rootView.findViewById(R.id.shopping_item_qty_picker);
         int qtyVal = (models[position].qty >= MIN_VAL && models[position].qty <= MAX_VAL)?
