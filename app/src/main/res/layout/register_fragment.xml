@@ -90,7 +90,6 @@
             android:id="@+id/registerButton"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="32dp"
-            android:layout_weight="0.17"
             android:background="@android:color/holo_blue_light"
             android:textColor="#FFFFFF" />
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +15,10 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShoppingListFragment extends android.support.v4.app.Fragment {
+public class ShoppingListFragment extends android.support.v4.app.Fragment implements  ListItemAdapter.ItemBtnClickListener{
 
+    private List<ListItemAdapter.RowData>models;
+    private ListItemAdapter shoppingListAdapter;
 
     String[] web = {
             "Google Plus",
@@ -40,11 +43,30 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment {
 
     public ShoppingListFragment() {
         // Required empty public constructor
+        models = new ArrayList<>();
+
+        for(int i=0; i<web.length; i++){
+            models.add(new ListItemAdapter.RowData(
+                    web[i],
+                    qty[i],
+                    cost[i],
+                    isInList[i]
+            ));
+        };
+
     }
 
 
+    @Override
+    public void onBtnClick(int position) {
+        ListItemAdapter.RowData row = shoppingListAdapter.getItem(position);
+        TextView tcView = (TextView)getView().findViewById(R.id.totalCost);
+        double total = Double.parseDouble(((String) tcView.getText()).substring(1));
+        total-= row.cost *row.qty;
+        tcView.setText("$"+Double.toString(Math.round(total* 100.0) / 100.0));
+        shoppingListAdapter.remove(row);
 
-
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,21 +80,21 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment {
 
         ListView listView = (ListView)rootView.findViewById(R.id.shopping_list_view);
 
-        List<ListItemAdapter.Model>models = new ArrayList<>();
 
-        for(int i=0; i<web.length; i++){
-            models.add(new ListItemAdapter.Model(
-                    web[i],
-                    qty[i],
-                    cost[i],
-                    isInList[i]
-            ));
-        };
+        shoppingListAdapter = new ListItemAdapter(getActivity(),models,this);
 
-        ListItemAdapter.Model[] modelArr = new ListItemAdapter.Model[web.length];
-        modelArr= models.toArray(modelArr);
+        listView.setAdapter(shoppingListAdapter);
 
-        listView.setAdapter(new ListItemAdapter(getActivity(),modelArr));
+
+        TextView totalCostView = (TextView)rootView.findViewById(R.id.totalCost);
+
+        double totalCost = 0;
+        for(ListItemAdapter.RowData m : models){
+            totalCost+= m.cost *m.qty;
+        }
+        totalCostView.setText("$"+ Double.toString(totalCost));
+
+
 
         return rootView;
     }
