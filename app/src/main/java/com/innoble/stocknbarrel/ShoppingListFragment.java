@@ -15,7 +15,8 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShoppingListFragment extends android.support.v4.app.Fragment implements  ListItemAdapter.ItemBtnClickListener{
+public class ShoppingListFragment extends android.support.v4.app.Fragment
+        implements  ListItemAdapter.ItemBtnClickListener,ListItemAdapter.ItemTotalChangeListener{
 
     private List<ListItemAdapter.RowData>models;
     private ListItemAdapter shoppingListAdapter;
@@ -69,19 +70,26 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment implem
     }
 
     @Override
+    public void onItemCostChange(double oldVal,double newVal,int position) {
+        TextView tcView = (TextView)getView().findViewById(R.id.totalCost);
+        double oldTotal = Double.parseDouble(tcView.getText().toString().substring(1));
+        double newTotal = Math.round(((oldTotal + (newVal - oldVal))*100)/100);
+        double budget = 100;
+        tcView.setText("$"+Double.toString(newTotal));
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-
+        shoppingListAdapter = new ListItemAdapter(getActivity(),models,this,this);
 
 
         View rootView =  inflater.inflate(R.layout.fragment_shopping_list, container, false);
 
         ListView listView = (ListView)rootView.findViewById(R.id.shopping_list_view);
 
-
-        shoppingListAdapter = new ListItemAdapter(getActivity(),models,this);
 
         listView.setAdapter(shoppingListAdapter);
 

@@ -41,8 +41,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/edit_qty"
-                    android:clickable="true" />
+                    android:id="@+id/edit_qty" />
 
                 <Space
                     android:layout_width="wrap_content"
