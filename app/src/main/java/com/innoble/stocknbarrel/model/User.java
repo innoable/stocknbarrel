@@ -11,6 +11,17 @@ public class User extends DataEntity {
     private String email;
     private float budget;
 
+    public User(String name, String email, float budget) {
+        super();
+        this.name =  name;
+        this.email = email;
+        this.budget = budget;
+    }
+
+    public User (){
+        super();
+    }
+
     public String getEmail() {
         return email;
     }
@@ -33,6 +44,25 @@ public class User extends DataEntity {
 
     public void setBudget(float budget) {
         this.budget = budget;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "\nName: " + name
+                + "\n Email: " + email
+                + "\n Budget: " + budget;
+    }
+
+    @Override
+    public boolean equals(Object u){
+        if (u instanceof User) {
+            User user = (User) u;
+
+            return (user.email.trim().toLowerCase() ==  this.email.trim().toLowerCase());
+        }
+        return false;
+
     }
 
     // Database table

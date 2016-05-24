@@ -1,5 +1,6 @@
 package com.innoble.stocknbarrel.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -95,5 +96,97 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public boolean userExsits( )
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from user limit 1;", null);
+        // make sure that potential listeners are getting notified
+        if (cursor == null) {
+            return false;
+        } else if (!cursor.moveToFirst()) {
+            cursor.close();
+            return false;
+        }
+        return cursor.getCount() > 0;
+    }
 
+    public User getUser( )
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from user limit 1;", null);
+        // make sure that potential listeners are getting notified
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) {
+            cursor.close();
+            return null;
+        }else if(cursor.getCount() > 0){
+            User user = new User();
+            user.setId(cursor.getLong(0));
+            user.setName(cursor.getString(1));
+            user.setEmail(cursor.getString(2));
+            user.setBudget(cursor.getFloat(3));
+            return user;
+        }
+        return null;
+    }
+
+
+    public Cursor getShoppingList( )
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from shopping_list_item;", null);
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) {
+            cursor.close();
+            return null;
+        }
+        return cursor;
+    }
+
+    public boolean addUser( String name, String email, float budget )
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from user where email=?", new String[]{email});
+        if (cursor != null && !cursor.moveToFirst() && cursor.getCount() > 0) {
+            return false;
+        }
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", name);
+        contentValues.put("email", email);
+        contentValues.put("budget", budget);
+        db.insert("user", null, contentValues);
+        // make sure that potential listeners are getting notified
+        return true;
+    }
+
+    public boolean deleteUserById(long id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int result = db.delete("user", "_id=?", new String[]{id + ""});
+        return result > 0;
+
+    }
+
+    public User getUserByEmail(String email) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from user where email=?;", new String[]{email});
+        // make sure that potential listeners are getting notified
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) {
+            cursor.close();
+            return null;
+        }else if(cursor.getCount() > 0){
+            User user = new User();
+            user.setId(cursor.getLong(0));
+            user.setName(cursor.getString(1));
+            user.setEmail(cursor.getString(2));
+            user.setBudget(cursor.getFloat(3));
+            return user;
+        }
+        return null;
+    }
 }

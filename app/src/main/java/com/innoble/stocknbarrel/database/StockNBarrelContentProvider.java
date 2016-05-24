@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 
 import com.innoble.stocknbarrel.model.Product;
+import com.innoble.stocknbarrel.model.User;
 
 /**
  * Created by At3r on 5/19/2016.
@@ -152,6 +153,38 @@ public class StockNBarrelContentProvider extends ContentProvider {
     }
 
 
+    public boolean userExsits( )
+    {
+        return database.userExsits();
+    }
+
+    public User getUserByEmail( String email)
+    {
+        return database.getUserByEmail(email);
+    }
+
+    public User getUser( )
+    {
+        return database.getUser();
+    }
+
+
+    public Cursor getShoppingList( )
+    {
+        return database.getShoppingList();
+    }
+
+    public boolean addUser( String name, String email, float budget )
+    {
+        return database.addUser(name, email, budget);
+    }
+
+    public boolean deleteUserById(long _id)
+    {
+        return database.deleteUserById(_id);
+    }
+
+
     private class DatabaseObject {
 
         String tableName;
@@ -184,7 +217,6 @@ public class StockNBarrelContentProvider extends ContentProvider {
                     throw new IllegalArgumentException("Unknown URI: " + uri);
             }
         }
-
 
 
     }
