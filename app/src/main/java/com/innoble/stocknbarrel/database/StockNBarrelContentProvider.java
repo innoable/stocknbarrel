@@ -1,5 +1,6 @@
 package com.innoble.stocknbarrel.database;
 
+import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -82,7 +83,6 @@ public class StockNBarrelContentProvider extends ContentProvider {
         // check if the caller has requested a column which does not exists
         //checkColumns(projection);
 
-
         DatabaseObject dbObj = new DatabaseObject(uri);
         queryBuilder.setTables(dbObj.tableName);          // Set the table
         if(dbObj.isTable == DatabaseQueryType.ROW ) {
@@ -95,16 +95,16 @@ public class StockNBarrelContentProvider extends ContentProvider {
 
         SQLiteDatabase db = database.getReadableDatabase();
 
-        Cursor cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
+        Cursor cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder, "10");
         // make sure that potential listeners are getting notified
-        //cursor.moveToFirst();
+
         if (cursor == null) {
             return null;
         } else if (!cursor.moveToFirst()) {
             cursor.close();
             return null;
         }
-        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        //cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
@@ -209,7 +209,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
                 case PRODUCT_SEARCH:
                     tableName = Product.TABLE_PRODUCT;
                     String searchData = uri.getLastPathSegment();
-                    projection = new String[]{ "_id", Product.COLUMN_NAME + " as suggest_text_1", "_id as suggest_intent_data_id"};
+                    projection = new String[]{ "_id", Product.COLUMN_NAME + " as " + SearchManager.SUGGEST_COLUMN_TEXT_1, Product.COLUMN_NAME + " as " + SearchManager.SUGGEST_COLUMN_INTENT_DATA};
                     whereClause = Product.COLUMN_NAME + " LIKE '" + searchData + "%'";
                     isTable = DatabaseQueryType.SEARCH;
                     break;
