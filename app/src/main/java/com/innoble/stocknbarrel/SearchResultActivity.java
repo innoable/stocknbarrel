@@ -2,6 +2,7 @@ package com.innoble.stocknbarrel;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -25,8 +26,9 @@ public class SearchResultActivity extends AppCompatActivity {
                 Displays android:searchSuggestIntentData variable defined in xml search xml file
                 followed by the index of the selected item in the list
             */
-            String uri = intent.getDataString();
-            txt.setText("Suggestion: "+ uri);
+
+            String searchTerm = intent.getDataString();
+            txt.setText("Suggestion: "+ searchTerm);
         }
 
     }
