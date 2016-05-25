@@ -68,7 +68,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        database = new StockNBarrelDatabaseHelper(getContext());
+        database =  new StockNBarrelDatabaseHelper(getContext());
         return false;
     }
 
@@ -174,7 +174,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
         return database.getShoppingList();
     }
 
-    public boolean addUser( String name, String email, float budget )
+    public boolean addUser( String name, String email, double budget )
     {
         return database.addUser(name, email, budget);
     }

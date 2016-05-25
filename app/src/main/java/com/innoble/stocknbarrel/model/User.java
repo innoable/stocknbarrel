@@ -9,9 +9,9 @@ public class User extends DataEntity {
 
     private String name;
     private String email;
-    private float budget;
+    private double budget;
 
-    public User(String name, String email, float budget) {
+    public User(String name, String email, double budget) {
         super();
         this.name =  name;
         this.email = email;
@@ -38,7 +38,7 @@ public class User extends DataEntity {
         this.name = name;
     }
 
-    public float getBudget() {
+    public double getBudget() {
         return budget;
     }
 

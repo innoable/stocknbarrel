@@ -145,7 +145,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public boolean addUser( String name, String email, float budget )
+    public boolean addUser(String name, String email, double budget )
     {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from user where email=?", new String[]{email});

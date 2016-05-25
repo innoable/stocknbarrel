@@ -55,13 +55,15 @@ public class ListItemAdapter extends ArrayAdapter<ListItemAdapter.RowData> imple
                             double oldItemCost = Double.parseDouble(holder.itemTotal.getText().toString().substring(1));
                             holder.itemTotal.setText("$" + String.valueOf(0.0));
                             holder.editQty.setText("0");
-                            mItemTotalChangeListener.onItemCostChange(oldItemCost, 0, holder.position);
+                            if(mItemTotalChangeListener!= null)
+                                 mItemTotalChangeListener.onItemCostChange(oldItemCost, 0, holder.position);
                         } else {
                             int qty = Integer.parseInt(qtyStr);
                             double oldItemCost = Double.parseDouble(holder.itemTotal.getText().toString().substring(1));
                             double newItemCost = Math.round(qty * models.get(holder.position).cost * 100.0) / 100.0;
                             holder.itemTotal.setText("$" + String.valueOf(newItemCost));
-                            mItemTotalChangeListener.onItemCostChange(oldItemCost, newItemCost, holder.position);
+                            if(mItemTotalChangeListener!= null)
+                                mItemTotalChangeListener.onItemCostChange(oldItemCost, newItemCost, holder.position);
                         }
                     }
                 }

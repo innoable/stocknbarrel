@@ -1,17 +1,23 @@
 package com.innoble.stocknbarrel;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
+
+import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity implements RegisterFragment.Callback {
 
+    private StockNBarrelDatabaseHelper db;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.db =  new StockNBarrelDatabaseHelper(this);
         setContentView(R.layout.activity_register);
 
     }
@@ -23,15 +29,31 @@ public class RegisterActivity extends AppCompatActivity implements RegisterFragm
     public void onUserRegister(Map<String, String> data) {
         if(data == null) return;
         //Do something with the data once it has been returned ( Persist data to local db)
-        String name = data.get("name");
-        String email = data.get("email");
-        Double budget = Double.parseDouble(data.get("budget"));
+        final String name = data.get("name");
+        final String email = data.get("email");
+        final double budget = Double.parseDouble(data.get("budget"));
 
-        Toast t = Toast.makeText(getApplicationContext(),name+"\n"+email+"\n"+budget,Toast.LENGTH_LONG);
-        t.show();
-        Intent iMain = new Intent(this,MainActivity.class);
-        startActivity(iMain);
-        finish();
+
+        AsyncTask<Void,Void,Boolean> userRegisterTask = new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                return db.addUser(name,email,budget);
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if(!result) throw new IllegalStateException("Could not initialize user");
+
+                else {
+                    Intent iMain = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(iMain);
+                    finish();
+                }
+            }
+        };
+
+        userRegisterTask.execute();
+
     }
 
 

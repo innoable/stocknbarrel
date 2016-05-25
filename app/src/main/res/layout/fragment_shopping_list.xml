@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="$430.00"
-                android:id="@+id/textView7"
+                android:id="@+id/budget"
                 android:layout_weight="2" />
         </LinearLayout>
 

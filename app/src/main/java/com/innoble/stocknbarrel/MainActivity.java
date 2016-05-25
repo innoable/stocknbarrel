@@ -11,18 +11,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
+
 public class MainActivity extends AppCompatActivity {
+
+    private StockNBarrelDatabaseHelper mDb;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if(!isRegistered()){
+        mDb = new StockNBarrelDatabaseHelper(this);
+        if(mDb.getUser() == null){
             Intent iLogin = new Intent(this,RegisterActivity.class);
             startActivity(iLogin);
             // to prevent back button from navigating back here from login screen
             finish();
-
         }
 
         setContentView(R.layout.activity_main);
@@ -63,5 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isRegistered(){
             return true;
     }
+
+
 
 }

@@ -2,11 +2,15 @@ package com.innoble.stocknbarrel;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +24,8 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
 
     private List<ListItemAdapter.RowData>models;
     private ListItemAdapter shoppingListAdapter;
+    private StockNBarrelDatabaseHelper db;
+
 
     String[] web = {
             "Google Plus",
@@ -33,6 +39,8 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
 
     int[] qty = {5,6,2,7,10,45,9};
 
+    double budget = 946.56;
+
     double[]cost ={4.30,10.31,32.57,94.0,46.4,78.9,1.50};
 
     boolean[] isInList={true,true,true,false,true,true,false};
@@ -41,6 +49,12 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
             R.drawable.ic_action_add,
             R.drawable.ic_action_remove
     };
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.db = new StockNBarrelDatabaseHelper(getActivity());
+    }
 
     public ShoppingListFragment() {
         // Required empty public constructor
@@ -74,7 +88,6 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
         TextView tcView = (TextView)getView().findViewById(R.id.totalCost);
         double oldTotal = Double.parseDouble(tcView.getText().toString().substring(1));
         double newTotal = Math.round(((oldTotal + (newVal - oldVal))*100)/100);
-        double budget = 100;
         tcView.setText("$"+Double.toString(newTotal));
     }
 
@@ -100,12 +113,20 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
         for(ListItemAdapter.RowData m : models){
             totalCost+= m.cost *m.qty;
         }
-        totalCostView.setText("$"+ Double.toString(totalCost));
+        totalCostView.setText("$"+ Double.toString(Math.round(totalCost*100)/100));
+
+        TextView budgetView = (TextView)rootView.findViewById(R.id.budget);
+        budgetView.setText("$"+Double.toString(budget));
+
+
+
 
 
 
         return rootView;
     }
+
+
 
 
 

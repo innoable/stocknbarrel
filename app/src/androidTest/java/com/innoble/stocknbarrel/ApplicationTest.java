@@ -2,10 +2,7 @@ package com.innoble.stocknbarrel;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
-import android.test.MoreAsserts;
-import android.util.Log;
 
-import com.innoble.stocknbarrel.database.StockNBarrelContentProvider;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 import com.innoble.stocknbarrel.model.User;
 
