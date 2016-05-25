@@ -39,15 +39,90 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void seedData(SQLiteDatabase db){
+
+        //create user
+        User user = new User("Random Shopper", "testuser@gmail.com", 2000.0f);
+        insertData(db, user);
+
+
+        Grocery grocery = new Grocery("Massy Stores", "Chaguanas", "Chaguanas");
+        insertData(db, grocery);
+
+        ShoppingList shoppingList = new ShoppingList("Monthly Grocery List", user.getId());
+        insertData(db, shoppingList);
+
         //db = this.getWritableDatabase();
         Product product = new Product("Planters Unsalted Mixed Nuts");
         insertData(db, product);
+        GroceryStockItem groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 65.99, "tin", 1000);
+        insertData(db, groceryStockItem);
+
+
         product.setName("Axe (Excite) Body Spray");
         insertData(db, product);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 25.99, "can", 1000);
+        insertData(db, groceryStockItem);
+        ShoppingListItem  shoppingListItem = new ShoppingListItem(shoppingList.getId(), groceryStockItem.getId(), 1);
+        insertData(db, shoppingListItem);
+
         product.setName("Panadol Hot Rem");
         insertData(db, product);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 19.99, "box", 1000);
+        insertData(db, groceryStockItem);
+
+        product.setName("Gullon Sugar Free Vanilla Wafer");
+        insertData(db, product);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),6, 15.99, "pack", 1000);
+        insertData(db, groceryStockItem);
+
+        product.setName("Irish Spring Body Wash (Original)");
+        insertData(db, product);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 26.00, "bottle", 1000);
+        insertData(db, groceryStockItem);
+        shoppingListItem = new ShoppingListItem(shoppingList.getId(), groceryStockItem.getId(), 1);
+        insertData(db, shoppingListItem);
+
+        product.setName("Protox Insecticide Spray");
+        insertData(db, product);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 16.00, "can", 1000);
+        insertData(db, groceryStockItem);
+
+        product.setName("Airwick Airfreshener 4in1");
+        insertData(db, product);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 23.00, "can", 1000);
+        insertData(db, groceryStockItem);
+        shoppingListItem = new ShoppingListItem(shoppingList.getId(), groceryStockItem.getId(), 1);
+        insertData(db, shoppingListItem);
+
+        product.setName("Kiss Whole Grain Loaf ");
+        insertData(db, product);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 13.00, "loaf", 1000);
+        insertData(db, groceryStockItem);
+        shoppingListItem = new ShoppingListItem(shoppingList.getId(), groceryStockItem.getId(), 1);
+        insertData(db, shoppingListItem);
+
+        product.setName("Dole Pineapple Juice Unsweetened");
+        insertData(db, product);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 9.00, "tin", 1000);
+        insertData(db, groceryStockItem);
+        shoppingListItem = new ShoppingListItem(shoppingList.getId(), groceryStockItem.getId(), 1);
+        insertData(db, shoppingListItem);
+
+        product.setName("Kiss Cakes Orange Cupcakes");
+        insertData(db, product);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 3.50, "pack", 1000);
+        insertData(db, groceryStockItem);
+
+        product.setName("Bermudez Wheat Crisps");
+        insertData(db, product);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 3.00, "pack", 1000);
+        insertData(db, groceryStockItem);
 
         Product.createNameIndex(db);
+
+        // Create a shopping list
+
+        //Create a shopping list items
     }
 
     @Override
@@ -135,7 +210,10 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
     public Cursor getShoppingList( )
     {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from shopping_list_item;", null);
+        Cursor cursor = db.rawQuery("select p.name as product_name, gsi.price as price, sli.quantity as quantity from " + ShoppingListItem.TABLE_SHOPPING_LIST_ITEM + " as sli "
+               +  " inner join " + GroceryStockItem.TABLE_GROCERY_STOCK_ITEM + " as gsi on sli." + ShoppingListItem.COLUMN_GROCERY_STOCK_ITEM_ID + "=gsi." + GroceryStockItem.COLUMN_ID
+                + " inner join " + Product.TABLE_PRODUCT + " as p on gsi." + GroceryStockItem.COLUMN_PRODUCT_ID + "=p." + Product.COLUMN_ID +" ;", null);
+
         if (cursor == null) {
             return null;
         } else if (!cursor.moveToFirst()) {
@@ -145,19 +223,22 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public boolean addUser( String name, String email, float budget )
+    public boolean addUser(String name, String email, float budget )
     {
         SQLiteDatabase db = this.getReadableDatabase();
+
         Cursor cursor = db.rawQuery("select * from user where email=?", new String[]{email});
         if (cursor != null && !cursor.moveToFirst() && cursor.getCount() > 0) {
             return false;
         }
 
-        ContentValues contentValues = new ContentValues();
+        User user = new User(name, email, budget);
+        insertData(db, user);
+        /*ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
         contentValues.put("email", email);
         contentValues.put("budget", budget);
-        db.insert("user", null, contentValues);
+        db.insert("user", null, contentValues);*/
         // make sure that potential listeners are getting notified
         return true;
     }

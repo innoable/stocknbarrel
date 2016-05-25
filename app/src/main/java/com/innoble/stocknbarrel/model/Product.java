@@ -69,7 +69,8 @@ public class Product extends DataEntity {
     public void insert (SQLiteDatabase database) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, name);
-        database.insert(TABLE_PRODUCT, null, contentValues);
+        Long result = database.insert(TABLE_PRODUCT, null, contentValues);
+        setId(result);
     }
 
     private static final String PRODUCT_INDEX = "create index product_name_index on product (name collate nocase);";

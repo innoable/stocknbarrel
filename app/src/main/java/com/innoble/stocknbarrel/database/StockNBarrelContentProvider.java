@@ -210,7 +210,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
                     tableName = Product.TABLE_PRODUCT;
                     String searchData = uri.getLastPathSegment();
                     projection = new String[]{ "_id", Product.COLUMN_NAME + " as " + SearchManager.SUGGEST_COLUMN_TEXT_1, Product.COLUMN_NAME + " as " + SearchManager.SUGGEST_COLUMN_INTENT_DATA};
-                    whereClause = Product.COLUMN_NAME + " LIKE '" + searchData + "%'";
+                    whereClause = Product.COLUMN_NAME + " LIKE '%" + searchData + "%'";
                     isTable = DatabaseQueryType.SEARCH;
                     break;
                 default:

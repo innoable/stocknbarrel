@@ -1,5 +1,6 @@
 package com.innoble.stocknbarrel.model;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
@@ -10,6 +11,13 @@ public class Grocery extends DataEntity {
     private String branch;
     private String location;
 
+    public Grocery(String name, String branch, String location) {
+        super();
+
+        this.name = name;
+        this.branch = branch;
+        this.location = location;
+    }
 
     public String getName() {
         return name;
@@ -61,6 +69,16 @@ public class Grocery extends DataEntity {
                                  int newVersion) {
         database.execSQL("DROP TABLE IF EXISTS " + TABLE_GROCERY);
         onCreate(database);
+    }
+
+    @Override
+    public void insert (SQLiteDatabase database) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_NAME, name);
+        contentValues.put(COLUMN_LOCATION, location);
+        contentValues.put(COLUMN_BRANCH, branch);
+        long result = database.insert(TABLE_GROCERY, null, contentValues);
+        setId(result);
     }
 }
 
