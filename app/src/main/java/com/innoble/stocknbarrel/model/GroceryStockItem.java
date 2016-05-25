@@ -100,6 +100,7 @@ public class GroceryStockItem extends DataEntity {
             + ");";
 
     public static void onCreate(SQLiteDatabase database) {
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_GROCERY_STOCK_ITEM);
         database.execSQL(DATABASE_CREATE);
     }
 

@@ -64,6 +64,7 @@ public class ShoppingListItem extends DataEntity {
             + ");";
 
     public static void onCreate(SQLiteDatabase database) {
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LIST_ITEM);
         database.execSQL(DATABASE_CREATE);
     }
 

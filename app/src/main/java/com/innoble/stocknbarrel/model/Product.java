@@ -55,6 +55,7 @@ public class Product extends DataEntity {
             + ");";
 
     public static void onCreate(SQLiteDatabase database) {
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT);
         database.execSQL(DATABASE_CREATE);
     }
 

@@ -26,10 +26,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
 
     public StockNBarrelDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1); //db will be created when constructor is called
-        if(databaseExist() == false) {
-            SQLiteDatabase db = this.getWritableDatabase();
-        }
-
+        SQLiteDatabase db = this.getWritableDatabase();
     }
 
     private boolean databaseExist()
@@ -131,8 +128,8 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
             Grocery.onCreate(db);
             User.onCreate(db);
             Product.onCreate(db);
-            GroceryStockItem.onCreate(db);
             ShoppingList.onCreate(db);
+            GroceryStockItem.onCreate(db);
             ShoppingListItem.onCreate(db);
             seedData(db);
 
@@ -143,9 +140,10 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         Grocery.onUpgrade(db, oldVersion, newVersion);
         User.onUpgrade(db, oldVersion, newVersion);
         Product.onUpgrade(db, oldVersion, newVersion);
-        GroceryStockItem.onUpgrade(db, oldVersion, newVersion);
         ShoppingList.onUpgrade(db, oldVersion, newVersion);
+        GroceryStockItem.onUpgrade(db, oldVersion, newVersion);
         ShoppingListItem.onUpgrade(db, oldVersion, newVersion);
+        seedData(db);
     }
 
     public boolean insertData(SQLiteDatabase db, DataEntity entity){

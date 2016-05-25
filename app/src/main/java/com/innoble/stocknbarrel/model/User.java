@@ -84,6 +84,7 @@ public class User extends DataEntity {
             + ");";
 
     public static void onCreate(SQLiteDatabase database) {
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         database.execSQL(DATABASE_CREATE);
     }
 
