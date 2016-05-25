@@ -49,6 +49,8 @@ public class ListItemAdapter extends ArrayAdapter<ListItemAdapter.RowData> imple
             holder.editQty.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
+                    if(getCount() <= 0)
+                        return;
                     if (!hasFocus) {
                         String qtyStr = holder.editQty.getText().toString();
                         if (qtyStr.length() == 0) {

@@ -77,9 +77,12 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
         ListItemAdapter.RowData row = shoppingListAdapter.getItem(position);
         TextView tcView = (TextView)getView().findViewById(R.id.totalCost);
         double total = Double.parseDouble(((String) tcView.getText()).substring(1));
-        total-= row.cost *row.qty;
-        tcView.setText("$"+Double.toString(Math.round(total* 100.0) / 100.0));
-        shoppingListAdapter.remove(row);
+        total-= Math.round(row.cost *row.qty * 100.0)/100.0;
+        tcView.setText("$"+Double.toString(total));
+        if(shoppingListAdapter.getCount() <= 1 )
+            shoppingListAdapter.clear();
+        else
+            shoppingListAdapter.remove(row);
 
     }
 
@@ -87,7 +90,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
     public void onItemCostChange(double oldVal,double newVal,int position) {
         TextView tcView = (TextView)getView().findViewById(R.id.totalCost);
         double oldTotal = Double.parseDouble(tcView.getText().toString().substring(1));
-        double newTotal = Math.round(((oldTotal + (newVal - oldVal))*100)/100);
+        double newTotal = Math.round(((oldTotal + (newVal - oldVal))*100.0)/100.0);
         tcView.setText("$"+Double.toString(newTotal));
     }
 
@@ -111,9 +114,9 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
 
         double totalCost = 0;
         for(ListItemAdapter.RowData m : models){
-            totalCost+= m.cost *m.qty;
+            totalCost+= Math.round(m.cost *m.qty *100.0)/100.0;
         }
-        totalCostView.setText("$"+ Double.toString(Math.round(totalCost*100)/100));
+        totalCostView.setText("$"+ Double.toString(totalCost));
 
         TextView budgetView = (TextView)rootView.findViewById(R.id.budget);
         budgetView.setText("$"+Double.toString(budget));
