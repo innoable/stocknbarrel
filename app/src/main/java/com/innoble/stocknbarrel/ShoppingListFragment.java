@@ -1,6 +1,7 @@
 package com.innoble.stocknbarrel;
 
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,9 +12,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
+import com.innoble.stocknbarrel.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.R.color.holo_red_light;
 
 
 /**
@@ -26,6 +30,10 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
     private ListItemAdapter shoppingListAdapter;
     private StockNBarrelDatabaseHelper db;
 
+    private double total = 0;
+    private User mUser;
+    private double budget;
+    private Cursor dataset;
 
     String[] web = {
             "Google Plus",
@@ -39,7 +47,6 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
 
     int[] qty = {5,6,2,7,10,45,9};
 
-    double budget = 946.56;
 
     double[]cost ={4.30,10.31,32.57,94.0,46.4,78.9,1.50};
 
@@ -54,6 +61,9 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.db = new StockNBarrelDatabaseHelper(getActivity());
+        this.mUser = db.getUser();
+        this.budget = mUser.getBudget();
+        this.dataset = db.getShoppingList();
     }
 
     public ShoppingListFragment() {
@@ -76,9 +86,16 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
     public void onBtnClick(int position) {
         ListItemAdapter.RowData row = shoppingListAdapter.getItem(position);
         TextView tcView = (TextView)getView().findViewById(R.id.totalCost);
-        double total = Double.parseDouble(((String) tcView.getText()).substring(1));
+        total = Double.parseDouble(((String) tcView.getText()).substring(1));
         total-= Math.round(row.cost *row.qty * 100.0)/100.0;
         tcView.setText("$"+Double.toString(total));
+
+        if(total > mUser.getBudget()){
+            tcView.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+        }
+        else{
+            tcView.setTextColor(getResources().getColor(android.R.color.white));
+        }
         if(shoppingListAdapter.getCount() <= 1 )
             shoppingListAdapter.clear();
         else
@@ -92,6 +109,13 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
         double oldTotal = Double.parseDouble(tcView.getText().toString().substring(1));
         double newTotal = Math.round(((oldTotal + (newVal - oldVal))*100.0)/100.0);
         tcView.setText("$"+Double.toString(newTotal));
+
+        if (newTotal > budget){
+            tcView.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+        }
+        else{
+            tcView.setTextColor(getResources().getColor(android.R.color.white));
+        }
     }
 
     @Override
@@ -117,6 +141,12 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
             totalCost+= Math.round(m.cost *m.qty *100.0)/100.0;
         }
         totalCostView.setText("$"+ Double.toString(totalCost));
+        if(totalCost > budget){
+            totalCostView.setTextColor(getResources().getColor(holo_red_light));
+        }
+        else {
+            totalCostView.setTextColor(getResources().getColor(android.R.color.white));
+        }
 
         TextView budgetView = (TextView)rootView.findViewById(R.id.budget);
         budgetView.setText("$"+Double.toString(budget));
