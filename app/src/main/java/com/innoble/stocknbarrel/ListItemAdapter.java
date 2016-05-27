@@ -53,31 +53,6 @@ public class ListItemAdapter extends ArrayAdapter<ListItemAdapter.RowData> imple
             holder.editQty = (EditText) view.findViewById(R.id.edit_qty);
             holder.addRemoveBtn.setOnClickListener(this);
 
-            holder.editQty.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if(getCount() <= 0)
-                        return;
-                    if (!hasFocus) {
-                        String qtyStr = holder.editQty.getText().toString();
-                        if (qtyStr.length() == 0) {
-                            double oldItemCost = Double.parseDouble(holder.itemTotal.getText().toString().substring(1));
-                            holder.itemTotal.setText("$" + String.valueOf(0.0));
-                            holder.editQty.setText("0");
-                            if(mItemTotalChangeListener!= null)
-                                 mItemTotalChangeListener.onItemCostChange(oldItemCost, 0, holder.position);
-                        } else {
-                            int qty = Integer.parseInt(qtyStr);
-                            double oldItemCost = Double.parseDouble(holder.itemTotal.getText().toString().substring(1));
-                            double newItemCost = Math.round(qty * models.get(holder.position).cost * 100.0) / 100.0;
-                            holder.itemTotal.setText("$" + String.valueOf(newItemCost));
-                            if(mItemTotalChangeListener!= null)
-                                mItemTotalChangeListener.onItemCostChange(oldItemCost, newItemCost, holder.position);
-                        }
-                    }
-                }
-            });
-
 
             view.setTag(holder);
 

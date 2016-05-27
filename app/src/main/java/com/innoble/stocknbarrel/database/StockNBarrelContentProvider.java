@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 
 import com.innoble.stocknbarrel.model.Product;
+import com.innoble.stocknbarrel.model.ShoppingListItem;
 import com.innoble.stocknbarrel.model.User;
 
 /**
@@ -83,19 +84,29 @@ public class StockNBarrelContentProvider extends ContentProvider {
         // check if the caller has requested a column which does not exists
         //checkColumns(projection);
 
-        DatabaseObject dbObj = new DatabaseObject(uri);
-        queryBuilder.setTables(dbObj.tableName);          // Set the table
-        if(dbObj.isTable == DatabaseQueryType.ROW ) {
-            queryBuilder.appendWhere(dbObj.tableIdColumnName + "=" + dbObj.rowId );
-        }
-        else if(dbObj.isTable == DatabaseQueryType.SEARCH){
-            projection = dbObj.projection;
-            queryBuilder.appendWhere(dbObj.whereClause);
+        Cursor cursor = null;
+
+        cursor = executeRawQueryIfAvailable(
+                uri,projection,selection,selectionArgs,sortOrder);
+
+
+        if(cursor == null){
+            DatabaseObject dbObj = new DatabaseObject(uri);
+            queryBuilder.setTables(dbObj.tableName);          // Set the table
+            if(dbObj.isTable == DatabaseQueryType.ROW ) {
+                queryBuilder.appendWhere(dbObj.tableIdColumnName + "=" + dbObj.rowId );
+            }
+            else if(dbObj.isTable == DatabaseQueryType.SEARCH){
+                projection = dbObj.projection;
+                queryBuilder.appendWhere(dbObj.whereClause);
+            }
+
+            SQLiteDatabase db = database.getReadableDatabase();
+
+            cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder, "10");
         }
 
-        SQLiteDatabase db = database.getReadableDatabase();
 
-        Cursor cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder, "10");
         // make sure that potential listeners are getting notified
 
         if (cursor == null) {
@@ -109,6 +120,17 @@ public class StockNBarrelContentProvider extends ContentProvider {
     }
 
 
+
+
+    private Cursor executeRawQueryIfAvailable(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder){
+        int uriType = sURIMatcher.match(uri);
+        switch (uriType) {
+            case SHOPPING_LIST_ITEMS:
+                return database.getShoppingList();
+            default:
+                return null;
+        }
+    }
 
     @Nullable
     @Override
@@ -125,7 +147,22 @@ public class StockNBarrelContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        int uriType = sURIMatcher.match(uri);
+        int count = 0;
+        switch (uriType){
+            case SHOPPING_LIST_ITEM_ID:
+                count = ShoppingListItem.removeById(database.getWritableDatabase(),Long.parseLong(uri.getLastPathSegment()));
+            break;
+
+            default:
+                throw new IllegalArgumentException("Unknown URI"+ uri);
+
+        }
+        if(count > 0) {
+            Uri notifyUri = CONTENT_URI.buildUpon().appendPath(SHOPPING_LIST_ITEMS_PATH).build();
+            getContext().getContentResolver().notifyChange(notifyUri, null);
+        }
+        return  count;
     }
 
     @Override
@@ -213,8 +250,6 @@ public class StockNBarrelContentProvider extends ContentProvider {
                     whereClause = Product.COLUMN_NAME + " LIKE '%" + searchData + "%'";
                     isTable = DatabaseQueryType.SEARCH;
                     break;
-                default:
-                    throw new IllegalArgumentException("Unknown URI: " + uri);
             }
         }
 

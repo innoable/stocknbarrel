@@ -14,13 +14,14 @@ import android.widget.TextView;
  * Created by Kemron on 27/05/2016.
  */
 public class ShoppingListAdapter extends CursorAdapter implements View.OnClickListener{
-    private final Context context;
+    private Context context;
     private ItemBtnClickListener mItemBtnClickListener;
     private ItemTotalChangeListener mItemTotalChangeListener;
 
-    public ShoppingListAdapter(Context context, Cursor cursor){
+    public ShoppingListAdapter(Context context, Cursor cursor,ItemBtnClickListener mItemBtnClickListener){
         super(context,cursor,0);
         this.context = context;
+        this.mItemBtnClickListener = mItemBtnClickListener;
     }
 
 
@@ -29,6 +30,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
     @Override
     // Executed when a new view is being created (should setup ViewHolder pattern initalization here)
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        this.context = context;
         View view =  LayoutInflater.from(context).inflate(R.layout.shopping_list_single,parent,false);
         ViewHolder holder;
         holder = new ViewHolder();
@@ -62,7 +64,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
 
 
         holder.itemTitle.setText(title);
-        //holder.addRemoveBtn.setTag(position);
+        holder.addRemoveBtn.setTag(cursor.getLong(cursor.getColumnIndex("_id")));
 
     }
 
@@ -71,14 +73,13 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if (mItemBtnClickListener != null) {
-            mItemBtnClickListener.onBtnClick((Integer) v.getTag());
-        }
+        if(mItemBtnClickListener!= null)
+            mItemBtnClickListener.onBtnClick((long)v.getTag());
     }
 
 
     public interface ItemBtnClickListener {
-        void onBtnClick(int position);
+        void onBtnClick(long itemId);
     }
 
     public interface ItemTotalChangeListener {
