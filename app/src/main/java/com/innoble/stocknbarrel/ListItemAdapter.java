@@ -33,6 +33,13 @@ public class ListItemAdapter extends ArrayAdapter<ListItemAdapter.RowData> imple
 
     }
 
+
+
+
+
+
+
+
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
 

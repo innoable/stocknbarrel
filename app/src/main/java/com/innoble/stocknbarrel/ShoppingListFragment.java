@@ -28,6 +28,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
 
     private List<ListItemAdapter.RowData>models;
     private ListItemAdapter shoppingListAdapter;
+    private ShoppingListAdapter cursorAdapter;
     private StockNBarrelDatabaseHelper db;
 
     private double total = 0;
@@ -60,6 +61,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getContext().deleteDatabase(StockNBarrelDatabaseHelper.DATABASE_NAME);
         this.db = new StockNBarrelDatabaseHelper(getActivity());
         this.mUser = db.getUser();
         this.budget = mUser.getBudget();
@@ -123,7 +125,8 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        shoppingListAdapter = new ListItemAdapter(getActivity(),models,this,this);
+       // shoppingListAdapter = new ListItemAdapter(getActivity(),models,this,this);
+        cursorAdapter = new ShoppingListAdapter(getActivity(),db.getShoppingList());
 
 
         View rootView =  inflater.inflate(R.layout.fragment_shopping_list, container, false);
@@ -131,7 +134,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
         ListView listView = (ListView)rootView.findViewById(R.id.shopping_list_view);
 
 
-        listView.setAdapter(shoppingListAdapter);
+        listView.setAdapter(cursorAdapter);
 
 
         TextView totalCostView = (TextView)rootView.findViewById(R.id.totalCost);

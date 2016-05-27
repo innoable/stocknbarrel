@@ -1,6 +1,5 @@
 package com.innoble.stocknbarrel.database;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,9 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.innoble.stocknbarrel.model.DataEntity;
 import com.innoble.stocknbarrel.model.Grocery;
 import com.innoble.stocknbarrel.model.GroceryStockItem;
+import com.innoble.stocknbarrel.model.Product;
 import com.innoble.stocknbarrel.model.ShoppingList;
 import com.innoble.stocknbarrel.model.ShoppingListItem;
-import com.innoble.stocknbarrel.model.Product;
 import com.innoble.stocknbarrel.model.User;
 
 import java.io.File;
@@ -208,7 +207,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
     public Cursor getShoppingList( )
     {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select p.name as product_name, gsi.price as price, sli.quantity as quantity from " + ShoppingListItem.TABLE_SHOPPING_LIST_ITEM + " as sli "
+        Cursor cursor = db.rawQuery("select sli._id as _id, p.name as product_name, gsi.price as price, sli.quantity as quantity from " + ShoppingListItem.TABLE_SHOPPING_LIST_ITEM + " as sli "
                +  " inner join " + GroceryStockItem.TABLE_GROCERY_STOCK_ITEM + " as gsi on sli." + ShoppingListItem.COLUMN_GROCERY_STOCK_ITEM_ID + "=gsi." + GroceryStockItem.COLUMN_ID
                 + " inner join " + Product.TABLE_PRODUCT + " as p on gsi." + GroceryStockItem.COLUMN_PRODUCT_ID + "=p." + Product.COLUMN_ID +" ;", null);
 
