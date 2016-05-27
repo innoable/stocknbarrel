@@ -1,5 +1,6 @@
 package com.innoble.stocknbarrel.model;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
@@ -8,10 +9,17 @@ import android.database.sqlite.SQLiteDatabase;
 public class ShoppingList extends DataEntity {
 
 
-    private int userId;
+    private long userId;
     private String name;
 
-    public int getUserId() {
+    public ShoppingList(String name, long userId) {
+        super();
+
+        this.name = name;
+        this.userId = userId;
+    }
+
+    public long getUserId() {
         return userId;
     }
 
@@ -44,6 +52,7 @@ public class ShoppingList extends DataEntity {
             + ");";
 
     public static void onCreate(SQLiteDatabase database) {
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LIST);
         database.execSQL(DATABASE_CREATE);
     }
 
@@ -51,6 +60,15 @@ public class ShoppingList extends DataEntity {
                                  int newVersion) {
         database.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LIST);
         onCreate(database);
+    }
+
+    @Override
+    public void insert (SQLiteDatabase database) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_NAME, name);
+        contentValues.put(COLUMN_USER_ID, userId);
+        long result = database.insert(TABLE_SHOPPING_LIST, null, contentValues);
+        setId(result);
     }
 
 }

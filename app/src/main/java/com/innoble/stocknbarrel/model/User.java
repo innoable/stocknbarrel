@@ -1,5 +1,6 @@
 package com.innoble.stocknbarrel.model;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
@@ -83,6 +84,7 @@ public class User extends DataEntity {
             + ");";
 
     public static void onCreate(SQLiteDatabase database) {
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         database.execSQL(DATABASE_CREATE);
     }
 
@@ -90,5 +92,15 @@ public class User extends DataEntity {
                                  int newVersion) {
         database.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         onCreate(database);
+    }
+
+    @Override
+    public void insert (SQLiteDatabase database) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_NAME, name);
+        contentValues.put(COLUMN_EMAIL, email);
+        contentValues.put(COLUMN_BUDGET, budget);
+        long result = database.insert(TABLE_USER, null, contentValues);
+        setId(result);
     }
 }

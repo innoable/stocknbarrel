@@ -1,6 +1,7 @@
 package com.innoble.stocknbarrel;
 
 import android.app.Application;
+import android.database.Cursor;
 import android.test.ApplicationTestCase;
 
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
@@ -26,16 +27,16 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         createApplication();
         application = getApplication();
         provider = new StockNBarrelDatabaseHelper(this.getContext());
-        user = new User("Jessica Jones", "sheldonhhall@gmail.com", 500.0f);
+        /*user = new User("Jessica Jones", "sheldonhhall@gmail.com", 500.0f);
         User userResult = provider.getUser();
         if(userResult != null)
-            provider.deleteUserById(userResult.getId());
+            provider.deleteUserById(userResult.getId());*/
     }
 
     public void testCorrectVersion() throws Exception {
         StockNBarrelDatabaseHelper provider = new StockNBarrelDatabaseHelper(this.getContext());
 
-        boolean userExists = provider.userExsits();
+        /*boolean userExists = provider.userExsits();
         Assert.assertFalse("User exists: ", userExists);
         boolean userAdded = provider.addUser(user.getName(), user.getEmail(), user.getBudget());
         Assert.assertTrue("User added: ", userAdded);
@@ -44,7 +45,13 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         User userResult = provider.getUser();
         Assert.assertEquals(user.getEmail(), userResult.getEmail());
         userResult = provider.getUserByEmail(user.getEmail());
-        Assert.assertEquals(user.getEmail(), userResult.getEmail());
+        Assert.assertEquals(user.getEmail(), userResult.getEmail());*/
+
+
+        Cursor cursor = provider.getShoppingList();
+        Assert.assertNotNull(cursor);
+        Assert.assertTrue(cursor.getCount() > 0);
+        Assert.assertTrue(cursor.getCount() == 5);
     }
 
 }
