@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "216505169119",
+    "project_id": "stocknbarrel-55fb4"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:216505169119:android:8e4e95f86328bb71",
+        "android_client_info": {
+          "package_name": "com.innoble.stocknbarrel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMYeOVg_9vxO5m3G_E6g1ozOlFx_zqF4Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-78429087-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

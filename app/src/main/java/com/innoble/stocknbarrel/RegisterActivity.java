@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 
 import java.util.Map;
@@ -12,14 +14,29 @@ import java.util.Map;
 public class RegisterActivity extends AppCompatActivity implements RegisterFragment.Callback {
 
     private StockNBarrelDatabaseHelper db;
-
+    private Tracker mTracker;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Obtain the shared Analytics Tracker instance.
+        TrackedApplication application = (TrackedApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+
         this.db =  new StockNBarrelDatabaseHelper(this);
         setContentView(R.layout.activity_register);
 
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        name = "Register Screen";
+        mTracker.setScreenName(name);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     /*
@@ -45,6 +62,17 @@ public class RegisterActivity extends AppCompatActivity implements RegisterFragm
                 if(!result) throw new IllegalStateException("Could not initialize user");
 
                 else {
+
+                    mTracker.set("&uid", email );
+
+                    // This hit will be sent with the User ID value and be visible in
+                    // User-ID-enabled views (profiles).
+                    mTracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("User")
+                            .setAction("Login")
+                            .setLabel(email)
+                            .build());
+
                     Intent iMain = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(iMain);
                     finish();
