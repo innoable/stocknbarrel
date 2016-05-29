@@ -18,10 +18,11 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
     private ItemBtnClickListener mItemBtnClickListener;
     private ItemTotalChangeListener mItemTotalChangeListener;
 
-    public ShoppingListAdapter(Context context, Cursor cursor,ItemBtnClickListener mItemBtnClickListener){
+    public ShoppingListAdapter(Context context, Cursor cursor,ItemBtnClickListener mItemBtnClickListener,ItemTotalChangeListener tcListener){
         super(context,cursor,0);
         this.context = context;
         this.mItemBtnClickListener = mItemBtnClickListener;
+        this.mItemTotalChangeListener = tcListener;
     }
 
 
@@ -39,6 +40,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
         holder.itemTotal = (TextView) view.findViewById(R.id.shopping_item_cost_textView);
         holder.editQty = (EditText) view.findViewById(R.id.edit_qty);
         holder.addRemoveBtn.setOnClickListener(this);
+        holder.editQty.setOnFocusChangeListener(new OnQtyChangeListener(holder));
         view.setTag(holder);
         return view;
     }
@@ -57,6 +59,8 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
 
         holder.editQty.setText(Integer.toString(qty));
 
+        holder.editQty.setTag(new Double(cost));
+
         holder.itemTotal.setText(new StringBuilder().append("$")
                 .append(Double.toString(
                         Math.round(qty *cost * 100.0) / 100.0)
@@ -64,6 +68,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
 
 
         holder.itemTitle.setText(title);
+        holder.position = cursor.getPosition();
         holder.addRemoveBtn.setTag(cursor.getLong(cursor.getColumnIndex("_id")));
 
     }
@@ -83,7 +88,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
     }
 
     public interface ItemTotalChangeListener {
-        void onItemCostChange(double oldVal, double newVal, int position);
+        void onItemCostChange(double oldVal, double newVal, int cursorIdx);
     }
 
 
@@ -94,8 +99,33 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
         TextView itemTitle;
         ImageButton addRemoveBtn;
         int position;
-
     }
+
+
+    private class OnQtyChangeListener implements View.OnFocusChangeListener{
+
+        ViewHolder viewHolder;
+        OnQtyChangeListener(ViewHolder viewHolder){
+            this.viewHolder = viewHolder;
+        }
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if(!hasFocus){
+                String qtyStr = ((EditText)v).getText().toString();
+                if(qtyStr.length() > 0 ){
+                    int qty = Integer.parseInt(qtyStr);
+                    double newCost = Math.round( qty*((Double)v.getTag()).doubleValue() * 100.0) / 100.0;
+                    double oldCost = Double.parseDouble(viewHolder.itemTotal.getText().toString().substring(1));
+                    viewHolder.itemTotal.setText("$"+Double.toString(newCost));
+                    mItemTotalChangeListener.onItemCostChange(oldCost,newCost,viewHolder.position);
+                }
+
+            }
+        }
+    }
+
+
 
 
 }

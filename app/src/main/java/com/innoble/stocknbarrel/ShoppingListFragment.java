@@ -26,7 +26,7 @@ import static android.R.color.holo_red_light;
  * A simple {@link Fragment} subclass.
  */
 public class ShoppingListFragment extends android.support.v4.app.Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>,ShoppingListAdapter.ItemBtnClickListener{
+        implements LoaderManager.LoaderCallbacks<Cursor>,ShoppingListAdapter.ItemBtnClickListener,ShoppingListAdapter.ItemTotalChangeListener{
 
     private static final int SHOPPING_LIST_LOADER_ID = 0;
     private Uri shoppingListItemQuery;
@@ -72,9 +72,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-        cursorAdapter = new ShoppingListAdapter(getActivity(),null,this);
-
+        cursorAdapter = new ShoppingListAdapter(getActivity(),null,this,this);
 
         View rootView =  inflater.inflate(R.layout.fragment_shopping_list, container, false);
 
@@ -85,9 +83,6 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
         budgetView.setText("$"+Double.toString(budget));
 
         listView.setAdapter(cursorAdapter);
-
-
-
         return rootView;
     }
 
@@ -113,6 +108,8 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
             tcView.setTextColor(getResources().getColor(android.R.color.white));
         }
         cursor.moveToFirst();
+
+        total = newTotal;
 
     }
 
@@ -145,11 +142,37 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
 
     @Override
     public void onBtnClick(long itemId) {
-        Uri uri = StockNBarrelContentProvider.CONTENT_URI.buildUpon()
-                .appendPath(StockNBarrelContentProvider.SHOPPING_LIST_ITEMS_PATH)
+        Uri uri = shoppingListItemQuery.buildUpon()
                 .appendPath(Long.toString(itemId))
                 .build();
         getActivity().getContentResolver().delete(uri,null,null);
         getLoaderManager().restartLoader(SHOPPING_LIST_LOADER_ID, null, this);
+    }
+
+    @Override
+    public void onItemCostChange(double oldVal, double newVal, int cursorIdx) {
+        total = Math.round((total - oldVal + newVal)*100)/100;
+        tcView.setText("$"+Double.toString(total));
+        if(total > budget){
+            tcView.setTextColor(getResources().getColor(holo_red_light));
+        }
+        else {
+            tcView.setTextColor(getResources().getColor(android.R.color.white));
+        }
+
+                Cursor cur = cursorAdapter.getCursor();
+
+                if(cursorIdx >= cur.getCount())
+                    return;
+                cur.move(cursorIdx);
+               long itemId  = cur.getLong(cur.getColumnIndexOrThrow("_id"));
+
+
+
+        Uri uri = shoppingListItemQuery.buildUpon()
+                .appendPath(Long.toString(itemId))
+                .build();
+
+
     }
 }

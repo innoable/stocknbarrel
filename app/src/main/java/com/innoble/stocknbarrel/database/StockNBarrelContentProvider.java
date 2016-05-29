@@ -167,7 +167,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+            return 0;
     }
 
     /*
