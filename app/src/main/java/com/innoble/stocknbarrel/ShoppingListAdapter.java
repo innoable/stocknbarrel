@@ -40,6 +40,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
         holder.itemTotal = (TextView) view.findViewById(R.id.shopping_item_cost_textView);
         holder.editQty = (EditText) view.findViewById(R.id.edit_qty);
         holder.addRemoveBtn.setOnClickListener(this);
+        holder.position = cursor.getPosition();
         holder.editQty.setOnFocusChangeListener(new OnQtyChangeListener(holder));
         view.setTag(holder);
         return view;
@@ -88,7 +89,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
     }
 
     public interface ItemTotalChangeListener {
-        void onItemCostChange(double oldVal, double newVal, int cursorIdx);
+        void onItemCostChange(double oldVal, double newVal,int newQty,int cursorIdx);
     }
 
 
@@ -118,7 +119,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
                     double newCost = Math.round( qty*((Double)v.getTag()).doubleValue() * 100.0) / 100.0;
                     double oldCost = Double.parseDouble(viewHolder.itemTotal.getText().toString().substring(1));
                     viewHolder.itemTotal.setText("$"+Double.toString(newCost));
-                    mItemTotalChangeListener.onItemCostChange(oldCost,newCost,viewHolder.position);
+                    mItemTotalChangeListener.onItemCostChange(oldCost,newCost,qty,viewHolder.position);
                 }
 
             }

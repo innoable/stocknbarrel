@@ -25,7 +25,6 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
 
     public StockNBarrelDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1); //db will be created when constructor is called
-        SQLiteDatabase db = this.getWritableDatabase();
     }
 
     private boolean databaseExist()
@@ -266,5 +265,26 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
             return user;
         }
         return null;
+    }
+
+    public Cursor getPossibleProductSearchItemMatches(String itemQuery,long marketId){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select p._id as _id, p.name as product_name, " +
+                "g.name as grocery_name,g.branch as grocery_branch, gsi.price as price, gsi.unit as unit " +
+                "from "+Grocery.TABLE_GROCERY+" as g " +
+                "inner join "+GroceryStockItem.TABLE_GROCERY_STOCK_ITEM+ " as gsi on g."+Grocery.COLUMN_ID+
+                "=gsi."+GroceryStockItem.COLUMN_GROCERY_ID+
+                " inner join Product as p on gsi." + GroceryStockItem.COLUMN_PRODUCT_ID+ "=p."+Product.COLUMN_ID+
+                " where p.name like '%"+itemQuery+"%'"
+                ,null);
+
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) {
+            cursor.close();
+            return null;
+        }
+
+        return cursor;
     }
 }

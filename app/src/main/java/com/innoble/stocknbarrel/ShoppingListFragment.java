@@ -1,6 +1,8 @@
 package com.innoble.stocknbarrel;
 
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 
 import com.innoble.stocknbarrel.database.StockNBarrelContentProvider;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
+import com.innoble.stocknbarrel.model.ShoppingListItem;
 import com.innoble.stocknbarrel.model.User;
 
 import static android.R.color.holo_red_light;
@@ -51,7 +54,6 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
         shoppingListItemQuery = StockNBarrelContentProvider.CONTENT_URI.buildUpon()
                 .appendPath(StockNBarrelContentProvider.SHOPPING_LIST_ITEMS_PATH)
                 .build();
-        getContext().deleteDatabase(StockNBarrelDatabaseHelper.DATABASE_NAME);
         this.db = new StockNBarrelDatabaseHelper(getActivity());
         this.mUser = db.getUser();
         this.budget = mUser.getBudget();
@@ -71,6 +73,10 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        if(savedInstanceState!=null){
+            getLoaderManager().restartLoader(SHOPPING_LIST_LOADER_ID,null,this);
+        }
 
         cursorAdapter = new ShoppingListAdapter(getActivity(),null,this,this);
 
@@ -97,7 +103,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
 
         double newTotal  = 0.00;
         for(cursor.moveToFirst(); !cursor.isAfterLast();cursor.moveToNext()){
-            newTotal+= cursor.getDouble(cursor.getColumnIndex("price"));
+            newTotal+= Math.round(cursor.getInt(cursor.getColumnIndex("quantity")) *cursor.getDouble(cursor.getColumnIndex("price")) *100.0)/100.0;
         }
         tcView.setText("$"+ Double.toString(newTotal));
 
@@ -107,7 +113,6 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
         else {
             tcView.setTextColor(getResources().getColor(android.R.color.white));
         }
-        cursor.moveToFirst();
 
         total = newTotal;
 
@@ -150,7 +155,11 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
     }
 
     @Override
-    public void onItemCostChange(double oldVal, double newVal, int cursorIdx) {
+    public void onItemCostChange(double oldVal, double newVal,
+                                 int newQty,int cursorIdx) {
+        if(oldVal == newVal)
+            return;
+
         total = Math.round((total - oldVal + newVal)*100)/100;
         tcView.setText("$"+Double.toString(total));
         if(total > budget){
@@ -164,7 +173,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
 
                 if(cursorIdx >= cur.getCount())
                     return;
-                cur.move(cursorIdx);
+                cur.moveToPosition(cursorIdx);
                long itemId  = cur.getLong(cur.getColumnIndexOrThrow("_id"));
 
 
@@ -173,6 +182,10 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
                 .appendPath(Long.toString(itemId))
                 .build();
 
-
+        ContentResolver resolver = getActivity().getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(ShoppingListItem.COLUMN_QUANTITY,newQty);
+        resolver.update(uri,values,null,null);
+       // resolver.notifyChange(shoppingListItemQuery,null);
     }
 }

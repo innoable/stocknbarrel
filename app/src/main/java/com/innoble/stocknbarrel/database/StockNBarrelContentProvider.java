@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
+import com.innoble.stocknbarrel.model.Grocery;
+import com.innoble.stocknbarrel.model.GroceryStockItem;
 import com.innoble.stocknbarrel.model.Product;
 import com.innoble.stocknbarrel.model.ShoppingListItem;
 import com.innoble.stocknbarrel.model.User;
@@ -33,6 +35,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
     public static final String GROCERY_STOCK_ITEM_PATH = "grocerystockitems";
     private static final int  GROCERY_STOCK_ITEMS = 50;
     private static final int GROCERY_STOCK_ITEM_ID = 60;
+    private static final int GROCERY_STOCK_ITEM_NAMED_PRODUCT_MATCH = 65;
 
     public static final String USERS_PATH = "users";
     private static final int  USERS = 70;
@@ -53,6 +56,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
 
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
+
         sURIMatcher.addURI(AUTHORITY, PRODUCTS_PATH, PRODUCTS);
         sURIMatcher.addURI(AUTHORITY, PRODUCTS_PATH + "/#", PRODUCT_ID);
         sURIMatcher.addURI(AUTHORITY, PRODUCTS_PATH + "/search_suggest_query/*", PRODUCT_SEARCH);
@@ -61,7 +65,9 @@ public class StockNBarrelContentProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, USERS_PATH, USERS);
         sURIMatcher.addURI(AUTHORITY, USERS_PATH + "/#", USER_ID);
         sURIMatcher.addURI(AUTHORITY, GROCERY_STOCK_ITEM_PATH, GROCERY_STOCK_ITEMS);
+        sURIMatcher.addURI(AUTHORITY, GROCERY_STOCK_ITEM_PATH, GROCERY_STOCK_ITEMS);
         sURIMatcher.addURI(AUTHORITY, GROCERY_STOCK_ITEM_PATH + "/#", GROCERY_STOCK_ITEM_ID);
+        sURIMatcher.addURI(AUTHORITY, GROCERY_STOCK_ITEM_PATH + "/#/*", GROCERY_STOCK_ITEM_NAMED_PRODUCT_MATCH);
         sURIMatcher.addURI(AUTHORITY, SHOPPING_LISTS_PATH, SHOPPING_LISTS);
         sURIMatcher.addURI(AUTHORITY, SHOPPING_LISTS_PATH + "/#", SHOPPING_LIST_ID);
         sURIMatcher.addURI(AUTHORITY, SHOPPING_LIST_ITEMS_PATH, SHOPPING_LIST_ITEMS);
@@ -104,6 +110,10 @@ public class StockNBarrelContentProvider extends ContentProvider {
             SQLiteDatabase db = database.getReadableDatabase();
 
             cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder, "10");
+
+            if(cursor!=null && dbObj.notificationUri!=null){
+                cursor.setNotificationUri(getContext().getContentResolver(),uri);
+            }
         }
 
 
@@ -115,7 +125,6 @@ public class StockNBarrelContentProvider extends ContentProvider {
             cursor.close();
             return null;
         }
-        //cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
@@ -126,7 +135,10 @@ public class StockNBarrelContentProvider extends ContentProvider {
         int uriType = sURIMatcher.match(uri);
         switch (uriType) {
             case SHOPPING_LIST_ITEMS:
-                return database.getShoppingList();
+                Cursor cursor =  database.getShoppingList();
+                cursor.setNotificationUri(getContext().getContentResolver(),uri);
+                return cursor;
+
             default:
                 return null;
         }
@@ -149,25 +161,49 @@ public class StockNBarrelContentProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         int uriType = sURIMatcher.match(uri);
         int count = 0;
+        Uri notifyUri = null;
         switch (uriType){
             case SHOPPING_LIST_ITEM_ID:
-                count = ShoppingListItem.removeById(database.getWritableDatabase(),Long.parseLong(uri.getLastPathSegment()));
+                SQLiteDatabase db = database.getWritableDatabase();
+                count = ShoppingListItem.removeById(db,Long.parseLong(uri.getLastPathSegment()));
+                notifyUri = CONTENT_URI.buildUpon().appendPath(SHOPPING_LIST_ITEMS_PATH).build();
             break;
 
             default:
                 throw new IllegalArgumentException("Unknown URI"+ uri);
 
         }
-        if(count > 0) {
-            Uri notifyUri = CONTENT_URI.buildUpon().appendPath(SHOPPING_LIST_ITEMS_PATH).build();
-            getContext().getContentResolver().notifyChange(notifyUri, null);
+        if(notifyUri != null) {
+           // getContext().getContentResolver().notifyChange(notifyUri, null);
         }
         return  count;
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-            return 0;
+        int uriType = sURIMatcher.match(uri);
+        int count = 0;
+        Uri notifyUri = null;
+        switch (uriType){
+            case SHOPPING_LIST_ITEM_ID:
+                count = ShoppingListItem.updateRow(
+                        database.getWritableDatabase(),
+                        Long.parseLong(uri.getLastPathSegment()),
+                        values);
+                if(count > 0) {
+                    notifyUri = CONTENT_URI.buildUpon().appendPath(SHOPPING_LIST_ITEMS_PATH).build();
+                }
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unknown URI"+ uri);
+
+        }
+        if(notifyUri!=null){
+           // getContext().getContentResolver().notifyChange(notifyUri,null);
+        }
+
+        return count;
     }
 
     /*
@@ -230,6 +266,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
         DatabaseQueryType isTable = DatabaseQueryType.TABLE;
         String whereClause;
         String[] projection;
+        Uri notificationUri;
 
         public DatabaseObject(Uri uri) {
             int uriType = sURIMatcher.match(uri);
@@ -250,6 +287,42 @@ public class StockNBarrelContentProvider extends ContentProvider {
                     whereClause = Product.COLUMN_NAME + " LIKE '%" + searchData + "%'";
                     isTable = DatabaseQueryType.SEARCH;
                     break;
+
+                case SHOPPING_LIST_ITEM_ID:
+                    tableName = ShoppingListItem.TABLE_SHOPPING_LIST_ITEM;
+                    isTable = DatabaseQueryType.ROW;
+                    tableIdColumnName =  ShoppingListItem.COLUMN_ID;
+                    rowId = uri.getLastPathSegment();
+                    break;
+
+                case GROCERY_STOCK_ITEM_NAMED_PRODUCT_MATCH:
+                    StringBuilder builder = new StringBuilder();
+                    tableName = builder.append(Grocery.TABLE_GROCERY)
+                            .append(" INNER JOIN ")
+                            .append(GroceryStockItem.TABLE_GROCERY_STOCK_ITEM)
+                            .append(" ON ")
+                            .append(Grocery.TABLE_GROCERY+"."+Grocery.COLUMN_ID)
+                            .append( " = " )
+                            .append(GroceryStockItem.TABLE_GROCERY_STOCK_ITEM + "." +GroceryStockItem.COLUMN_GROCERY_ID)
+                            .append(" INNER JOIN ")
+                            .append(Product.TABLE_PRODUCT)
+                            .append(" ON ")
+                            .append(GroceryStockItem.TABLE_GROCERY_STOCK_ITEM+"."+GroceryStockItem.COLUMN_PRODUCT_ID)
+                            .append( " = " )
+                            .append(Product.TABLE_PRODUCT + "." +Product.COLUMN_ID)
+                            .toString();
+
+                    projection = new String[]{
+                            Product.TABLE_PRODUCT+"."+Product.COLUMN_ID+" as _id",
+                            Product.TABLE_PRODUCT+"."+Product.COLUMN_NAME+ " as product_name",
+                            Grocery.TABLE_GROCERY+"."+Grocery.COLUMN_NAME+ " as grocery_name",
+                            Grocery.TABLE_GROCERY+"."+Grocery.COLUMN_BRANCH+ " as grocery_branch",
+                            GroceryStockItem.TABLE_GROCERY_STOCK_ITEM+"."+ GroceryStockItem.COLUMN_PRICE+ " as price",
+                            GroceryStockItem.TABLE_GROCERY_STOCK_ITEM+"."+ GroceryStockItem.COLUMN_UNIT + " as unit"
+                    };
+
+                    isTable = DatabaseQueryType.SEARCH;
+                    whereClause = Product.TABLE_PRODUCT+"."+Product.COLUMN_NAME + " LIKE '%" + uri.getPathSegments().get(2) + "%'";
             }
         }
 

@@ -88,4 +88,8 @@ public class ShoppingListItem extends DataEntity {
    public static int removeById(SQLiteDatabase database,long id){
        return database.delete(TABLE_SHOPPING_LIST_ITEM,"_id="+id,null);
    }
+
+    public static int updateRow(SQLiteDatabase database,long id,ContentValues content){
+        return database.update(TABLE_SHOPPING_LIST_ITEM,content,DataEntity.COLUMN_ID+"="+Long.toString(id),null);
+    }
 }
