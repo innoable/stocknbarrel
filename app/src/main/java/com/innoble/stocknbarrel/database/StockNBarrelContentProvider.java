@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import com.innoble.stocknbarrel.model.Grocery;
 import com.innoble.stocknbarrel.model.GroceryStockItem;
 import com.innoble.stocknbarrel.model.Product;
+import com.innoble.stocknbarrel.model.ShoppingList;
 import com.innoble.stocknbarrel.model.ShoppingListItem;
 import com.innoble.stocknbarrel.model.User;
 
@@ -295,6 +296,10 @@ public class StockNBarrelContentProvider extends ContentProvider {
                     rowId = uri.getLastPathSegment();
                     break;
 
+                case SHOPPING_LISTS:
+                    tableName = ShoppingList.TABLE_SHOPPING_LIST;
+                    break;
+
                 case GROCERY_STOCK_ITEM_NAMED_PRODUCT_MATCH:
                     StringBuilder builder = new StringBuilder();
                     tableName = builder.append(Grocery.TABLE_GROCERY)
@@ -318,7 +323,10 @@ public class StockNBarrelContentProvider extends ContentProvider {
                             Grocery.TABLE_GROCERY+"."+Grocery.COLUMN_NAME+ " as grocery_name",
                             Grocery.TABLE_GROCERY+"."+Grocery.COLUMN_BRANCH+ " as grocery_branch",
                             GroceryStockItem.TABLE_GROCERY_STOCK_ITEM+"."+ GroceryStockItem.COLUMN_PRICE+ " as price",
-                            GroceryStockItem.TABLE_GROCERY_STOCK_ITEM+"."+ GroceryStockItem.COLUMN_UNIT + " as unit"
+                            GroceryStockItem.TABLE_GROCERY_STOCK_ITEM+"."+ GroceryStockItem.COLUMN_UNIT + " as unit",
+                            GroceryStockItem.TABLE_GROCERY_STOCK_ITEM+"."+ GroceryStockItem.COLUMN_ID + " as grocery_stock_item_id",
+
+
                     };
 
                     isTable = DatabaseQueryType.SEARCH;

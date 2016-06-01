@@ -40,7 +40,9 @@
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_register_activity" />
-        <activity android:name=".ProductDetailActivity" >
+        <activity android:name=".ProductDetailActivity"
+            android:parentActivityName=".SearchResultActivity"
+            android:theme="@style/ActionBarTheme">
         </activity>
     </application>
 

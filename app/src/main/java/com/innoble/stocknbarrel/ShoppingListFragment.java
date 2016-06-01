@@ -71,12 +71,14 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
     }
 
     @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        getLoaderManager().restartLoader(SHOPPING_LIST_LOADER_ID, null, this);
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        if(savedInstanceState!=null){
-            getLoaderManager().restartLoader(SHOPPING_LIST_LOADER_ID,null,this);
-        }
 
         cursorAdapter = new ShoppingListAdapter(getActivity(),null,this,this);
 
@@ -117,6 +119,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
         total = newTotal;
 
     }
+
 
 
     @Override

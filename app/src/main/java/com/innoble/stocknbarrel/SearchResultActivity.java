@@ -2,6 +2,7 @@ package com.innoble.stocknbarrel;
 
 import android.app.LoaderManager;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -52,12 +53,8 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
         if (Intent.ACTION_SEARCH.equals(thisIntent.getAction())) {
             // Search Calls activity with String Extra  SearchManager.QUERY when user clicks search button
             getLoaderManager().initLoader(DIRECT_SEARCH_LOADER_ID,null,this);
-            resultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Cursor cur = resultListAdapter.getCursor();
-                }
-            });
+            resultList.setOnItemClickListener(new SearchResultClickListener(this));
+
 
 
             mTracker.send(new HitBuilders.EventBuilder()
@@ -117,4 +114,27 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
     public void onLoaderReset(Loader loader) {
 
     }
+
+
+    private class SearchResultClickListener implements AdapterView.OnItemClickListener{
+
+        private Context context;
+        SearchResultClickListener(Context context){
+            this.context = context;
+        }
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Cursor cur = resultListAdapter.getCursor();
+            Intent detailIntent = new Intent(context,ProductDetailActivity.class);
+            detailIntent.putExtra("product_name",cur.getString(cur.getColumnIndex("product_name")));
+            detailIntent.putExtra("price",cur.getDouble(cur.getColumnIndex("price")));
+            detailIntent.putExtra("unit",cur.getString(cur.getColumnIndex("unit")));
+            detailIntent.putExtra("grocery_name",cur.getString(cur.getColumnIndex("grocery_name")));
+            detailIntent.putExtra("grocery_stock_item_id",cur.getLong(cur.getColumnIndex("grocery_stock_item_id")));
+
+            startActivity(detailIntent);
+        }
+    }
+
+
 }

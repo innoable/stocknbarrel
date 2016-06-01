@@ -9,5 +9,6 @@
     <string name="title_activity_main">MainActivity</string>
 
     <string name="title_register_activity">Register</string>
+    <string name="product_details_default_qty">1</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
