@@ -14,7 +14,6 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,7 +36,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
     private ShoppingListAdapter cursorAdapter;
     private StockNBarrelDatabaseHelper db;
     private TextView tcView;
-    private EditText budgetView;
+    private TextView budgetView;
 
 
     private double total = 0;
@@ -81,7 +80,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
 
         ListView listView = (ListView)rootView.findViewById(R.id.shopping_list_view);
         tcView = (TextView)rootView.findViewById(R.id.totalCost);
-        budgetView = (EditText) rootView.findViewById(R.id.budget);
+        budgetView = (TextView) rootView.findViewById(R.id.budget);
 
         budgetView.setText("$"+Double.toString(budget));
 

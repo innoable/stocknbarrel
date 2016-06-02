@@ -99,12 +99,13 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
             cursor.moveToFirst();
             Intent detailIntent = new Intent(this,ProductDetailActivity.class);
             packageIntentData(detailIntent,cursor);
-            startActivity(detailIntent);
             mTracker.send(new HitBuilders.EventBuilder()
                     .setCategory("Product")
                     .setAction("Action View")
                     .setLabel(searchTerm)
                     .build());
+             startActivity(detailIntent);
+             finish();
         }
         else {
             // Search Calls activity with String Extra  SearchManager.QUERY when user clicks search button
