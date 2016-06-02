@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,12 +38,14 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
     private ListView resultList;
     private SearchResultListAdapter resultListAdapter;
 
+    private String query;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
 
         setContentView(R.layout.activity_searchable);
@@ -61,32 +64,27 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
         resultList.setAdapter(resultListAdapter);
         thisIntent = getIntent();
 
+        SharedPreferences queryPref = getPreferences(Context.MODE_PRIVATE);
+        if(thisIntent.getStringExtra(SearchManager.QUERY) !=null){
+            query = thisIntent.getStringExtra(SearchManager.QUERY);
+            queryPref.edit().putString("query",query).commit();
+        }
+       else query = queryPref.getString("query","");
+
 
         // Obtain the shared Analytics Tracker instance.
         TrackedApplication application = (TrackedApplication) getApplication();
         mTracker = application.getDefaultTracker();
+        getLoaderManager().initLoader(DIRECT_SEARCH_LOADER_ID,null,this);
+
 
     }
 
 
-
     @Override
-    protected void onStart() {
-        super.onStart();
-        if (Intent.ACTION_SEARCH.equals(thisIntent.getAction())) {
-            // Search Calls activity with String Extra  SearchManager.QUERY when user clicks search button
-            getLoaderManager().initLoader(DIRECT_SEARCH_LOADER_ID,null,this);
-            resultList.setOnItemClickListener(new SearchResultClickListener(this));
-
-
-
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Product")
-                    .setAction("Action Search")
-                    .setLabel(thisIntent.getStringExtra(SearchManager.QUERY))
-                    .build());
-
-        } else if (Intent.ACTION_VIEW.equals(thisIntent.getAction())) {
+    protected void onResume() {
+        super.onResume();
+         if (Intent.ACTION_VIEW.equals(thisIntent.getAction())) {
             String searchTerm = thisIntent.getDataString();
             Uri uri = PRODUCT_OPTIONS_URI.buildUpon()
                     .appendPath(searchTerm)
@@ -108,11 +106,19 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
                     .setLabel(searchTerm)
                     .build());
         }
+        else {
+            // Search Calls activity with String Extra  SearchManager.QUERY when user clicks search button
+            resultList.setOnItemClickListener(new SearchResultClickListener(this));
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Product")
+                    .setAction("Action Search")
+                    .setLabel(query)
+                    .build());
+
+        }
+
 
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -138,7 +144,6 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
     public Loader onCreateLoader(int id, Bundle args) {
 
         if(id ==DIRECT_SEARCH_LOADER_ID) {
-            String query = thisIntent.getStringExtra(SearchManager.QUERY);
             Uri uri = PRODUCT_OPTIONS_URI.buildUpon()
                     .appendPath(query)
                     .build();
@@ -163,6 +168,7 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
 
     @Override
     public void onLoaderReset(Loader loader) {
+        resultListAdapter.swapCursor(null );
 
     }
 

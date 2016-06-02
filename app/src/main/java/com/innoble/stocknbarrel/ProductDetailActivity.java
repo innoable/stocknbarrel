@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.innoble.stocknbarrel.database.StockNBarrelContentProvider;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
@@ -61,8 +62,11 @@ public class ProductDetailActivity extends AppCompatActivity {
         unitText.setText(thisIntent.getStringExtra("unit"));
 
 
+
         final EditText qtyEdit  = (EditText)findViewById(R.id.qtyEditText);
-        qtyEdit.addTextChangedListener(new TextWatcher() {
+        qty = Integer.parseInt(qtyEdit.getText().toString());
+
+                qtyEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -106,6 +110,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                 ShoppingListItem shoppingListItem = new ShoppingListItem(shoppingListID,thisIntent.getLongExtra("grocery_stock_item_id",1),qty);
                shoppingListItem.insert(new StockNBarrelDatabaseHelper(ProductDetailActivity.this).getWritableDatabase());
+                Toast.makeText(getBaseContext(),"Item has been added to shopping list",Toast.LENGTH_SHORT).show();
                 finish();
 
             }

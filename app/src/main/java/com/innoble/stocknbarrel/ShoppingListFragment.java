@@ -14,6 +14,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -36,7 +37,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
     private ShoppingListAdapter cursorAdapter;
     private StockNBarrelDatabaseHelper db;
     private TextView tcView;
-    private TextView budgetView;
+    private EditText budgetView;
 
 
     private double total = 0;
@@ -80,12 +81,18 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
 
         ListView listView = (ListView)rootView.findViewById(R.id.shopping_list_view);
         tcView = (TextView)rootView.findViewById(R.id.totalCost);
-        budgetView = (TextView)rootView.findViewById(R.id.budget);
+        budgetView = (EditText) rootView.findViewById(R.id.budget);
 
         budgetView.setText("$"+Double.toString(budget));
 
         listView.setAdapter(cursorAdapter);
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getLoaderManager().restartLoader(SHOPPING_LIST_LOADER_ID,null,this);
     }
 
 
@@ -183,6 +190,5 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
         ContentValues values = new ContentValues();
         values.put(ShoppingListItem.COLUMN_QUANTITY,newQty);
         resolver.update(uri,values,null,null);
-       // resolver.notifyChange(shoppingListItemQuery,null);
     }
 }

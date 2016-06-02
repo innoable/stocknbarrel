@@ -23,8 +23,7 @@
         </activity>
         <activity android:name=".SearchResultActivity"
             android:parentActivityName=".MainActivity"
-            android:label="@string/search_activity_label"
-            android:noHistory="true">
+            android:label="@string/search_activity_label">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
