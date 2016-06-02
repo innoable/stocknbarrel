@@ -71,12 +71,6 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
     }
 
     @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        getLoaderManager().restartLoader(SHOPPING_LIST_LOADER_ID, null, this);
-        super.onViewStateRestored(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 

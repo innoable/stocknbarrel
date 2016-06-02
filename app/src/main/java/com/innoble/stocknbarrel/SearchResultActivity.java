@@ -2,6 +2,7 @@ package com.innoble.stocknbarrel;
 
 import android.app.LoaderManager;
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -10,6 +11,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -32,6 +37,9 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
     private ListView resultList;
     private SearchResultListAdapter resultListAdapter;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,17 +47,32 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
 
         setContentView(R.layout.activity_searchable);
 
-        resultList = (ListView)findViewById(R.id.search_result_list);
-        resultListAdapter = new SearchResultListAdapter(this,null);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+
+        resultList = (ListView) findViewById(R.id.search_result_list);
+        resultListAdapter = new SearchResultListAdapter(this, null);
         resultList.setAdapter(resultListAdapter);
         thisIntent = getIntent();
-
 
 
         // Obtain the shared Analytics Tracker instance.
         TrackedApplication application = (TrackedApplication) getApplication();
         mTracker = application.getDefaultTracker();
 
+    }
+
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         if (Intent.ACTION_SEARCH.equals(thisIntent.getAction())) {
             // Search Calls activity with String Extra  SearchManager.QUERY when user clicks search button
             getLoaderManager().initLoader(DIRECT_SEARCH_LOADER_ID,null,this);
@@ -64,13 +87,21 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
                     .build());
 
         } else if (Intent.ACTION_VIEW.equals(thisIntent.getAction())) {
-            /* called when user clicks suggestion item
-                Displays android:searchSuggestIntentData variable defined in xml search xml file
-                followed by the index of the selected item in the list
-            */
-
             String searchTerm = thisIntent.getDataString();
-
+            Uri uri = PRODUCT_OPTIONS_URI.buildUpon()
+                    .appendPath(searchTerm)
+                    .build();
+            Cursor cursor = getContentResolver().query(
+                    uri,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            cursor.moveToFirst();
+            Intent detailIntent = new Intent(this,ProductDetailActivity.class);
+            packageIntentData(detailIntent,cursor);
+            startActivity(detailIntent);
             mTracker.send(new HitBuilders.EventBuilder()
                     .setCategory("Product")
                     .setAction("Action View")
@@ -78,6 +109,26 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
                     .build());
         }
 
+    }
+
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        //Associate searchable configuration with the search View
+
+        MenuItem item = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) item.getActionView();
+
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(
+                new ComponentName(this, SearchResultActivity.class)));
+        searchView.setIconifiedByDefault(true);
+
+        return true;
     }
 
 
@@ -126,15 +177,23 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Cursor cur = resultListAdapter.getCursor();
             Intent detailIntent = new Intent(context,ProductDetailActivity.class);
-            detailIntent.putExtra("product_name",cur.getString(cur.getColumnIndex("product_name")));
-            detailIntent.putExtra("price",cur.getDouble(cur.getColumnIndex("price")));
-            detailIntent.putExtra("unit",cur.getString(cur.getColumnIndex("unit")));
-            detailIntent.putExtra("grocery_name",cur.getString(cur.getColumnIndex("grocery_name")));
-            detailIntent.putExtra("grocery_stock_item_id",cur.getLong(cur.getColumnIndex("grocery_stock_item_id")));
+            packageIntentData(detailIntent,cur);
 
             startActivity(detailIntent);
         }
     }
+
+
+
+    private void packageIntentData(Intent intent, Cursor cur){
+        intent.putExtra("product_name",cur.getString(cur.getColumnIndex("product_name")));
+        intent.putExtra("price",cur.getDouble(cur.getColumnIndex("price")));
+        intent.putExtra("unit",cur.getString(cur.getColumnIndex("unit")));
+        intent.putExtra("grocery_name",cur.getString(cur.getColumnIndex("grocery_name")));
+        intent.putExtra("grocery_stock_item_id",cur.getLong(cur.getColumnIndex("grocery_stock_item_id")));
+    }
+
+
 
 
 }

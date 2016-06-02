@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content,new ShoppingListFragment())
-                .addToBackStack("shopping_list")
                 .commit();
 
     }
