@@ -19,13 +19,13 @@ public class AsyncTracker {
         this.userId = userId;
     }
 
-    public void trackEvent(final String category, final String action, final String label  )
+    public void trackEvent(final String screen, final String category, final String action, final String label  )
     {
         AsyncTask<Void,Void,Boolean> trackerTask = new AsyncTask<Void, Void, Boolean>() {
             @Override
             protected Boolean doInBackground(Void... params) {
 
-                mTracker.setScreenName("Search Results");
+                mTracker.setScreenName(screen);
                 mTracker.set("&uid", userId );
 
                 // This hit will be sent with the User ID value and be visible in

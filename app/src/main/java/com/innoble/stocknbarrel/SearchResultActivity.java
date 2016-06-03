@@ -53,7 +53,7 @@ public class SearchResultActivity extends AppCompatActivity {
             String searchTerm = intent.getDataString();
             txt.setText("Suggestion: "+ searchTerm);
 
-            aTracker.trackEvent("Product", "Action View", searchTerm);
+            aTracker.trackEvent("Search Results", "Product", "Action View", searchTerm);
             /*mTracker.setScreenName("Search Results");
             mTracker.send(new HitBuilders.EventBuilder()
                     .setCategory("Product")
