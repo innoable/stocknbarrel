@@ -14,6 +14,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
     private Tracker mTracker;
     private String name;
+    private AsyncTracker aTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +24,8 @@ public class SearchResultActivity extends AppCompatActivity {
         // Obtain the shared Analytics Tracker instance.
         TrackedApplication application = (TrackedApplication) getApplication();
         mTracker = application.getDefaultTracker();
-        //mTracker.set("&uid", user.getEmail() );
+        //mTracker.set("&uid", "testuser@gmail.com" );
+        aTracker = new AsyncTracker(mTracker, "testuser@gmail.com");
 
         setContentView(R.layout.activity_searchable);
         TextView txt = (TextView)findViewById(R.id.textView);
@@ -34,12 +36,13 @@ public class SearchResultActivity extends AppCompatActivity {
             String query = intent.getStringExtra(SearchManager.QUERY);
             txt.setText("Searching by: "+ query);
 
-
+/*
+            mTracker.setScreenName("Search Results");
             mTracker.send(new HitBuilders.EventBuilder()
                     .setCategory("Product")
                     .setAction("Action Search")
                     .setLabel(query)
-                    .build());
+                    .build());*/
 
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             /* called when user clicks suggestion item
@@ -50,11 +53,13 @@ public class SearchResultActivity extends AppCompatActivity {
             String searchTerm = intent.getDataString();
             txt.setText("Suggestion: "+ searchTerm);
 
+            aTracker.trackEvent("Product", "Action View", searchTerm);
+            /*mTracker.setScreenName("Search Results");
             mTracker.send(new HitBuilders.EventBuilder()
                     .setCategory("Product")
                     .setAction("Action View")
                     .setLabel(searchTerm)
-                    .build());
+                    .build());*/
         }
 
     }
