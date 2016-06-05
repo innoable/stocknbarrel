@@ -3,6 +3,7 @@ package com.innoble.stocknbarrel;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,9 +12,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,16 +41,11 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
     private StockNBarrelDatabaseHelper db;
     private TextView tcView;
     private TextView budgetView;
-
+    private ImageButton budgetEditBtn;
 
     private double total = 0;
     private User mUser;
     private double budget;
-
-    Integer[] imageId = {
-            R.drawable.ic_action_add,
-            R.drawable.ic_action_remove
-    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,8 +80,52 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
         ListView listView = (ListView)rootView.findViewById(R.id.shopping_list_view);
         tcView = (TextView)rootView.findViewById(R.id.totalCost);
         budgetView = (TextView) rootView.findViewById(R.id.budget);
-
         budgetView.setText("$"+Double.toString(budget));
+        budgetEditBtn = (ImageButton)rootView.findViewById(R.id.budgetEditBtn);
+
+        budgetEditBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.single_edit_dialog,(ViewGroup)v.getParent(), false);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Budget");
+
+                // Set up the input
+                final EditText input = (EditText) viewInflated.findViewById(R.id.input);
+                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                builder.setView(viewInflated);
+
+
+                // Set up the buttons
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+               builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+
+                       String inputStr = input.getText().toString();
+                       budget = Math.round(Double.parseDouble(inputStr)*100.0)/100.0;
+                       mUser.setBudget(budget);
+                       mUser.update(db.getWritableDatabase());
+                       budgetView.setText("$"+Double.toString(budget));
+                       if(total > budget){
+                           tcView.setTextColor(getResources().getColor(holo_red_light));
+                       }
+                       else {
+                           tcView.setTextColor(getResources().getColor(android.R.color.white));
+                       }
+                   }
+               });
+
+                builder.show();
+            }
+        });
+
 
         listView.setAdapter(cursorAdapter);
         return rootView;
