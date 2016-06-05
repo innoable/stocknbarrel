@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 /**
  * Created by Kemron on 31/05/2016.
  */
@@ -38,7 +41,7 @@ public class SearchResultListAdapter extends CursorAdapter{
                 .append(cursor.getString(cursor.getColumnIndex("unit")))
                 .append(" | ")
                 .append("$")
-                .append(Math.round(cursor.getDouble(cursor.getColumnIndex("price")) *100.0)/100.0)
+                .append(new BigDecimal(cursor.getDouble(cursor.getColumnIndex("price")), MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING).toString())
                 .toString();
 
         holder.price.setText(unitCost);

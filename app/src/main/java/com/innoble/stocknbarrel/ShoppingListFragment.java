@@ -26,6 +26,9 @@ import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 import com.innoble.stocknbarrel.model.ShoppingListItem;
 import com.innoble.stocknbarrel.model.User;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 import static android.R.color.holo_red_light;
 
 
@@ -43,9 +46,9 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
     private TextView budgetView;
     private ImageButton budgetEditBtn;
 
-    private double total = 0;
+    private BigDecimal total = new BigDecimal(0, MathContext.DECIMAL64);
     private User mUser;
-    private double budget;
+    private BigDecimal budget;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +58,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
                 .build();
         this.db = new StockNBarrelDatabaseHelper(getActivity());
         this.mUser = db.getUser();
-        this.budget = mUser.getBudget();
+        this.budget = new BigDecimal(mUser.getBudget(),MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
     }
 
     public ShoppingListFragment() {
@@ -80,7 +83,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
         ListView listView = (ListView)rootView.findViewById(R.id.shopping_list_view);
         tcView = (TextView)rootView.findViewById(R.id.totalCost);
         budgetView = (TextView) rootView.findViewById(R.id.budget);
-        budgetView.setText("$"+Double.toString(budget));
+        budgetView.setText("$"+budget.toString());
         budgetEditBtn = (ImageButton)rootView.findViewById(R.id.budgetEditBtn);
 
         budgetEditBtn.setOnClickListener(new View.OnClickListener() {
@@ -109,11 +112,11 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
                    public void onClick(DialogInterface dialog, int which) {
 
                        String inputStr = input.getText().toString();
-                       budget = Math.round(Double.parseDouble(inputStr)*100.0)/100.0;
-                       mUser.setBudget(budget);
+                       budget = new BigDecimal(inputStr,MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
+                       mUser.setBudget(budget.doubleValue());
                        mUser.update(db.getWritableDatabase());
-                       budgetView.setText("$"+Double.toString(budget));
-                       if(total > budget){
+                       budgetView.setText("$"+budget.toString());
+                       if(total.compareTo(budget) > 0){
                            tcView.setTextColor(getResources().getColor(holo_red_light));
                        }
                        else {
@@ -146,13 +149,14 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
             return;
         }
 
-        double newTotal  = 0.00;
+        BigDecimal newTotal  = new BigDecimal(0.00,MathContext.DECIMAL64);
         for(cursor.moveToFirst(); !cursor.isAfterLast();cursor.moveToNext()){
-            newTotal+= Math.round(cursor.getInt(cursor.getColumnIndex("quantity")) *cursor.getDouble(cursor.getColumnIndex("price")) *100.0)/100.0;
+            newTotal=newTotal.add(new BigDecimal(cursor.getInt(cursor.getColumnIndex("quantity")) *cursor.getDouble(cursor.getColumnIndex("price")),MathContext.DECIMAL64)
+                    .setScale(2,BigDecimal.ROUND_CEILING));
         }
-        tcView.setText("$"+ Double.toString(newTotal));
+        tcView.setText("$"+ newTotal.toString());
 
-        if(newTotal > budget){
+        if(newTotal.compareTo(budget) > 0){
             tcView.setTextColor(getResources().getColor(holo_red_light));
         }
         else {
@@ -201,14 +205,14 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
     }
 
     @Override
-    public void onItemCostChange(double oldVal, double newVal,
-                                 int newQty,int cursorIdx) {
-        if(oldVal == newVal)
+    public void onItemCostChange(BigDecimal oldVal, BigDecimal newVal,
+                                 int newQty, int cursorIdx) {
+        if(oldVal.equals(newVal))
             return;
 
-        total = Math.round((total - oldVal + newVal)*100)/100;
-        tcView.setText("$"+Double.toString(total));
-        if(total > budget){
+        total = total.subtract(oldVal).add(newVal);
+        tcView.setText("$"+total.toString());
+        if(total.compareTo(budget) > 0){
             tcView.setTextColor(getResources().getColor(holo_red_light));
         }
         else {

@@ -11,5 +11,6 @@
         android:inputType="numberDecimal"
         android:ems="10"
         android:id="@+id/input"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:maxLength="7" />
 </LinearLayout>

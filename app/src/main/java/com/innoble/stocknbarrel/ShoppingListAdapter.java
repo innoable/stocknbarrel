@@ -10,6 +10,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 /**
  * Created by Kemron on 27/05/2016.
  */
@@ -63,10 +66,10 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
         holder.editQty.setTag(new Double(cost));
 
         holder.itemTotal.setText(new StringBuilder().append("$")
-                .append(Double.toString(
-                        Math.round(qty *cost * 100.0) / 100.0)
-                ).toString());
-
+                .append(new BigDecimal(qty*cost, MathContext.DECIMAL64)
+                        .setScale(2,BigDecimal.ROUND_CEILING)
+                        .toString())
+                .toString());
 
         holder.itemTitle.setText(title);
         holder.position = cursor.getPosition();
@@ -89,7 +92,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
     }
 
     public interface ItemTotalChangeListener {
-        void onItemCostChange(double oldVal, double newVal,int newQty,int cursorIdx);
+        void onItemCostChange(BigDecimal oldVal, BigDecimal newVal,int newQty,int cursorIdx);
     }
 
 
@@ -116,9 +119,10 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
                 String qtyStr = ((EditText)v).getText().toString();
                 if(qtyStr.length() > 0 ){
                     int qty = Integer.parseInt(qtyStr);
-                    double newCost = Math.round( qty*((Double)v.getTag()).doubleValue() * 100.0) / 100.0;
-                    double oldCost = Double.parseDouble(viewHolder.itemTotal.getText().toString().substring(1));
-                    viewHolder.itemTotal.setText("$"+Double.toString(newCost));
+                    BigDecimal newCost = new BigDecimal(qty *((Double)v.getTag()).doubleValue(),MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
+                  //  double newCost = Math.round( qty*((Double)v.getTag()).doubleValue() * 100.0) / 100.0;
+                    BigDecimal oldCost = new BigDecimal(viewHolder.itemTotal.getText().toString().substring(1),MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
+                    viewHolder.itemTotal.setText("$"+newCost.toString());
                     mItemTotalChangeListener.onItemCostChange(oldCost,newCost,qty,viewHolder.position);
                 }
 
