@@ -189,5 +189,6 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
         ContentValues values = new ContentValues();
         values.put(ShoppingListItem.COLUMN_QUANTITY,newQty);
         resolver.update(uri,values,null,null);
+        resolver.notifyChange(shoppingListItemQuery,null);
     }
 }

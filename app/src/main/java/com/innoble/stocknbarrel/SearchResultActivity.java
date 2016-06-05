@@ -75,16 +75,8 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
         // Obtain the shared Analytics Tracker instance.
         TrackedApplication application = (TrackedApplication) getApplication();
         mTracker = application.getDefaultTracker();
-        getLoaderManager().initLoader(DIRECT_SEARCH_LOADER_ID,null,this);
 
-
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-         if (Intent.ACTION_VIEW.equals(thisIntent.getAction())) {
+        if (Intent.ACTION_VIEW.equals(thisIntent.getAction())) {
             String searchTerm = thisIntent.getDataString();
             Uri uri = PRODUCT_OPTIONS_URI.buildUpon()
                     .appendPath(searchTerm)
@@ -104,10 +96,22 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
                     .setAction("Action View")
                     .setLabel(searchTerm)
                     .build());
-             startActivity(detailIntent);
-             finish();
+            startActivity(detailIntent);
+            finish();
         }
         else {
+            getLoaderManager().initLoader(DIRECT_SEARCH_LOADER_ID, null, this);
+        }
+
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (Intent.ACTION_SEARCH.equals(thisIntent.getAction())){
             // Search Calls activity with String Extra  SearchManager.QUERY when user clicks search button
             resultList.setOnItemClickListener(new SearchResultClickListener(this));
             mTracker.send(new HitBuilders.EventBuilder()
@@ -138,8 +142,19 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
         return true;
     }
 
-
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        SharedPreferences queryPref = getPreferences(Context.MODE_PRIVATE);
+        if(intent.getStringExtra(SearchManager.QUERY) !=null){
+            query = intent.getStringExtra(SearchManager.QUERY);
+            queryPref.edit().putString("query",query).commit();
+        }
+        else query = queryPref.getString("query","");
+        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+            getLoaderManager().restartLoader(DIRECT_SEARCH_LOADER_ID,null,this);
+        }
+        thisIntent = intent;
+    }
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
