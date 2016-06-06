@@ -43,7 +43,7 @@ public class User extends DataEntity {
         return budget;
     }
 
-    public void setBudget(float budget) {
+    public void setBudget(double budget) {
         this.budget = budget;
     }
 
@@ -102,5 +102,11 @@ public class User extends DataEntity {
         contentValues.put(COLUMN_BUDGET, budget);
         long result = database.insert(TABLE_USER, null, contentValues);
         setId(result);
+    }
+
+    public void update (SQLiteDatabase database){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(COLUMN_BUDGET,budget);
+            database.update(this.TABLE_USER,contentValues,COLUMN_ID+"="+getId(),null);
     }
 }

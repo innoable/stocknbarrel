@@ -112,7 +112,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
 
             cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder, "10");
 
-            if(cursor!=null && dbObj.notificationUri!=null){
+            if(cursor!=null && cursor.moveToFirst() && dbObj.notificationUri!=null){
                 cursor.setNotificationUri(getContext().getContentResolver(),uri);
             }
         }
@@ -137,7 +137,9 @@ public class StockNBarrelContentProvider extends ContentProvider {
         switch (uriType) {
             case SHOPPING_LIST_ITEMS:
                 Cursor cursor =  database.getShoppingList();
-                cursor.setNotificationUri(getContext().getContentResolver(),uri);
+                if(cursor!= null){
+                    cursor.setNotificationUri(getContext().getContentResolver(),uri);
+                }
                 return cursor;
 
             default:
@@ -201,7 +203,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
 
         }
         if(notifyUri!=null){
-           // getContext().getContentResolver().notifyChange(notifyUri,null);
+       //     getContext().getContentResolver().notifyChange(notifyUri,null);
         }
 
         return count;

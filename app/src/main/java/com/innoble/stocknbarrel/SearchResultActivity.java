@@ -79,14 +79,7 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
         aTracker = new AsyncTracker(mTracker, "");
         getLoaderManager().initLoader(DIRECT_SEARCH_LOADER_ID, null, this);
 
-
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-         if (Intent.ACTION_VIEW.equals(thisIntent.getAction())) {
+        if (Intent.ACTION_VIEW.equals(thisIntent.getAction())) {
             String searchTerm = thisIntent.getDataString();
             Uri uri = PRODUCT_OPTIONS_URI.buildUpon()
                     .appendPath(searchTerm)
@@ -102,10 +95,22 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
             Intent detailIntent = new Intent(this,ProductDetailActivity.class);
             packageIntentData(detailIntent,cursor);
             aTracker.trackEvent("Search Results", "Product", "Action View", searchTerm);
-             startActivity(detailIntent);
-             finish();
+            startActivity(detailIntent);
+            finish();
         }
         else {
+            getLoaderManager().initLoader(DIRECT_SEARCH_LOADER_ID, null, this);
+        }
+
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (Intent.ACTION_SEARCH.equals(thisIntent.getAction())){
             // Search Calls activity with String Extra  SearchManager.QUERY when user clicks search button
             resultList.setOnItemClickListener(new SearchResultClickListener(this));
              aTracker.trackEvent("Search Results", "Product", "Action Search", query);
@@ -129,8 +134,42 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
         return true;
     }
 
-
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        SharedPreferences queryPref = getPreferences(Context.MODE_PRIVATE);
+        if(intent.getStringExtra(SearchManager.QUERY) !=null){
+            query = intent.getStringExtra(SearchManager.QUERY);
+            queryPref.edit().putString("query",query).commit();
+        }
+        else query = queryPref.getString("query","");
+        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+            getLoaderManager().restartLoader(DIRECT_SEARCH_LOADER_ID,null,this);
+        }
+        else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            String searchTerm = intent.getDataString();
+            Uri uri = PRODUCT_OPTIONS_URI.buildUpon()
+                    .appendPath(searchTerm)
+                    .build();
+            Cursor cursor = getContentResolver().query(
+                    uri,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            cursor.moveToFirst();
+            Intent detailIntent = new Intent(this,ProductDetailActivity.class);
+            packageIntentData(detailIntent,cursor);
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Product")
+                    .setAction("Action View")
+                    .setLabel(searchTerm)
+                    .build());
+            startActivity(detailIntent);
+            finish();
+        }
+        thisIntent = intent;
+    }
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {

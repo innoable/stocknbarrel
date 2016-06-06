@@ -19,6 +19,9 @@ import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 import com.innoble.stocknbarrel.model.ShoppingList;
 import com.innoble.stocknbarrel.model.ShoppingListItem;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 public class ProductDetailActivity extends AppCompatActivity {
 
     private Intent thisIntent;
@@ -54,9 +57,9 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         totalCostTxt = (TextView)findViewById(R.id.produt_detail_cost);
 
-        double totalCost = Math.round(thisIntent.getDoubleExtra("price",0.00)*100.0)/100.0;
+        BigDecimal totalCost = new BigDecimal(thisIntent.getDoubleExtra("price",0.00),MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
 
-        totalCostTxt.setText("$"+Double.toString(totalCost));
+        totalCostTxt.setText("$"+ totalCost.toString());
 
         unitText = (TextView)findViewById(R.id.unitTextView);
         unitText.setText(thisIntent.getStringExtra("unit"));
@@ -85,9 +88,9 @@ public class ProductDetailActivity extends AppCompatActivity {
                 }
                 else{
                     qty = Integer.parseInt(qtyTxt);
-                    double cost = Math.round(qty * thisIntent.getDoubleExtra("price",0.00) * 100.00)/100.00;
+                    BigDecimal cost = new BigDecimal(qty * thisIntent.getDoubleExtra("price",0.00), MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
 
-                    totalCostTxt.setText("$"+cost);
+                    totalCostTxt.setText("$"+cost.toString());
                 }
             }
         });
