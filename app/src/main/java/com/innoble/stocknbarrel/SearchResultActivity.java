@@ -153,6 +153,29 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
         if(Intent.ACTION_SEARCH.equals(intent.getAction())){
             getLoaderManager().restartLoader(DIRECT_SEARCH_LOADER_ID,null,this);
         }
+        else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            String searchTerm = intent.getDataString();
+            Uri uri = PRODUCT_OPTIONS_URI.buildUpon()
+                    .appendPath(searchTerm)
+                    .build();
+            Cursor cursor = getContentResolver().query(
+                    uri,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            cursor.moveToFirst();
+            Intent detailIntent = new Intent(this,ProductDetailActivity.class);
+            packageIntentData(detailIntent,cursor);
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Product")
+                    .setAction("Action View")
+                    .setLabel(searchTerm)
+                    .build());
+            startActivity(detailIntent);
+            finish();
+        }
         thisIntent = intent;
     }
 

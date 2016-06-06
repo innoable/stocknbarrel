@@ -137,7 +137,9 @@ public class StockNBarrelContentProvider extends ContentProvider {
         switch (uriType) {
             case SHOPPING_LIST_ITEMS:
                 Cursor cursor =  database.getShoppingList();
-                cursor.setNotificationUri(getContext().getContentResolver(),uri);
+                if(cursor!= null){
+                    cursor.setNotificationUri(getContext().getContentResolver(),uri);
+                }
                 return cursor;
 
             default:
