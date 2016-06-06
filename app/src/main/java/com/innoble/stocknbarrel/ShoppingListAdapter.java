@@ -14,13 +14,15 @@ import android.widget.TextView;
  * Created by Kemron on 27/05/2016.
  */
 public class ShoppingListAdapter extends CursorAdapter implements View.OnClickListener{
-    private final Context context;
+    private Context context;
     private ItemBtnClickListener mItemBtnClickListener;
     private ItemTotalChangeListener mItemTotalChangeListener;
 
-    public ShoppingListAdapter(Context context, Cursor cursor){
+    public ShoppingListAdapter(Context context, Cursor cursor,ItemBtnClickListener mItemBtnClickListener,ItemTotalChangeListener tcListener){
         super(context,cursor,0);
         this.context = context;
+        this.mItemBtnClickListener = mItemBtnClickListener;
+        this.mItemTotalChangeListener = tcListener;
     }
 
 
@@ -29,6 +31,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
     @Override
     // Executed when a new view is being created (should setup ViewHolder pattern initalization here)
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        this.context = context;
         View view =  LayoutInflater.from(context).inflate(R.layout.shopping_list_single,parent,false);
         ViewHolder holder;
         holder = new ViewHolder();
@@ -37,6 +40,8 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
         holder.itemTotal = (TextView) view.findViewById(R.id.shopping_item_cost_textView);
         holder.editQty = (EditText) view.findViewById(R.id.edit_qty);
         holder.addRemoveBtn.setOnClickListener(this);
+        holder.position = cursor.getPosition();
+        holder.editQty.setOnFocusChangeListener(new OnQtyChangeListener(holder));
         view.setTag(holder);
         return view;
     }
@@ -55,6 +60,8 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
 
         holder.editQty.setText(Integer.toString(qty));
 
+        holder.editQty.setTag(new Double(cost));
+
         holder.itemTotal.setText(new StringBuilder().append("$")
                 .append(Double.toString(
                         Math.round(qty *cost * 100.0) / 100.0)
@@ -62,7 +69,8 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
 
 
         holder.itemTitle.setText(title);
-        //holder.addRemoveBtn.setTag(position);
+        holder.position = cursor.getPosition();
+        holder.addRemoveBtn.setTag(cursor.getLong(cursor.getColumnIndex("_id")));
 
     }
 
@@ -71,18 +79,17 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if (mItemBtnClickListener != null) {
-            mItemBtnClickListener.onBtnClick((Integer) v.getTag());
-        }
+        if(mItemBtnClickListener!= null)
+            mItemBtnClickListener.onBtnClick((long)v.getTag());
     }
 
 
     public interface ItemBtnClickListener {
-        void onBtnClick(int position);
+        void onBtnClick(long itemId);
     }
 
     public interface ItemTotalChangeListener {
-        void onItemCostChange(double oldVal, double newVal, int position);
+        void onItemCostChange(double oldVal, double newVal,int newQty,int cursorIdx);
     }
 
 
@@ -93,8 +100,33 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
         TextView itemTitle;
         ImageButton addRemoveBtn;
         int position;
-
     }
+
+
+    private class OnQtyChangeListener implements View.OnFocusChangeListener{
+
+        ViewHolder viewHolder;
+        OnQtyChangeListener(ViewHolder viewHolder){
+            this.viewHolder = viewHolder;
+        }
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if(!hasFocus){
+                String qtyStr = ((EditText)v).getText().toString();
+                if(qtyStr.length() > 0 ){
+                    int qty = Integer.parseInt(qtyStr);
+                    double newCost = Math.round( qty*((Double)v.getTag()).doubleValue() * 100.0) / 100.0;
+                    double oldCost = Double.parseDouble(viewHolder.itemTotal.getText().toString().substring(1));
+                    viewHolder.itemTotal.setText("$"+Double.toString(newCost));
+                    mItemTotalChangeListener.onItemCostChange(oldCost,newCost,qty,viewHolder.position);
+                }
+
+            }
+        }
+    }
+
+
 
 
 }

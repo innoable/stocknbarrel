@@ -25,7 +25,6 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
 
     public StockNBarrelDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1); //db will be created when constructor is called
-        SQLiteDatabase db = this.getWritableDatabase();
     }
 
     private boolean databaseExist()

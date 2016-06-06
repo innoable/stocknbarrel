@@ -9,5 +9,8 @@
     <string name="title_activity_main">MainActivity</string>
 
     <string name="title_register_activity">Register</string>
+    <string name="product_details_default_qty">1</string>
+    <string name ="search_activity_label"> Result Listings</string>
+    <string name ="shopping_list_label"> Shopping List</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

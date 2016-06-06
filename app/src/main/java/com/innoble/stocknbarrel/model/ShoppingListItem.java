@@ -83,4 +83,13 @@ public class ShoppingListItem extends DataEntity {
         long result = database.insert(TABLE_SHOPPING_LIST_ITEM, null, contentValues);
         setId(result);
     }
+
+
+   public static int removeById(SQLiteDatabase database,long id){
+       return database.delete(TABLE_SHOPPING_LIST_ITEM,"_id="+id,null);
+   }
+
+    public static int updateRow(SQLiteDatabase database,long id,ContentValues content){
+        return database.update(TABLE_SHOPPING_LIST_ITEM,content,DataEntity.COLUMN_ID+"="+Long.toString(id),null);
+    }
 }
