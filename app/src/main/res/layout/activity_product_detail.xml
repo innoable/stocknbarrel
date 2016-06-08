@@ -33,7 +33,8 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Large Text"
-                android:id="@+id/produt_detail_name" />
+                android:id="@+id/produt_detail_name"
+                android:textSize="20sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -108,7 +109,8 @@
                     android:text="Total \nCost"
                     android:id="@+id/textView8"
                     android:layout_weight="1"
-                    android:layout_marginBottom="20dp" />
+                    android:layout_marginBottom="20dp"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -117,7 +119,8 @@
                     android:text="Medium Text"
                     android:id="@+id/produt_detail_cost"
                     android:layout_weight="0.25"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:textSize="20sp" />
             </LinearLayout>
 
         </LinearLayout>

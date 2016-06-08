@@ -20,15 +20,15 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/result_item_price_textView" />
+        android:text="New Text"
+        android:id="@+id/result_item_grocery_textView" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/result_item_grocery_textView"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/result_item_price_textView"
         android:layout_marginTop="10dp" />
 
 </LinearLayout>
