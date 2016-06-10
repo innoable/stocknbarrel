@@ -35,8 +35,9 @@ public class StockNBarrelContentProvider extends ContentProvider {
 
     public static final String GROCERY_STOCK_ITEM_PATH = "grocerystockitems";
     private static final int  GROCERY_STOCK_ITEMS = 50;
-    private static final int GROCERY_STOCK_ITEM_ID = 60;
-    private static final int GROCERY_STOCK_ITEM_NAMED_PRODUCT_MATCH = 65;
+    private static final int GROCERY_STOCK_ITEM_ID = 55;
+    private static final int GROCERY_STOCK_ITEM_NAMED_PRODUCT_MATCH = 60;
+    private static final int NAMED_GROCERY_STOCK_ITEMS = 65;
 
     public static final String USERS_PATH = "users";
     private static final int  USERS = 70;
@@ -66,7 +67,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, USERS_PATH, USERS);
         sURIMatcher.addURI(AUTHORITY, USERS_PATH + "/#", USER_ID);
         sURIMatcher.addURI(AUTHORITY, GROCERY_STOCK_ITEM_PATH, GROCERY_STOCK_ITEMS);
-        sURIMatcher.addURI(AUTHORITY, GROCERY_STOCK_ITEM_PATH, GROCERY_STOCK_ITEMS);
+        sURIMatcher.addURI(AUTHORITY, GROCERY_STOCK_ITEM_PATH +"/*",NAMED_GROCERY_STOCK_ITEMS);
         sURIMatcher.addURI(AUTHORITY, GROCERY_STOCK_ITEM_PATH + "/#", GROCERY_STOCK_ITEM_ID);
         sURIMatcher.addURI(AUTHORITY, GROCERY_STOCK_ITEM_PATH + "/#/*", GROCERY_STOCK_ITEM_NAMED_PRODUCT_MATCH);
         sURIMatcher.addURI(AUTHORITY, SHOPPING_LISTS_PATH, SHOPPING_LISTS);
@@ -164,20 +165,17 @@ public class StockNBarrelContentProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         int uriType = sURIMatcher.match(uri);
         int count = 0;
-        Uri notifyUri = null;
+        SQLiteDatabase db = database.getWritableDatabase();
         switch (uriType){
             case SHOPPING_LIST_ITEM_ID:
-                SQLiteDatabase db = database.getWritableDatabase();
                 count = ShoppingListItem.removeById(db,Long.parseLong(uri.getLastPathSegment()));
-                notifyUri = CONTENT_URI.buildUpon().appendPath(SHOPPING_LIST_ITEMS_PATH).build();
             break;
-
+            case SHOPPING_LIST_ITEMS:
+                db.delete(ShoppingListItem.TABLE_SHOPPING_LIST_ITEM,selection,selectionArgs);
+                break;
             default:
                 throw new IllegalArgumentException("Unknown URI"+ uri);
 
-        }
-        if(notifyUri != null) {
-           // getContext().getContentResolver().notifyChange(notifyUri, null);
         }
         return  count;
     }
@@ -302,7 +300,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
                     tableName = ShoppingList.TABLE_SHOPPING_LIST;
                     break;
 
-                case GROCERY_STOCK_ITEM_NAMED_PRODUCT_MATCH:
+                case NAMED_GROCERY_STOCK_ITEMS:
                     StringBuilder builder = new StringBuilder();
                     tableName = builder.append(Grocery.TABLE_GROCERY)
                             .append(" INNER JOIN ")
@@ -332,7 +330,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
                     };
 
                     isTable = DatabaseQueryType.SEARCH;
-                    whereClause = Product.TABLE_PRODUCT+"."+Product.COLUMN_NAME + " LIKE '%" + uri.getPathSegments().get(2) + "%'";
+                    whereClause = Product.TABLE_PRODUCT+"."+Product.COLUMN_NAME + " LIKE '%" + uri.getPathSegments().get(1) + "%'";
             }
         }
 

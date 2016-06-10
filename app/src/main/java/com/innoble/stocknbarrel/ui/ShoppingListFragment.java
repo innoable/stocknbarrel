@@ -4,6 +4,7 @@ package com.innoble.stocknbarrel.ui;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,8 +15,12 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -40,6 +45,9 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>,ShoppingListAdapter.ItemBtnClickListener,ShoppingListAdapter.ItemTotalChangeListener{
 
     private static final int SHOPPING_LIST_LOADER_ID = 0;
+
+
+
     private Uri shoppingListItemQuery;
     private ShoppingListAdapter cursorAdapter;
     private StockNBarrelDatabaseHelper db;
@@ -54,6 +62,8 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
         shoppingListItemQuery = StockNBarrelContentProvider.CONTENT_URI.buildUpon()
                 .appendPath(StockNBarrelContentProvider.SHOPPING_LIST_ITEMS_PATH)
                 .build();
@@ -132,6 +142,24 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
 
 
         listView.setAdapter(cursorAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                Intent intent = new Intent(getActivity(),ProductDetailActivity.class);
+                Cursor cur = cursorAdapter.getCursor();
+                cur.moveToPosition(position);
+                intent.putExtra("product_name",cur.getString(cur.getColumnIndex("product_name")));
+                intent.putExtra("price",cur.getDouble(cur.getColumnIndex("price")));
+                intent.putExtra("unit",cur.getString(cur.getColumnIndex("unit")));
+                intent.putExtra("grocery_name",cur.getString(cur.getColumnIndex("vendor_name")));
+                intent.putExtra("cart_item_id",cur.getString(cur.getColumnIndex("_id")));
+                intent.putExtra("qty",cur.getInt(cur.getColumnIndex("quantity")));
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
 
@@ -141,7 +169,26 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
         getLoaderManager().restartLoader(SHOPPING_LIST_LOADER_ID,null,this);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.shopping_cart_menu,menu);
+        MenuItem item = menu.findItem(R.id.clear_cart);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.clear_cart:
+                getActivity().getContentResolver().delete(shoppingListItemQuery,null,null);
+                getLoaderManager().restartLoader(SHOPPING_LIST_LOADER_ID, null, this);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
 
     private void updateViewTotal(Cursor cursor){
 

@@ -30,10 +30,8 @@ import com.innoble.stocknbarrel.database.StockNBarrelContentProvider;
 public class SearchResultActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final int DIRECT_SEARCH_LOADER_ID = 1;
-    private static final String GROCERY_ID = "1";
     private Uri PRODUCT_OPTIONS_URI = StockNBarrelContentProvider.CONTENT_URI.buildUpon()
-            .appendPath(StockNBarrelContentProvider.GROCERY_STOCK_ITEM_PATH)
-            .appendPath(GROCERY_ID).build();
+            .appendPath(StockNBarrelContentProvider.GROCERY_STOCK_ITEM_PATH).build();
 
     private Tracker mTracker;
     private Intent thisIntent;
@@ -50,7 +48,9 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        TrackedApplication application = (TrackedApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        aTracker = new AsyncTracker(mTracker, "");
 
         setContentView(R.layout.activity_searchable);
 
@@ -69,6 +69,16 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
         thisIntent = getIntent();
 
         SharedPreferences queryPref = getPreferences(Context.MODE_PRIVATE);
+
+
+
+
+        if (Intent.ACTION_VIEW.equals(thisIntent.getAction())) {
+            query = thisIntent.getDataString();
+            aTracker.trackEvent("Search Results", "Product", "Action View", query);
+            queryPref.edit().putString("query",query).commit();
+        }
+
         if(thisIntent.getStringExtra(SearchManager.QUERY) !=null){
             query = thisIntent.getStringExtra(SearchManager.QUERY);
             queryPref.edit().putString("query",query).commit();
@@ -77,33 +87,8 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
 
 
         // Obtain the shared Analytics Tracker instance.
-        TrackedApplication application = (TrackedApplication) getApplication();
-        mTracker = application.getDefaultTracker();
-        aTracker = new AsyncTracker(mTracker, "");
-        getLoaderManager().initLoader(DIRECT_SEARCH_LOADER_ID, null, this);
 
-        if (Intent.ACTION_VIEW.equals(thisIntent.getAction())) {
-            String searchTerm = thisIntent.getDataString();
-            Uri uri = PRODUCT_OPTIONS_URI.buildUpon()
-                    .appendPath(searchTerm)
-                    .build();
-            Cursor cursor = getContentResolver().query(
-                    uri,
-                    null,
-                    null,
-                    null,
-                    null
-            );
-            cursor.moveToFirst();
-            Intent detailIntent = new Intent(this,ProductDetailActivity.class);
-            packageIntentData(detailIntent,cursor);
-            aTracker.trackEvent("Search Results", "Product", "Action View", searchTerm);
-            startActivity(detailIntent);
-            finish();
-        }
-        else {
-            getLoaderManager().initLoader(DIRECT_SEARCH_LOADER_ID, null, this);
-        }
+        getLoaderManager().initLoader(DIRECT_SEARCH_LOADER_ID, null, this);
 
 
     }
@@ -113,11 +98,9 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
     protected void onResume() {
         super.onResume();
 
-        if (thisIntent.getAction() == null || Intent.ACTION_SEARCH.equals(thisIntent.getAction())){
             // Search Calls activity with String Extra  SearchManager.QUERY when user clicks search button
             resultList.setOnItemClickListener(new SearchResultClickListener(this));
              aTracker.trackEvent("Search Results", "Product", "Action Search", query);
-        }
     }
 
     @Override
@@ -140,37 +123,28 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
     @Override
     protected void onNewIntent(Intent intent) {
         SharedPreferences queryPref = getPreferences(Context.MODE_PRIVATE);
-        if(intent.getStringExtra(SearchManager.QUERY) !=null){
+
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            query = intent.getDataString();
+        }
+        else if(intent.getStringExtra(SearchManager.QUERY) !=null){
             query = intent.getStringExtra(SearchManager.QUERY);
             queryPref.edit().putString("query",query).commit();
         }
-        else query = queryPref.getString("query","");
-        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
-            getLoaderManager().restartLoader(DIRECT_SEARCH_LOADER_ID,null,this);
+        else {
+            query = queryPref.getString("query", "");
         }
-        else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            String searchTerm = intent.getDataString();
-            Uri uri = PRODUCT_OPTIONS_URI.buildUpon()
-                    .appendPath(searchTerm)
-                    .build();
-            Cursor cursor = getContentResolver().query(
-                    uri,
-                    null,
-                    null,
-                    null,
-                    null
-            );
-            cursor.moveToFirst();
-            Intent detailIntent = new Intent(this,ProductDetailActivity.class);
-            packageIntentData(detailIntent,cursor);
+
+
+            getLoaderManager().restartLoader(DIRECT_SEARCH_LOADER_ID, null, this);
+
+
             mTracker.send(new HitBuilders.EventBuilder()
                     .setCategory("Product")
                     .setAction("Action View")
-                    .setLabel(searchTerm)
+                    .setLabel(query)
                     .build());
-            startActivity(detailIntent);
-            finish();
-        }
+
         thisIntent = intent;
     }
 
@@ -196,13 +170,15 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        resultListAdapter.swapCursor(data);
+            resultListAdapter.swapCursor(data);
+
+
     }
 
 
     @Override
     public void onLoaderReset(Loader loader) {
-        resultListAdapter.swapCursor(null );
+        resultListAdapter.swapCursor( null );
 
     }
 

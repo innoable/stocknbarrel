@@ -44,6 +44,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
         holder.addRemoveBtn = (ImageButton) view.findViewById(R.id.add_remote_btn);
         holder.itemTotal = (TextView) view.findViewById(R.id.shopping_item_cost_textView);
         holder.editQty = (EditText) view.findViewById(R.id.edit_qty);
+        holder.vendorTitle = (TextView)view.findViewById(R.id.shopping_item_vendor);
         holder.addRemoveBtn.setOnClickListener(this);
         holder.position = cursor.getPosition();
         holder.editQty.setOnFocusChangeListener(new OnQtyChangeListener(holder));
@@ -73,6 +74,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
                         .toString())
                 .toString());
 
+        holder.vendorTitle.setText(cursor.getString(cursor.getColumnIndex("vendor_name")));
         holder.itemTitle.setText(title);
         holder.position = cursor.getPosition();
         holder.addRemoveBtn.setTag(cursor.getLong(cursor.getColumnIndex("_id")));
@@ -104,6 +106,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
         TextView itemTotal;
         TextView itemTitle;
         ImageButton addRemoveBtn;
+        TextView vendorTitle;
         int position;
     }
 
