@@ -1,4 +1,4 @@
-package com.innoble.stocknbarrel;
+package com.innoble.stocknbarrel.ui;
 
 
 import android.content.ContentResolver;
@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.innoble.stocknbarrel.R;
 import com.innoble.stocknbarrel.database.StockNBarrelContentProvider;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 import com.innoble.stocknbarrel.model.ShoppingListItem;

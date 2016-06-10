@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.innoble.stocknbarrel.MainActivity">
+    tools:context=".ui.MainActivity">
 
     <include layout="@layout/app_bar_layout" />
 
@@ -20,7 +20,7 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingBottom="@dimen/activity_vertical_margin"
-        tools:context="com.innoble.stocknbarrel.ProductDetailActivity">
+        tools:context=".ui.ProductDetailActivity">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"

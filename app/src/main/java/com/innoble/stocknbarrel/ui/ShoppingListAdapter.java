@@ -1,4 +1,4 @@
-package com.innoble.stocknbarrel;
+package com.innoble.stocknbarrel.ui;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +9,8 @@ import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.innoble.stocknbarrel.R;
 
 import java.math.BigDecimal;
 import java.math.MathContext;

@@ -1,4 +1,4 @@
-package com.innoble.stocknbarrel;
+package com.innoble.stocknbarrel.ui;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.innoble.stocknbarrel.R;
+import com.innoble.stocknbarrel.utils.TrackedApplication;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 
 import java.util.Map;

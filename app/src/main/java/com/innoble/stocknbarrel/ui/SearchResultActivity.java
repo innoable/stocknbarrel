@@ -1,4 +1,4 @@
-package com.innoble.stocknbarrel;
+package com.innoble.stocknbarrel.ui;
 
 import android.app.LoaderManager;
 import android.app.SearchManager;
@@ -22,6 +22,9 @@ import android.widget.ListView;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.innoble.stocknbarrel.utils.AsyncTracker;
+import com.innoble.stocknbarrel.R;
+import com.innoble.stocknbarrel.utils.TrackedApplication;
 import com.innoble.stocknbarrel.database.StockNBarrelContentProvider;
 
 public class SearchResultActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{

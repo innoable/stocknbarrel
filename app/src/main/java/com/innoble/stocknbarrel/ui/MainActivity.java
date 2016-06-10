@@ -1,4 +1,4 @@
-package com.innoble.stocknbarrel;
+package com.innoble.stocknbarrel.ui;
 
 import android.app.SearchManager;
 import android.content.ComponentName;
@@ -13,6 +13,8 @@ import android.view.MenuItem;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.innoble.stocknbarrel.R;
+import com.innoble.stocknbarrel.utils.TrackedApplication;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 import com.innoble.stocknbarrel.model.User;
 
