@@ -27,6 +27,8 @@ import com.innoble.stocknbarrel.model.ShoppingListItem;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
+import static android.R.color.holo_red_light;
+
 public class ProductDetailActivity extends AppCompatActivity {
 
     private Intent thisIntent;
@@ -72,8 +74,10 @@ public class ProductDetailActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = super.onCreateView(inflater, container, savedInstanceState);
             qty = thisIntent.getIntExtra("qty",1);
-            actionBtn.setText("Remove");
-            qtyEdit.setText(qty);
+            actionBtn.setText("DELETE THIS ENTRY");
+            actionBtn.setTextColor(getResources().getColor(android.R.color.white));
+            actionBtn.setBackgroundColor(getResources().getColor(holo_red_light));
+            qtyEdit.setText(Integer.toString(qty));
             BigDecimal cost = new BigDecimal(qty * thisIntent.getDoubleExtra("price",0.00), MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
             totalCostTxt.setText("$"+cost.toString());
 
