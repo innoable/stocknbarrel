@@ -182,6 +182,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
             case R.id.clear_cart:
                 getActivity().getContentResolver().delete(shoppingListItemQuery,null,null);
                 getLoaderManager().restartLoader(SHOPPING_LIST_LOADER_ID, null, this);
+                tcView.setTextColor(getResources().getColor(android.R.color.white));
                 return true;
 
             default:

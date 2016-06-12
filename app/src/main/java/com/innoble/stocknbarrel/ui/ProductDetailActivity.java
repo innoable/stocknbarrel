@@ -1,5 +1,7 @@
 package com.innoble.stocknbarrel.ui;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -11,6 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -30,14 +35,6 @@ import java.math.MathContext;
 import static android.R.color.holo_red_light;
 
 public class ProductDetailActivity extends AppCompatActivity {
-
-    private Intent thisIntent;
-    private TextView prodNameTxt;
-    private TextView retailerTxt;
-    private TextView totalCostTxt;
-    private TextView unitText;
-    private int qty;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,18 +60,49 @@ public class ProductDetailActivity extends AppCompatActivity {
 
 
     public static class ProductEditRemoveFragment extends ProductFragment{
-
-
         private final Uri shoppingListItemUri = StockNBarrelContentProvider.CONTENT_URI.buildUpon()
                 .appendPath(StockNBarrelContentProvider.SHOPPING_LIST_ITEMS_PATH)
                 .build();
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setHasOptionsMenu(true);
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            inflater.inflate(R.menu.product_edit,menu);
+            super.onCreateOptionsMenu(menu, inflater);
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            switch (item.getItemId()){
+                case R.id.confirm:
+                    Uri uri = shoppingListItemUri.buildUpon()
+                            .appendPath(thisIntent.getStringExtra("cart_item_id"))
+                            .build();
+
+                    ContentResolver resolver = getActivity().getContentResolver();
+                    ContentValues values = new ContentValues();
+                    values.put(ShoppingListItem.COLUMN_QUANTITY,qty);
+                    resolver.update(uri,values,null,null);
+                    resolver.notifyChange(shoppingListItemUri,null);
+                    activity.finish();
+                    return true;
+
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        }
 
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = super.onCreateView(inflater, container, savedInstanceState);
             qty = thisIntent.getIntExtra("qty",1);
-            actionBtn.setText("DELETE THIS ENTRY");
+            actionBtn.setText("Remove From Cart");
             actionBtn.setTextColor(getResources().getColor(android.R.color.white));
             actionBtn.setBackgroundColor(getResources().getColor(holo_red_light));
             qtyEdit.setText(Integer.toString(qty));
@@ -146,6 +174,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         protected EditText qtyEdit;
         protected Button actionBtn;
         protected int qty;
+        protected BigDecimal total;
         protected AppCompatActivity activity;
 
         @Nullable
@@ -176,7 +205,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             totalCostTxt = (TextView)view.findViewById(R.id.produt_detail_cost);
 
-            BigDecimal totalCost = new BigDecimal(thisIntent.getDoubleExtra("price",0.00),MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
+            final BigDecimal totalCost = new BigDecimal(thisIntent.getDoubleExtra("price",0.00),MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
 
             totalCostTxt.setText("$"+ totalCost.toString());
 
@@ -209,34 +238,11 @@ public class ProductDetailActivity extends AppCompatActivity {
                     }
                     else{
                         qty = Integer.parseInt(qtyTxt);
-                        BigDecimal cost = new BigDecimal(qty * thisIntent.getDoubleExtra("price",0.00), MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
-
-                        totalCostTxt.setText("$"+cost.toString());
+                        total = new BigDecimal(qty * thisIntent.getDoubleExtra("price",0.00), MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
+                        totalCostTxt.setText("$"+total.toString());
                     }
                 }
             });
-
-            actionBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Uri shoppingListUri = StockNBarrelContentProvider.CONTENT_URI.buildUpon()
-                            .appendPath(StockNBarrelContentProvider.SHOPPING_LISTS_PATH)
-                            .build();
-
-                    Cursor shoppingListCurr = activity.getContentResolver().query(shoppingListUri,null,null,null,null);
-                    shoppingListCurr.moveToFirst();
-                    long shoppingListID = shoppingListCurr.getLong(shoppingListCurr.getColumnIndex(ShoppingList.COLUMN_ID));
-
-                    ShoppingListItem shoppingListItem = new ShoppingListItem(shoppingListID,thisIntent.getLongExtra("grocery_stock_item_id",1),qty);
-                    shoppingListItem.insert(new StockNBarrelDatabaseHelper(activity).getWritableDatabase());
-                    Toast.makeText(activity,"Item has been added to shopping list",Toast.LENGTH_SHORT).show();
-                    activity.finish();
-
-                }
-            });
-
-
-
             return view;
         }
     }

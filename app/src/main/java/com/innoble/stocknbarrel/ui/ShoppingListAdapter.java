@@ -41,10 +41,11 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
         holder = new ViewHolder();
         holder.itemTitle = (TextView) view.findViewById(R.id.shopping_item_name);
         holder.itemTotal = (TextView) view.findViewById(R.id.shopping_item_cost_textView);
-        holder.editQty = (TextView) view.findViewById(R.id.edit_qty);
+        holder.txtQty = (TextView) view.findViewById(R.id.qty_txtView);
         holder.vendorTitle = (TextView)view.findViewById(R.id.shopping_item_vendor);
+        holder.unitText = (TextView)view.findViewById(R.id.unitTxtView);
         holder.position = cursor.getPosition();
-        holder.editQty.setOnFocusChangeListener(new OnQtyChangeListener(holder));
+        holder.txtQty.setOnFocusChangeListener(new OnQtyChangeListener(holder));
         view.setTag(holder);
         return view;
     }
@@ -61,9 +62,15 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
         int qty = cursor.getInt(3);
         qty = qty >=0 ? qty : 1;
 
-        holder.editQty.setText(Integer.toString(qty));
+        holder.txtQty.setText(Integer.toString(qty));
 
-        holder.editQty.setTag(new Double(cost));
+        holder.txtQty.setTag(new Double(cost));
+
+        String unitText = cursor.getString(cursor.getColumnIndex("unit"));
+
+        if(qty > 1)
+            unitText+="+";
+        holder.unitText.setText(unitText);
 
         holder.itemTotal.setText(new StringBuilder().append("$")
                 .append(new BigDecimal(qty*cost, MathContext.DECIMAL64)
@@ -98,10 +105,11 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
 
 
     private class ViewHolder {
-        TextView editQty;
+        TextView txtQty;
         TextView itemTotal;
         TextView itemTitle;
         TextView vendorTitle;
+        TextView unitText;
         int position;
     }
 

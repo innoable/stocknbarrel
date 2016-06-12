@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
 
 
         <LinearLayout
@@ -11,7 +15,7 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Large Text"
                     android:id="@+id/shopping_item_name"
@@ -39,30 +43,26 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Qty"
-                    android:id="@+id/textView11"
-                    android:layout_gravity="center" />
-
-                <TextView
-                    android:layout_width="85dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:id="@+id/edit_qty"
+                    android:id="@+id/qty_txtView"
                     android:singleLine="true"
-                    android:maxLength="9" />
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="8" />
+                    android:maxLength="9"
+                    android:text="Qty"
+                    android:ellipsize="end"
+                    android:layout_marginRight="3px" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cost:"
-                    android:id="@+id/textView10"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.41" />
+                    android:text="Unit"
+                    android:id="@+id/unitTxtView" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="|"
+                    android:id="@+id/textView9"
+                    android:layout_marginLeft="5px"
+                    android:layout_marginRight="5px" />
 
                 <TextView
                     android:layout_width="wrap_content"

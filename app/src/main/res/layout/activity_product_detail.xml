@@ -128,12 +128,14 @@
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Add to Cart"
+            android:text="@string/add_to_cart_txt"
             android:id="@+id/add_to_cart_btn"
             android:layout_gravity="bottom|center_horizontal"
             android:padding="25dp"
             android:background="@android:color/holo_blue_dark"
-            android:elevation="3dp" />
+            android:elevation="3dp"
+            android:textAlignment="center" />
+
     </FrameLayout>
 
 
