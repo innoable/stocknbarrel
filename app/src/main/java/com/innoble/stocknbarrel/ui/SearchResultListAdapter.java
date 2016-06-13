@@ -39,11 +39,10 @@ public class SearchResultListAdapter extends CursorAdapter{
         holder.name.setText(cursor.getString(cursor.getColumnIndex("product_name")));
 
         String unitCost = new StringBuilder()
-                .append("1 ")
-                .append(cursor.getString(cursor.getColumnIndex("unit")))
-                .append(" | ")
                 .append("$")
                 .append(new BigDecimal(cursor.getDouble(cursor.getColumnIndex("price")), MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING).toString())
+                .append(" per ")
+                .append(cursor.getString(cursor.getColumnIndex("unit")))
                 .toString();
 
         holder.price.setText(unitCost);

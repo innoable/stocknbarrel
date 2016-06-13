@@ -8,24 +8,16 @@
     android:paddingRight="5dp">
 
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Large Text"
-                    android:id="@+id/shopping_item_name"
-                    android:textStyle="italic"
-                    android:textColor="@color/foreground_material_light"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:layout_weight="1" />
-
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Large Text"
+            android:id="@+id/shopping_item_name"
+            android:textStyle="italic"
+            android:textColor="@color/foreground_material_light"
+            android:maxLines="2"
+            android:ellipsize="end" />
 
         <TextView
             android:layout_width="match_parent"
@@ -56,21 +48,15 @@
                     android:text="Unit"
                     android:id="@+id/unitTxtView" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="|"
-                    android:id="@+id/textView9"
-                    android:layout_marginLeft="5px"
-                    android:layout_marginRight="5px" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="$45.33"
-                    android:id="@+id/shopping_item_cost_textView"
-                    android:layout_weight="0.38"
-                    android:layout_gravity="center" />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$45.33"
+            android:id="@+id/shopping_item_cost_textView"
+            android:layout_gravity="left|center"
+            android:textColor="@android:color/holo_green_dark"
+            android:textStyle="italic" />
 
 </LinearLayout>

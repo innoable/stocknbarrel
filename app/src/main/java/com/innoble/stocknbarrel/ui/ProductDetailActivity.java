@@ -2,12 +2,18 @@ package com.innoble.stocknbarrel.ui;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -54,20 +60,28 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
+    /**
+     * ProductEditRemoveFragment displays product details fragment with interaction icons specific
+     * to editing and removal for items currently held in users cart
+     *
+     * @Author Kemron Glasgow
+     */
     public static class ProductEditRemoveFragment extends ProductFragment{
         private final Uri shoppingListItemUri = StockNBarrelContentProvider.CONTENT_URI.buildUpon()
                 .appendPath(StockNBarrelContentProvider.SHOPPING_LIST_ITEMS_PATH)
                 .build();
 
+        private final double ACTION_BUTTON_DPS = 250;
+        private  float DISPLAY_SCALE;
+        private Drawable actionIcon;
+
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setHasOptionsMenu(true);
+            DISPLAY_SCALE = getResources().getDisplayMetrics().density;
+            actionIcon = ResourcesCompat.getDrawable(getResources(),android.R.drawable.ic_menu_delete, null);
+            actionIcon.setColorFilter(Color.argb(230, 255, 0, 0), PorterDuff.Mode.SRC_ATOP);
         }
 
         @Override
@@ -103,24 +117,40 @@ public class ProductDetailActivity extends AppCompatActivity {
             View view = super.onCreateView(inflater, container, savedInstanceState);
             qty = thisIntent.getIntExtra("qty",1);
             actionBtn.setText("Remove From Cart");
-            actionBtn.setTextColor(getResources().getColor(android.R.color.white));
-            actionBtn.setBackgroundColor(getResources().getColor(holo_red_light));
+            actionBtn.setTextColor(getResources().getColor(holo_red_light));
+            actionBtn.setBackgroundColor(Color.TRANSPARENT);
+            int pixels = (int) (ACTION_BUTTON_DPS * DISPLAY_SCALE + 0.5f);
+            ViewGroup.LayoutParams params = actionBtn.getLayoutParams();
+            params.width = pixels;
+            actionBtn.setLayoutParams(params);
+            actionBtn.setCompoundDrawablesWithIntrinsicBounds(actionIcon,null,null,null);
             qtyEdit.setText(Integer.toString(qty));
             BigDecimal cost = new BigDecimal(qty * thisIntent.getDoubleExtra("price",0.00), MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
             totalCostTxt.setText("$"+cost.toString());
 
-
+            // Display removal confirmation dialog
             actionBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    Uri uri = shoppingListItemUri.buildUpon()
-                            .appendPath(thisIntent.getStringExtra("cart_item_id"))
-                            .build();
-                    getActivity().getContentResolver().delete(uri,null,null);
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+                    dialogBuilder.setMessage("Are you sure you want to delete this entry?")
+                            .setPositiveButton("Cancel",null)
+                            .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Uri uri = shoppingListItemUri.buildUpon()
+                                            .appendPath(thisIntent.getStringExtra("cart_item_id"))
+                                            .build();
+                                    getActivity().getContentResolver().delete(uri,null,null);
 
-                    Toast.makeText(activity,"Item has been removed from cart",Toast.LENGTH_SHORT).show();
-                    activity.finish();
+                                    Toast.makeText(activity,"Item has been removed from cart",Toast.LENGTH_SHORT).show();
+                                    activity.finish();
+
+                                }
+                            }).create().show();
+
+
 
                 }
             });
@@ -129,10 +159,15 @@ public class ProductDetailActivity extends AppCompatActivity {
         }
 
 
+
     }
 
 
-
+    /**
+     * ProductAddFragment displays products product details view with controls specific for reviewing
+     * items and adding them to the user's cart.
+     * @Author Kemron Glasgow
+     */
     public static class ProductAddFragment extends  ProductFragment{
         @Nullable
         @Override
@@ -164,8 +199,12 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
 
-
-    public static class ProductFragment extends android.support.v4.app.Fragment{
+    /**
+     * ProductFragment is manages loading and display of the fundamental items within the product
+     * details view
+     * @Author Kemron Glasgow
+     */
+    public abstract static class ProductFragment extends android.support.v4.app.Fragment{
         protected Intent thisIntent;
         protected TextView prodNameTxt;
         protected TextView retailerTxt;

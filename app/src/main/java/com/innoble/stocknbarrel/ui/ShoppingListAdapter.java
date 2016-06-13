@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.innoble.stocknbarrel.R;
 
+import org.atteo.evo.inflector.English;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 
@@ -68,9 +70,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
 
         String unitText = cursor.getString(cursor.getColumnIndex("unit"));
 
-        if(qty > 1)
-            unitText+="+";
-        holder.unitText.setText(unitText);
+        holder.unitText.setText(English.plural(unitText,qty));
 
         holder.itemTotal.setText(new StringBuilder().append("$")
                 .append(new BigDecimal(qty*cost, MathContext.DECIMAL64)
