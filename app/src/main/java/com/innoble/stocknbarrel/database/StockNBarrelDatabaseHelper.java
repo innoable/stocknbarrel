@@ -51,6 +51,8 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
 
         //db = this.getWritableDatabase();
         Product product = new Product("Planters Unsalted Mixed Nuts");
+        product.setShortDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient.");
+        product.setLongDescription("From the groundbreaking storytellers at Naughty Dog, comes the genre-defining epic that revolutionized adventure storytelling, rebuilt by Bluepoint Games with the power of the PS4 system. Experience one of the most revered game series of all time as you follow the perilous journey of Nathan Drake across the globe, from humble beginnings to extraordinary discoveries. Meet an unforgettable cast of characters as Drake puts life and friendship on the line in a race against ruthless enemies to uncover unimaginable treasure. UNCHARTED: The Nathan Drake Collection includes the single player campaigns for UNCHARTED: Drake's Fortune, UNCHARTED 2: Among Thieves, and UNCHARTED 3: Drake's Deception.");
         insertData(db, product);
         GroceryStockItem groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 65.99, "tin", 1000);
         insertData(db, groceryStockItem);
@@ -234,7 +236,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
     public Cursor getShoppingList( )
     {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select sli._id as _id, p.name as product_name, gsi.price as price, sli.quantity as quantity, gsi.unit as unit, vendor.name as vendor_name from " + ShoppingListItem.TABLE_SHOPPING_LIST_ITEM + " as sli "
+        Cursor cursor = db.rawQuery("select sli._id as _id, p.name as product_name, p.short_description as short_description, gsi.price as price, sli.quantity as quantity, gsi.unit as unit, vendor.name as vendor_name from " + ShoppingListItem.TABLE_SHOPPING_LIST_ITEM + " as sli "
                +  " inner join " + GroceryStockItem.TABLE_GROCERY_STOCK_ITEM + " as gsi on sli." + ShoppingListItem.COLUMN_GROCERY_STOCK_ITEM_ID + "=gsi." + GroceryStockItem.COLUMN_ID
                 + " inner join " + Product.TABLE_PRODUCT + " as p on gsi." + GroceryStockItem.COLUMN_PRODUCT_ID + "=p." + Product.COLUMN_ID
                 +" inner join "+Grocery.TABLE_GROCERY+ " as vendor on gsi."+GroceryStockItem.COLUMN_GROCERY_ID + "=vendor."+Grocery.COLUMN_ID+";", null);

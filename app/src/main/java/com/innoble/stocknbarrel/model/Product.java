@@ -9,12 +9,10 @@ import android.database.sqlite.SQLiteDatabase;
 public class Product extends DataEntity {
 
     private String name;
-    private String description;
+    private String longDescription;
+    private String shortDescription;
 
-    public  Product(String name)
-    {
-        this.name = name;
-    }
+
     public  Product()
     {
 
@@ -30,18 +28,36 @@ public class Product extends DataEntity {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getLongDescription() {
+        return longDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setLongDescription(String longDescription) {
+        this.longDescription = longDescription;
     }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+
+
+    public  Product(String name)
+    {
+        this.name = name;
+    }
+
+
 
     // Database table
     public static final String TABLE_PRODUCT = "product";
     public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_DESCRIPTION = "description";
+    public static final String COLUMN_LONG_DESCRIPTION = "long_description";
+    public static final String COLUMN_SHORT_DESCRIPTION = "short_description";
 
 
     // Database creation SQL statement
@@ -51,7 +67,8 @@ public class Product extends DataEntity {
             + "("
             + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_NAME + " text collate nocase,"
-            + COLUMN_DESCRIPTION + " text"
+            + COLUMN_SHORT_DESCRIPTION + " text,"
+            + COLUMN_LONG_DESCRIPTION + " text"
             + ");";
 
     public static void onCreate(SQLiteDatabase database) {
@@ -70,6 +87,8 @@ public class Product extends DataEntity {
     public void insert (SQLiteDatabase database) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, name);
+        contentValues.put(COLUMN_LONG_DESCRIPTION,longDescription);
+        contentValues.put(COLUMN_SHORT_DESCRIPTION,shortDescription);
         Long result = database.insert(TABLE_PRODUCT, null, contentValues);
         setId(result);
     }

@@ -46,8 +46,6 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
 
     private static final int SHOPPING_LIST_LOADER_ID = 0;
 
-
-
     private Uri shoppingListItemQuery;
     private ShoppingListAdapter cursorAdapter;
     private StockNBarrelDatabaseHelper db;
@@ -157,6 +155,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
                 intent.putExtra("grocery_name",cur.getString(cur.getColumnIndex("vendor_name")));
                 intent.putExtra("cart_item_id",cur.getString(cur.getColumnIndex("_id")));
                 intent.putExtra("qty",cur.getInt(cur.getColumnIndex("quantity")));
+                intent.putExtra("product_short_description",cur.getString(cur.getColumnIndex("short_description")));
                 startActivity(intent);
             }
         });

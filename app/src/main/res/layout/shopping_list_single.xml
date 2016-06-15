@@ -1,62 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingTop="15dp"
-    android:paddingBottom="15dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="15dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="15dp"
+        android:layout_weight="1">
 
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Large Text"
             android:id="@+id/shopping_item_name"
-            android:textStyle="italic"
-            android:textColor="@color/foreground_material_light"
-            android:maxLines="2"
-            android:ellipsize="end" />
-
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/foreground_material_light"
+            android:textStyle="italic" />
+
+        <TextView
             android:id="@+id/shopping_item_vendor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:maxLines="1"
-            android:ellipsize="end" />
+            android:text="New Text" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/qty_txtView"
-                    android:singleLine="true"
-                    android:maxLength="9"
-                    android:text="Qty"
-                    android:ellipsize="end"
-                    android:layout_marginRight="3px" />
+            <TextView
+                android:id="@+id/qty_txtView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="3dp"
+                android:ellipsize="end"
+                android:maxLength="9"
+                android:singleLine="true"
+                android:text="Qty" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Unit"
-                    android:id="@+id/unitTxtView" />
+            <TextView
+                android:id="@+id/unitTxtView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unit" />
 
         </LinearLayout>
 
         <TextView
+            android:id="@+id/shopping_item_cost_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$45.33"
-            android:id="@+id/shopping_item_cost_textView"
             android:layout_gravity="left|center"
-            android:textColor="@android:color/holo_green_dark"
+            android:text="New Text"
+            android:textColor="@color/colorAccent"
             android:textStyle="italic" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/thumbnail"
+        android:layout_weight="3"
+        android:maxHeight="512dp"
+        android:maxWidth="512dp"
+        android:layout_gravity="right" />
 
 </LinearLayout>

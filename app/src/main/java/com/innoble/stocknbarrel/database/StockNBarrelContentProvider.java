@@ -210,7 +210,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
     /*
     private void checkColumns(String[] projection, string table) {
         String[] available = { TodoTable.COLUMN_CATEGORY,
-                TodoTable.COLUMN_SUMMARY, TodoTable.COLUMN_DESCRIPTION,
+                TodoTable.COLUMN_SUMMARY, TodoTable.COLUMN_LONG_DESCRIPTION,
                 TodoTable.COLUMN_ID };
         if (projection != null) {
             HashSet<String> requestedColumns = new HashSet<String>(Arrays.asList(projection));
@@ -320,6 +320,8 @@ public class StockNBarrelContentProvider extends ContentProvider {
                     projection = new String[]{
                             Product.TABLE_PRODUCT+"."+Product.COLUMN_ID+" as _id",
                             Product.TABLE_PRODUCT+"."+Product.COLUMN_NAME+ " as product_name",
+                            Product.TABLE_PRODUCT+"."+Product.COLUMN_SHORT_DESCRIPTION + " as product_short_description",
+                            Product.TABLE_PRODUCT+"."+Product.COLUMN_LONG_DESCRIPTION + " as product_long_description",
                             Grocery.TABLE_GROCERY+"."+Grocery.COLUMN_NAME+ " as grocery_name",
                             Grocery.TABLE_GROCERY+"."+Grocery.COLUMN_BRANCH+ " as grocery_branch",
                             GroceryStockItem.TABLE_GROCERY_STOCK_ITEM+"."+ GroceryStockItem.COLUMN_PRICE+ " as price",

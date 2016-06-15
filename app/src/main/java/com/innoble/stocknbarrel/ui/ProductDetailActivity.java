@@ -35,6 +35,8 @@ import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 import com.innoble.stocknbarrel.model.ShoppingList;
 import com.innoble.stocknbarrel.model.ShoppingListItem;
 
+import org.atteo.evo.inflector.English;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 
@@ -135,8 +137,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
                     dialogBuilder.setMessage("Are you sure you want to delete this entry?")
-                            .setPositiveButton("Cancel",null)
-                            .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                            .setNegativeButton("Cancel",null)
+                            .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     Uri uri = shoppingListItemUri.buildUpon()
@@ -212,9 +214,11 @@ public class ProductDetailActivity extends AppCompatActivity {
         protected TextView unitText;
         protected EditText qtyEdit;
         protected Button actionBtn;
+        protected TextView descTextView;
         protected int qty;
         protected BigDecimal total;
         protected AppCompatActivity activity;
+
 
         @Nullable
         @Override
@@ -223,12 +227,17 @@ public class ProductDetailActivity extends AppCompatActivity {
             activity = (AppCompatActivity)getActivity();
             View view = inflater.inflate(R.layout.activity_product_detail,container,false);
 
+
+
+
             Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
             activity.setSupportActionBar(toolbar);
             if (activity.getSupportActionBar() != null){
                 activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
             }
+
+
 
 
 
@@ -248,13 +257,27 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             totalCostTxt.setText("$"+ totalCost.toString());
 
-            unitText = (TextView)view.findViewById(R.id.unitTextView);
-            unitText.setText(thisIntent.getStringExtra("unit"));
+
+            descTextView = (TextView)view.findViewById(R.id.descriptTextView);
+            descTextView.setText(thisIntent.getStringExtra("product_short_description"));
 
 
 
             qtyEdit  = (EditText)view.findViewById(R.id.qtyEditText);
             qty = Integer.parseInt(qtyEdit.getText().toString());
+
+            unitText = (TextView)view.findViewById(R.id.unitTextView);
+            unitText.setText(English.plural(thisIntent.getStringExtra("unit"),qty));
+
+
+
+
+
+
+
+            // specify an adapter (see also next example)
+
+
 
             actionBtn = (Button)view.findViewById(R.id.add_to_cart_btn);
 
@@ -279,12 +302,16 @@ public class ProductDetailActivity extends AppCompatActivity {
                         qty = Integer.parseInt(qtyTxt);
                         total = new BigDecimal(qty * thisIntent.getDoubleExtra("price",0.00), MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
                         totalCostTxt.setText("$"+total.toString());
+                        unitText.setText(English.plural(thisIntent.getStringExtra("unit"),qty));
                     }
                 }
             });
             return view;
         }
     }
+
+
+
 
 
 

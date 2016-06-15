@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.innoble.stocknbarrel.R;
@@ -46,6 +47,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
         holder.txtQty = (TextView) view.findViewById(R.id.qty_txtView);
         holder.vendorTitle = (TextView)view.findViewById(R.id.shopping_item_vendor);
         holder.unitText = (TextView)view.findViewById(R.id.unitTxtView);
+        holder.thumbnail =(ImageView) view.findViewById(R.id.thumbnail);
         holder.position = cursor.getPosition();
         holder.txtQty.setOnFocusChangeListener(new OnQtyChangeListener(holder));
         view.setTag(holder);
@@ -57,11 +59,11 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        ViewHolder holder = (ViewHolder) view.getTag();
+        final ViewHolder holder = (ViewHolder) view.getTag();
 
-        String title = cursor.getString(1);
-        double cost = cursor.getDouble(2);
-        int qty = cursor.getInt(3);
+        String title = cursor.getString(cursor.getColumnIndex("product_name"));
+        double cost = cursor.getDouble(cursor.getColumnIndex("price"));
+        int qty = cursor.getInt(cursor.getColumnIndex("quantity"));
         qty = qty >=0 ? qty : 1;
 
         holder.txtQty.setText(Integer.toString(qty));
@@ -82,9 +84,10 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
         holder.itemTitle.setText(title);
         holder.position = cursor.getPosition();
 
+
+
+
     }
-
-
 
 
     @Override
@@ -110,6 +113,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
         TextView itemTitle;
         TextView vendorTitle;
         TextView unitText;
+        ImageView thumbnail;
         int position;
     }
 
