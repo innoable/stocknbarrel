@@ -156,6 +156,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
                 intent.putExtra("cart_item_id",cur.getString(cur.getColumnIndex("_id")));
                 intent.putExtra("qty",cur.getInt(cur.getColumnIndex("quantity")));
                 intent.putExtra("product_short_description",cur.getString(cur.getColumnIndex("short_description")));
+                intent.putExtra("product_long_description",cur.getString(cur.getColumnIndex("long_description")));
                 startActivity(intent);
             }
         });

@@ -52,7 +52,52 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         //db = this.getWritableDatabase();
         Product product = new Product("Planters Unsalted Mixed Nuts");
         product.setShortDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient.");
-        product.setLongDescription("From the groundbreaking storytellers at Naughty Dog, comes the genre-defining epic that revolutionized adventure storytelling, rebuilt by Bluepoint Games with the power of the PS4 system. Experience one of the most revered game series of all time as you follow the perilous journey of Nathan Drake across the globe, from humble beginnings to extraordinary discoveries. Meet an unforgettable cast of characters as Drake puts life and friendship on the line in a race against ruthless enemies to uncover unimaginable treasure. UNCHARTED: The Nathan Drake Collection includes the single player campaigns for UNCHARTED: Drake's Fortune, UNCHARTED 2: Among Thieves, and UNCHARTED 3: Drake's Deception.");
+        product.setLongDescription("CELEBRATE THE 2016 EUROPEAN TOURNAMENT IN ASPHALT 8! DEDICATED LIMITED-TIME EVENTS, EXCLUSIVE PROMOTIONS, AWESOME REWARDS... STAND UP & REPRESENT YOUR NATION!\n" +
+                "200 MILLION PLAYERS CAN’T BE WRONG!\n" +
+                "TAKE A SPIN WITH THE FRONTRUNNER AMONG MOBILE RACING GAMES!\n" +
+                "\n" +
+                "** The fully installed game requires at least 1.8 GB of free space in your internal storage. **\n" +
+                "\n" +
+                "ACCLAIMED BY PLAYERS & THE PRESS!\n" +
+                "WINNER: **2015 MWC Best Mobile Game App**\n" +
+                "WINNER: **Winner of 2014 Pocket Gamer Best Sports/Racing Game Award**\n" +
+                "PERFECT SCORE: ** 5/5 – TouchArcade**\n" +
+                "PERFECT SCORE: ** 5/5 – AppSpy**\n" +
+                "PERFECT SCORE: ** 5/5 – Slide to Play**\n" +
+                "PERFECT SCORE: ** 100/100 – GameReactor**\n" +
+                "PERFECT SCORE: ** 5/5 – MacLife**\n" +
+                "\n" +
+                "LEAVE GRAVITY IN THE DUST!\n" +
+                "• 140+ OFFICIAL SPEED MACHINES: Ferrari, Lamborghini, McLaren, Bugatti, Mercedes, Audi, Ford, Chevrolet… We got ‘em all! \n" +
+                "• STUNNING GRAPHICS: Interactions between the vehicles, environments & tracks are a fully physics-based experience! \n" +
+                "• ARCADE GAMEPLAY AT ITS FINEST: Feel the thrill of gravity-defying racing across 40+ high-speed tracks!\n" +
+                "• THE ULTIMATE MULTIPLAYER RACING EXPERIENCE: Race in real-time multiplayer action for up to 12 opponents & dare your friends to ghost races!\n" +
+                "• WIN BIG: Participate in our Limited-Time Events to stack up amazing & exclusive rewards! \n" +
+                "• MASSIVE CONTENT DEPTH: 400+ career events, 1,500 car mastery challenges, 5 unique game modes, car collections. An endless stream of single-player content!\n" +
+                "• CUSTOMIZE & UPGRADE YOUR RIDES: With over 2,300 decals, take down your opponents with style!\n" +
+                "\n" +
+                "JOIN OUR RACER COMMUNITY!\n" +
+                "• FACEBOOK: facebook.com/AsphaltGame \n" +
+                "• YOUTUBE: youtube.com/c/AsphaltGames\n" +
+                "• TWITTER: twitter.com/Asphalt\n" +
+                "• INSTAGRAM: instagram.com/asphalt8\n" +
+                "\n" +
+                "A game for fans of extreme arcade racing, with real dream cars and phenomenal graphics that will also please racing simulation enthusiasts.\n" +
+                "\n" +
+                "_____________________________________________\n" +
+                "\n" +
+                "Visit our official site at http://www.gameloft.com\n" +
+                "Follow us on Twitter at http://glft.co/GameloftonTwitter or like us on Facebook at http://facebook.com/Gameloft to get more info about all our upcoming titles.\n" +
+                "Check out our videos and game trailers on http://www.youtube.com/Gameloft \n" +
+                "Discover our blog at http://glft.co/Gameloft_Official_Blog for the inside scoop on everything Gameloft.\n" +
+                "\n" +
+                "_____________________________________________\n" +
+                "\n" +
+                "This app allows you to purchase virtual items within the app.\n" +
+                "\n" +
+                "Privacy Policy: http://www.gameloft.com/privacy-notice/\n" +
+                "Terms of Use: http://www.gameloft.com/conditions/\n" +
+                "End-User License Agreement: http://www.gameloft.com/eula/?lang=en");
         insertData(db, product);
         GroceryStockItem groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 65.99, "tin", 1000);
         insertData(db, groceryStockItem);
@@ -236,7 +281,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
     public Cursor getShoppingList( )
     {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select sli._id as _id, p.name as product_name, p.short_description as short_description, gsi.price as price, sli.quantity as quantity, gsi.unit as unit, vendor.name as vendor_name from " + ShoppingListItem.TABLE_SHOPPING_LIST_ITEM + " as sli "
+        Cursor cursor = db.rawQuery("select sli._id as _id, p.name as product_name, p.short_description as short_description,  p.long_description as long_description, gsi.price as price, sli.quantity as quantity, gsi.unit as unit, vendor.name as vendor_name from " + ShoppingListItem.TABLE_SHOPPING_LIST_ITEM + " as sli "
                +  " inner join " + GroceryStockItem.TABLE_GROCERY_STOCK_ITEM + " as gsi on sli." + ShoppingListItem.COLUMN_GROCERY_STOCK_ITEM_ID + "=gsi." + GroceryStockItem.COLUMN_ID
                 + " inner join " + Product.TABLE_PRODUCT + " as p on gsi." + GroceryStockItem.COLUMN_PRODUCT_ID + "=p." + Product.COLUMN_ID
                 +" inner join "+Grocery.TABLE_GROCERY+ " as vendor on gsi."+GroceryStockItem.COLUMN_GROCERY_ID + "=vendor."+Grocery.COLUMN_ID+";", null);

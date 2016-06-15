@@ -218,6 +218,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         protected int qty;
         protected BigDecimal total;
         protected AppCompatActivity activity;
+        protected TextView longDescriptionLink;
 
 
         @Nullable
@@ -270,9 +271,19 @@ public class ProductDetailActivity extends AppCompatActivity {
             unitText.setText(English.plural(thisIntent.getStringExtra("unit"),qty));
 
 
+            longDescriptionLink = (TextView)view.findViewById(R.id.longDetailsLink);
 
+            longDescriptionLink.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(),DescriptionActivity.class);
+                    intent.putExtra(Intent.EXTRA_TEXT,thisIntent.getStringExtra("product_long_description"));
+                    intent.putExtra("SHORT_DESCRIPTION",thisIntent.getStringExtra("product_short_description"));
+                    intent.putExtra("PRODUCT_NAME",thisIntent.getStringExtra("product_name"));
+                    startActivity(intent);
 
-
+                }
+            });
 
 
             // specify an adapter (see also next example)

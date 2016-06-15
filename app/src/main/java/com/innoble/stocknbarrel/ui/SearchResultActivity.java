@@ -203,6 +203,7 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
 
     private void packageIntentData(Intent intent, Cursor cur){
         intent.putExtra("product_short_description",cur.getString(cur.getColumnIndex("product_short_description")));
+        intent.putExtra("product_long_description",cur.getString(cur.getColumnIndex("product_long_description")));
         intent.putExtra("product_name",cur.getString(cur.getColumnIndex("product_name")));
         intent.putExtra("price",cur.getDouble(cur.getColumnIndex("price")));
         intent.putExtra("unit",cur.getString(cur.getColumnIndex("unit")));
