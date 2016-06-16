@@ -23,7 +23,7 @@ public class SearchResultListAdapter extends CursorAdapter{
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.search_result_single,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.search_result_item,parent,false);
         ViewHolder holder = new ViewHolder();
         holder.name = (TextView)view.findViewById(R.id.result_item_name_textView);
         holder.price = (TextView)view.findViewById(R.id.result_item_price_textView);

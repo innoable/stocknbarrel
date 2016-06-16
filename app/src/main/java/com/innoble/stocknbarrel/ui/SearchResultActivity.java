@@ -98,7 +98,7 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
     protected void onResume() {
         super.onResume();
 
-            // Search Calls activity with String Extra  SearchManager.QUERY when user clicks search button
+            // Search Calls mActivity with String Extra  SearchManager.QUERY when user clicks search button
             resultList.setOnItemClickListener(new SearchResultClickListener(this));
              aTracker.trackEvent("Search Results", "Product", "Action Search", query);
     }

@@ -39,7 +39,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
     // Executed when a new view is being created (should setup ViewHolder pattern initalization here)
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         this.context = context;
-        View view =  LayoutInflater.from(context).inflate(R.layout.shopping_list_single,parent,false);
+        View view =  LayoutInflater.from(context).inflate(R.layout.shopping_list_item,parent,false);
         ViewHolder holder;
         holder = new ViewHolder();
         holder.itemTitle = (TextView) view.findViewById(R.id.shopping_item_name);

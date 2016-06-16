@@ -48,7 +48,6 @@
             android:name=".ui.ProductDetailActivity"
             android:configChanges="keyboardHidden"
             android:parentActivityName=".ui.SearchResultActivity"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"></activity>
 
 
