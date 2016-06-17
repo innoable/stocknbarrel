@@ -12,8 +12,10 @@ import com.innoble.stocknbarrel.model.Product;
 import com.innoble.stocknbarrel.model.ShoppingList;
 import com.innoble.stocknbarrel.model.ShoppingListItem;
 import com.innoble.stocknbarrel.model.User;
+import com.innoble.stocknbarrel.provider.Images;
 
 import java.io.File;
+import java.util.Random;
 
 /**
  * Created by At3r on 5/17/2016.
@@ -35,12 +37,14 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
 
     private void seedData(SQLiteDatabase db){
 
+        Random random = new Random(System.currentTimeMillis());
         //create user
         User user = new User("Random Shopper", "testuser@gmail.com", 2000.0f);
         insertData(db, user);
 
 
-        Grocery grocery = new Grocery("Massy Stores", "Chaguanas", "Chaguanas");
+        Grocery grocery = new Grocery("Massy Stores", "Chaguanas", "One Woodbrook Place, Damian St, Port of Spain");
+        grocery.setPhone("868-272-7441");
         insertData(db, grocery);
 
         Grocery grocery2 = new Grocery("Extra Foods ", "Grand Bazzar", "Grand Bazzar");
@@ -105,6 +109,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         insertData(db, groceryStockItem);
 
         product.setName("Axe (Excite) Body Spray");
+        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
         groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 25.99, "can", 1000);
         insertData(db, groceryStockItem);
@@ -116,6 +121,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         insertData(db, shoppingListItem);
 
         product.setName("Panadol Hot Rem");
+        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
         groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 19.99, "box", 1000);
         insertData(db, groceryStockItem);
@@ -124,6 +130,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
 
 
         product.setName("Gullon Sugar Free Vanilla Wafer");
+        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
         groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),6, 15.99, "pack", 1000);
         insertData(db, groceryStockItem);
@@ -131,6 +138,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         insertData(db, groceryStockItem);
 
         product.setName("Irish Spring Body Wash (Original)");
+        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
         groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 26.00, "bottle", 1000);
         insertData(db, groceryStockItem);
@@ -140,6 +148,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         insertData(db, shoppingListItem);
 
         product.setName("Protox Insecticide Spray");
+        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
         groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 16.00, "can", 1000);
         insertData(db, groceryStockItem);
@@ -147,6 +156,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         insertData(db, groceryStockItem);
 
         product.setName("Airwick Airfreshener 4in1");
+        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
         groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 23.00, "can", 1000);
         insertData(db, groceryStockItem);
@@ -156,6 +166,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         insertData(db, shoppingListItem);
 
         product.setName("Kiss Whole Grain Loaf ");
+        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
         groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 13.00, "loaf", 1000);
         insertData(db, groceryStockItem);
@@ -165,6 +176,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         insertData(db, shoppingListItem);
 
         product.setName("Dole Pineapple Juice Unsweetened");
+        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
         groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 9.00, "tin", 1000);
         insertData(db, groceryStockItem);
@@ -174,6 +186,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         insertData(db, shoppingListItem);
 
         product.setName("Kiss Cakes Orange Cupcakes");
+        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
         groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 3.50, "pack", 1000);
         insertData(db, groceryStockItem);
@@ -181,6 +194,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         insertData(db, groceryStockItem);
 
         product.setName("Bermudez Wheat Crisps");
+        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
         groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 3.00, "pack", 1000);
         insertData(db, groceryStockItem);
@@ -281,10 +295,11 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
     public Cursor getShoppingList( )
     {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select sli._id as _id, p.name as product_name, p.short_description as short_description,  p.long_description as long_description, gsi.price as price, sli.quantity as quantity, gsi.unit as unit, vendor.name as vendor_name from " + ShoppingListItem.TABLE_SHOPPING_LIST_ITEM + " as sli "
-               +  " inner join " + GroceryStockItem.TABLE_GROCERY_STOCK_ITEM + " as gsi on sli." + ShoppingListItem.COLUMN_GROCERY_STOCK_ITEM_ID + "=gsi." + GroceryStockItem.COLUMN_ID
+        Cursor cursor = db.rawQuery("select sli._id as _id, p.name as product_name, p.short_description as short_description,  p.long_description as long_description, p.thumbnail as product_thumbnail, gsi.price as price, sli.quantity as quantity, gsi.unit as unit, vendor.name as vendor_name,"
+                + " vendor.phone as vendor_phone, vendor.location as vendor_location from " + ShoppingListItem.TABLE_SHOPPING_LIST_ITEM + " as sli "
+                + " inner join " + GroceryStockItem.TABLE_GROCERY_STOCK_ITEM + " as gsi on sli." + ShoppingListItem.COLUMN_GROCERY_STOCK_ITEM_ID + "=gsi." + GroceryStockItem.COLUMN_ID
                 + " inner join " + Product.TABLE_PRODUCT + " as p on gsi." + GroceryStockItem.COLUMN_PRODUCT_ID + "=p." + Product.COLUMN_ID
-                +" inner join "+Grocery.TABLE_GROCERY+ " as vendor on gsi."+GroceryStockItem.COLUMN_GROCERY_ID + "=vendor."+Grocery.COLUMN_ID+";", null);
+                + " inner join "+Grocery.TABLE_GROCERY+ " as vendor on gsi."+GroceryStockItem.COLUMN_GROCERY_ID + "=vendor."+Grocery.COLUMN_ID+";", null);
 
         if (cursor == null) {
             return null;

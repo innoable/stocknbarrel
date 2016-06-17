@@ -27,7 +27,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.innoble.stocknbarrel.R;
-import com.innoble.stocknbarrel.database.StockNBarrelContentProvider;
+import com.innoble.stocknbarrel.provider.StockNBarrelContentProvider;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 import com.innoble.stocknbarrel.model.ShoppingListItem;
 import com.innoble.stocknbarrel.model.User;
@@ -157,6 +157,12 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
                 intent.putExtra("qty",cur.getInt(cur.getColumnIndex("quantity")));
                 intent.putExtra("product_short_description",cur.getString(cur.getColumnIndex("short_description")));
                 intent.putExtra("product_long_description",cur.getString(cur.getColumnIndex("long_description")));
+                intent.putExtra("vendor_phone",cur.getString(cur.getColumnIndex("vendor_phone")));
+                intent.putExtra("vendor_location",cur.getString(cur.getColumnIndex("vendor_location")));
+                intent.putExtra("product_thumbnail",cur.getString(cur.getColumnIndex("vendor_location")));
+
+
+
                 startActivity(intent);
             }
         });
@@ -195,6 +201,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
 
         if(cursor == null){
             tcView.setText("$"+ Double.toString(0.00));
+            tcView.setTextColor(getResources().getColor(android.R.color.white));
             return;
         }
 

@@ -11,6 +11,7 @@ public class Product extends DataEntity {
     private String name;
     private String longDescription;
     private String shortDescription;
+    private String thumbnailUri;
 
 
     public  Product()
@@ -44,7 +45,13 @@ public class Product extends DataEntity {
         this.shortDescription = shortDescription;
     }
 
+    public String getThumbnailUri() {
+        return thumbnailUri;
+    }
 
+    public void setThumbnailUri(String thumbnailUri) {
+        this.thumbnailUri = thumbnailUri;
+    }
 
     public  Product(String name)
     {
@@ -58,6 +65,7 @@ public class Product extends DataEntity {
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_LONG_DESCRIPTION = "long_description";
     public static final String COLUMN_SHORT_DESCRIPTION = "short_description";
+    public static final String COLUMN_THUMBNAIL = "thumbnail";
 
 
     // Database creation SQL statement
@@ -68,7 +76,8 @@ public class Product extends DataEntity {
             + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_NAME + " text collate nocase,"
             + COLUMN_SHORT_DESCRIPTION + " text,"
-            + COLUMN_LONG_DESCRIPTION + " text"
+            + COLUMN_LONG_DESCRIPTION + " text,"
+            + COLUMN_THUMBNAIL + " text"
             + ");";
 
     public static void onCreate(SQLiteDatabase database) {
@@ -89,6 +98,7 @@ public class Product extends DataEntity {
         contentValues.put(COLUMN_NAME, name);
         contentValues.put(COLUMN_LONG_DESCRIPTION,longDescription);
         contentValues.put(COLUMN_SHORT_DESCRIPTION,shortDescription);
+        contentValues.put(COLUMN_THUMBNAIL,thumbnailUri);
         Long result = database.insert(TABLE_PRODUCT, null, contentValues);
         setId(result);
     }

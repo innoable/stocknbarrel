@@ -180,46 +180,57 @@
             <android.support.v7.widget.RecyclerView
               android:id="@+id/details.gallery"
               android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                ></android.support.v7.widget.RecyclerView>
+                android:layout_marginBottom="15dp"
+              android:layout_height="wrap_content" />
+
+
+
+            <View android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                style="@style/Divider"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Vendor Details"
+                android:text="Vendor"
                 android:id="@+id/textView4"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="left"
+                android:textStyle="italic"
+                android:layout_marginBottom="10dp" />
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="75dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Phone"
-                    android:drawableLeft="@drawable/ic_phone_black_24dp"
-                    android:id="@+id/textView8"
-                    android:layout_weight="1"
-                    android:paddingLeft="15dp" />
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <TextView
+                <Button
+                    style="?android:attr/buttonStyleSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Location"
                     android:drawableLeft="@drawable/ic_location_on_black_24dp"
-                    android:id="@+id/textView9"
-                    android:layout_weight="1"
-                    android:paddingRight="15dp" />
+                    android:id="@+id/details.vendorLocation"
+                    android:textStyle="italic"
+                    android:layout_gravity="left"
+                    android:background="@android:color/transparent"
+                    android:textAlignment="textStart"
+                    android:textSize="12sp" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Phone"
+                    android:drawableLeft="@drawable/ic_phone_black_24dp"
+                    android:id="@+id/details.vendorPhone"
+                    android:textStyle="italic"
+                    android:layout_gravity="left"
+                    android:background="@android:color/transparent"
+                    android:textAlignment="textStart"
+                    android:textSize="12sp" />
+
             </LinearLayout>
 
 

@@ -35,18 +35,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.innoble.stocknbarrel.R;
-import com.innoble.stocknbarrel.database.StockNBarrelContentProvider;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 import com.innoble.stocknbarrel.model.ShoppingList;
 import com.innoble.stocknbarrel.model.ShoppingListItem;
+import com.innoble.stocknbarrel.provider.Images;
+import com.innoble.stocknbarrel.provider.StockNBarrelContentProvider;
 import com.squareup.picasso.Picasso;
 
 import org.atteo.evo.inflector.English;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import static android.R.color.holo_red_light;
 
@@ -229,6 +231,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         protected TextView longDescriptionLink;
         protected RecyclerView gallery;
         protected GalleryAdapter galleryAdapter;
+        protected Button vendorPhone;
+        protected Button vendorLocation;
 
 
         @Override
@@ -243,7 +247,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-            View view = inflater.inflate(R.layout.activity_product_detail,container,false);
+            final View view = inflater.inflate(R.layout.activity_product_detail,container,false);
 
             Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
             mActivity.setSupportActionBar(toolbar);
@@ -283,6 +287,60 @@ public class ProductDetailActivity extends AppCompatActivity {
                 }
             });
 
+            vendorPhone = (Button)view.findViewById(R.id.details_vendorPhone);
+            String vendorNum = thisIntent.getStringExtra("vendor_phone");
+            if(vendorNum!=null && vendorNum.length() > 0){
+                vendorPhone.setText(vendorNum);
+            }
+
+
+            vendorPhone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+
+                    String phoneNum = thisIntent.getStringExtra("vendor_phone");
+                    if(phoneNum == null || phoneNum.length() == 0){
+                        Toast.makeText(mActivity,"No phone number is registered for this vendor",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    intent.setData(Uri.parse("tel:"+thisIntent.getStringExtra("vendor_phone")));
+                    try{
+                        startActivity(intent);
+                    }
+
+                    catch (android.content.ActivityNotFoundException ex){
+                        Toast.makeText(mActivity,"Could not find suitable communication application",Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            });
+
+
+            vendorLocation = (Button)view.findViewById(R.id.details_vendorLocation);
+            String vendorLocal = thisIntent.getStringExtra("vendor_location");
+            if(vendorLocal!=null && vendorLocal.length() > 0){
+                vendorLocation.setText(vendorLocal);
+            }
+            vendorLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String location =  thisIntent.getStringExtra("vendor_location");
+                    if(location == null || location.length() == 0){
+                        Toast.makeText(mActivity,"No geo-location is registered for this vendor",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    Uri gmmIntentUri = Uri.parse("geo:0,0?q="+location);
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+                }
+            });
+
+
+
+
             // specify an adapter (see also next example)
             gallery = (RecyclerView) view.findViewById(R.id.details_gallery);
             gallery.setHasFixedSize(true);
@@ -290,21 +348,11 @@ public class ProductDetailActivity extends AppCompatActivity {
             llm.setOrientation(LinearLayoutManager.HORIZONTAL);
             gallery.setLayoutManager(llm);
             gallery.setItemAnimator(new DefaultItemAnimator());
-            List<String> images = Arrays.asList(
-                    "https://lh6.googleusercontent.com/-55osAWw3x0Q/URquUtcFr5I/AAAAAAAAAbs/rWlj1RUKrYI/s1024/A%252520Photographer.jpg",
-                    "https://lh4.googleusercontent.com/--dq8niRp7W4/URquVgmXvgI/AAAAAAAAAbs/-gnuLQfNnBA/s1024/A%252520Song%252520of%252520Ice%252520and%252520Fire.jpg",
-                    "https://lh5.googleusercontent.com/-7qZeDtRKFKc/URquWZT1gOI/AAAAAAAAAbs/hqWgteyNXsg/s1024/Another%252520Rockaway%252520Sunset.jpg",
-                    "https://lh3.googleusercontent.com/--L0Km39l5J8/URquXHGcdNI/AAAAAAAAAbs/3ZrSJNrSomQ/s1024/Antelope%252520Butte.jpg",
-                    "https://lh6.googleusercontent.com/-8HO-4vIFnlw/URquZnsFgtI/AAAAAAAAAbs/WT8jViTF7vw/s1024/Antelope%252520Hallway.jpg",
-                    "https://lh4.googleusercontent.com/-WIuWgVcU3Qw/URqubRVcj4I/AAAAAAAAAbs/YvbwgGjwdIQ/s1024/Antelope%252520Walls.jpg",
-                    "https://lh6.googleusercontent.com/-UBmLbPELvoQ/URqucCdv0kI/AAAAAAAAAbs/IdNhr2VQoQs/s1024/Apre%2525CC%252580s%252520la%252520Pluie.jpg",
-                    "https://lh3.googleusercontent.com/-s-AFpvgSeew/URquc6dF-JI/AAAAAAAAAbs/Mt3xNGRUd68/s1024/Backlit%252520Cloud.jpg",
-                    "https://lh5.googleusercontent.com/-bvmif9a9YOQ/URquea3heHI/AAAAAAAAAbs/rcr6wyeQtAo/s1024/Bee%252520and%252520Flower.jpg",
-                    "https://lh5.googleusercontent.com/-n7mdm7I7FGs/URqueT_BT-I/AAAAAAAAAbs/9MYmXlmpSAo/s1024/Bonzai%252520Rock%252520Sunset.jpg",
-                    "https://lh6.googleusercontent.com/-4CN4X4t0M1k/URqufPozWzI/AAAAAAAAAbs/8wK41lg1KPs/s1024/Caterpillar.jpg",
-                    "https://lh3.googleusercontent.com/-rrFnVC8xQEg/URqufdrLBaI/AAAAAAAAAbs/s69WYy_fl1E/s1024/Chess.jpg",
-                    "http://vignette4.wikia.nocookie.net/kingdomhearts/images/f/f7/Sora_(KHIIFM)_KHIIHD.png/revision/latest?cb=20140813042326"
-            );
+            List<String> images = new LinkedList<>();
+            Random random = new Random(System.currentTimeMillis());
+            for(int i = 0; i < 5; i++){
+                images.add(Images.imageUrls[random.nextInt(Images.imageUrls.length)]);
+            }
 
             galleryAdapter = new GalleryAdapter(mActivity,images);
             gallery.setAdapter(galleryAdapter);
@@ -375,7 +423,6 @@ public class ProductDetailActivity extends AppCompatActivity {
             Picasso.with(mContext)
                     .load(mImageUriList.get(position))
                     .fit()
-                    .centerInside()
                     .into(holder.imageView);
 
         }

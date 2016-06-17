@@ -7,6 +7,7 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="4dp"
         >
 
 
@@ -15,7 +16,8 @@
             android:id="@+id/details.gallery.image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/produt_gallery_contentDescription" />
     </android.support.v7.widget.CardView>
 
 </FrameLayout>

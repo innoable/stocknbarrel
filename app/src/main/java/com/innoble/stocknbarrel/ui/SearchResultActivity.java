@@ -25,7 +25,7 @@ import com.google.android.gms.analytics.Tracker;
 import com.innoble.stocknbarrel.utils.AsyncTracker;
 import com.innoble.stocknbarrel.R;
 import com.innoble.stocknbarrel.utils.TrackedApplication;
-import com.innoble.stocknbarrel.database.StockNBarrelContentProvider;
+import com.innoble.stocknbarrel.provider.StockNBarrelContentProvider;
 
 public class SearchResultActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -209,6 +209,9 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
         intent.putExtra("unit",cur.getString(cur.getColumnIndex("unit")));
         intent.putExtra("grocery_name",cur.getString(cur.getColumnIndex("grocery_name")));
         intent.putExtra("grocery_stock_item_id",cur.getLong(cur.getColumnIndex("grocery_stock_item_id")));
+        intent.putExtra("vendor_phone",cur.getString(cur.getColumnIndex("vendor_phone")));
+        intent.putExtra("vendor_location",cur.getString(cur.getColumnIndex("vendor_location")));
+        intent.putExtra("product_thumbnail",cur.getString(cur.getColumnIndex("vendor_location")));
     }
 
 

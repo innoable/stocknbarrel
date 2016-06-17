@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.innoble.stocknbarrel.R;
@@ -28,6 +29,7 @@ public class SearchResultListAdapter extends CursorAdapter{
         holder.name = (TextView)view.findViewById(R.id.result_item_name_textView);
         holder.price = (TextView)view.findViewById(R.id.result_item_price_textView);
         holder.grocery = (TextView)view.findViewById(R.id.result_item_grocery_textView);
+        holder.thumbnail = (ImageView)view.findViewById(R.id.result_thumbnail);
         view.setTag(holder);
         return view;
     }
@@ -46,7 +48,6 @@ public class SearchResultListAdapter extends CursorAdapter{
                 .toString();
 
         holder.price.setText(unitCost);
-
         holder.grocery.setText(cursor.getString(cursor.getColumnIndex("grocery_name")));
     }
 
@@ -56,5 +57,6 @@ public class SearchResultListAdapter extends CursorAdapter{
         TextView name;
         TextView price;
         TextView grocery;
+        ImageView thumbnail;
     }
 }

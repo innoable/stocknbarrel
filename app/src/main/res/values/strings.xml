@@ -16,5 +16,6 @@
 
 
     <string name="delete_dialog_message">Are you sure you want to delete this entry?</string>
+    <string name="produt_gallery_contentDescription">produt_gallery_image</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
