@@ -422,7 +422,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             Picasso.with(mContext)
                     .load(mImageUriList.get(position))
-                    .fit()
+                    .error(R.drawable.empty_photo)
+                    .placeholder(R.drawable.progress_animation)
                     .into(holder.imageView);
 
         }
