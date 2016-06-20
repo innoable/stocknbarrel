@@ -117,7 +117,7 @@
         jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         revision="23.0.2"
-        sha1="aa61f382fdbd5423799ff063013ad14bfb8805db">
+        sha1="841178c2a477335e7da4927093dbfc11ee5d8fea">
         <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\instant-run_dce01bc39690d661847e59f66e761607014b6c71.jar" />
     </item>
     <item
@@ -152,7 +152,7 @@
         jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         revision="23.0.2"
-        sha1="b15234081e9abb4dc60de78499c974d5198c89da">
+        sha1="c3d6df65a29af7a3e450e886db06a95086442602">
         <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\instant-run-bootstrap_e12fcb9e1955162bf9dfceb67902efd15b9a0aee.jar" />
     </item>
     <item
