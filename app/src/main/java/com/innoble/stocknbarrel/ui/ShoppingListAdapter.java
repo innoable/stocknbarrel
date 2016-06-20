@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.innoble.stocknbarrel.R;
+import com.squareup.picasso.Picasso;
 
 import org.atteo.evo.inflector.English;
 
@@ -47,7 +48,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
         holder.txtQty = (TextView) view.findViewById(R.id.qty_txtView);
         holder.vendorTitle = (TextView)view.findViewById(R.id.shopping_item_vendor);
         holder.unitText = (TextView)view.findViewById(R.id.unitTxtView);
-        holder.thumbnail =(ImageView) view.findViewById(R.id.thumbnail);
+        holder.thumbnail =(ImageView) view.findViewById(R.id.cart_thumbnail);
         holder.position = cursor.getPosition();
         holder.txtQty.setOnFocusChangeListener(new OnQtyChangeListener(holder));
         view.setTag(holder);
@@ -83,6 +84,9 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
         holder.vendorTitle.setText(cursor.getString(cursor.getColumnIndex("vendor_name")));
         holder.itemTitle.setText(title);
         holder.position = cursor.getPosition();
+        Picasso.with(context)
+                .load(cursor.getString(cursor.getColumnIndex("product_thumbnail")))
+                .into(holder.thumbnail);
 
 
 

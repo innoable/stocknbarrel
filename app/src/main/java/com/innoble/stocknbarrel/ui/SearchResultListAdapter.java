@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.innoble.stocknbarrel.R;
+import com.squareup.picasso.Picasso;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -49,6 +50,9 @@ public class SearchResultListAdapter extends CursorAdapter{
 
         holder.price.setText(unitCost);
         holder.grocery.setText(cursor.getString(cursor.getColumnIndex("grocery_name")));
+        Picasso.with(context)
+                .load(cursor.getString(cursor.getColumnIndex("product_thumbnail")))
+                .into(holder.thumbnail);
     }
 
 

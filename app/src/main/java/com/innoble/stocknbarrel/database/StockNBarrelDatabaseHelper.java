@@ -55,6 +55,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
 
         //db = this.getWritableDatabase();
         Product product = new Product("Planters Unsalted Mixed Nuts");
+        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         product.setShortDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient.");
         product.setLongDescription("CELEBRATE THE 2016 EUROPEAN TOURNAMENT IN ASPHALT 8! DEDICATED LIMITED-TIME EVENTS, EXCLUSIVE PROMOTIONS, AWESOME REWARDS... STAND UP & REPRESENT YOUR NATION!\n" +
                 "200 MILLION PLAYERS CAN’T BE WRONG!\n" +
