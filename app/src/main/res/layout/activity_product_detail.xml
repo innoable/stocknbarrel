@@ -15,9 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-
-        app:elevation="4dp"
-        android:measureWithLargestChild="false">
+        app:elevation="4dp">
 
 
             <android.support.v7.widget.Toolbar
@@ -43,7 +41,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="50dp"
             app:layout_scrollFlags="scroll|enterAlways"
             tools:context=".ui.ProductDetailActivity"
             android:padding="16dp"
