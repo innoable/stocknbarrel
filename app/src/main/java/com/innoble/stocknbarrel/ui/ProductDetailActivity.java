@@ -83,15 +83,12 @@ public class ProductDetailActivity extends AppCompatActivity {
                 .appendPath(StockNBarrelContentProvider.SHOPPING_LIST_ITEMS_PATH)
                 .build();
 
-        private final double ACTION_BUTTON_DPS = 250;
-        private  float DISPLAY_SCALE;
         private Drawable actionIcon;
 
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setHasOptionsMenu(true);
-            DISPLAY_SCALE = getResources().getDisplayMetrics().density;
             actionIcon = ResourcesCompat.getDrawable(getResources(),android.R.drawable.ic_menu_delete, null);
             actionIcon.setColorFilter(Color.argb(230, 255, 0, 0), PorterDuff.Mode.SRC_ATOP);
         }
@@ -131,10 +128,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             actionBtn.setText("Remove From Cart");
             actionBtn.setTextColor(getResources().getColor(holo_red_light));
             actionBtn.setBackgroundColor(Color.TRANSPARENT);
-            int pixels = (int) (ACTION_BUTTON_DPS * DISPLAY_SCALE + 0.5f);
-            //ViewGroup.LayoutParams params = actionBtn.getLayoutParams();
-            //params.width = pixels;
-            //actionBtn.setLayoutParams(params);
+
             actionBtn.setCompoundDrawablesWithIntrinsicBounds(actionIcon,null,null,null);
             qtyEdit.setText(Integer.toString(qty));
             BigDecimal cost = new BigDecimal(qty * thisIntent.getDoubleExtra("price",0.00), MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
@@ -186,7 +180,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view =  super.onCreateView(inflater, container, savedInstanceState);
 
-
+            qty = thisIntent.getIntExtra("qty",1);
             actionBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -201,6 +195,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     ShoppingListItem shoppingListItem = new ShoppingListItem(shoppingListID,thisIntent.getLongExtra("grocery_stock_item_id",1),qty);
                     shoppingListItem.insert(new StockNBarrelDatabaseHelper(mActivity).getWritableDatabase());
                     Toast.makeText(mActivity,"Item has been added to shopping list",Toast.LENGTH_SHORT).show();
+                     shoppingListCurr.close();
                     mActivity.finish();
 
                 }
@@ -271,8 +266,13 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             actionBtn = (Button)view.findViewById(R.id.add_to_cart_btn);
 
+            qtyEdit  = (EditText)view.findViewById(R.id.qtyEditText);
+            qty = Integer.parseInt(qtyEdit.getText().toString());
+
             unitText = (TextView)view.findViewById(R.id.unitTextView);
             unitText.setText(English.plural(thisIntent.getStringExtra("unit"),qty));
+
+
 
             longDescriptionLink = (TextView)view.findViewById(R.id.longDetailsLink);
             longDescriptionLink.setOnClickListener(new View.OnClickListener() {
@@ -356,8 +356,6 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             galleryAdapter = new GalleryAdapter(mActivity,images);
             gallery.setAdapter(galleryAdapter);
-            qtyEdit  = (EditText)view.findViewById(R.id.qtyEditText);
-            qty = Integer.parseInt(qtyEdit.getText().toString());
             qtyEdit.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
