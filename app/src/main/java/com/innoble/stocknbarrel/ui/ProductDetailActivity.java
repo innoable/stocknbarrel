@@ -343,6 +343,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             // specify an adapter (see also next example)
             gallery = (RecyclerView) view.findViewById(R.id.details_gallery);
+
             gallery.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(mActivity);
             llm.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -399,6 +400,16 @@ public class ProductDetailActivity extends AppCompatActivity {
             public ViewHolder(View itemView) {
                 super(itemView);
                 imageView = (ImageView) itemView.findViewById(R.id.details_gallery_image);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext,ProductDetailsImageSlider.class);
+                        String[] arr = new String[mImageUriList.size()];
+                        mImageUriList.toArray(arr);
+                        intent.putExtra("imageUris",arr);
+                        mContext.startActivity(intent);
+                    }
+                });
             }
         }
 
