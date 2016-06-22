@@ -136,7 +136,6 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
                 if(qtyStr.length() > 0 ){
                     int qty = Integer.parseInt(qtyStr);
                     BigDecimal newCost = new BigDecimal(qty *((Double)v.getTag()).doubleValue(),MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
-                  //  double newCost = Math.round( qty*((Double)v.getTag()).doubleValue() * 100.0) / 100.0;
                     BigDecimal oldCost = new BigDecimal(viewHolder.itemTotal.getText().toString().substring(1),MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
                     viewHolder.itemTotal.setText("$"+newCost.toString());
                     mItemTotalChangeListener.onItemCostChange(oldCost,newCost,qty,viewHolder.position);

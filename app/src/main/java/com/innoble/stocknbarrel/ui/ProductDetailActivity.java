@@ -279,9 +279,9 @@ public class ProductDetailActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mActivity,DescriptionActivity.class);
-                    intent.putExtra(Intent.EXTRA_TEXT,thisIntent.getStringExtra("product_long_description"));
-                    intent.putExtra("SHORT_DESCRIPTION",thisIntent.getStringExtra("product_short_description"));
-                    intent.putExtra("PRODUCT_NAME",thisIntent.getStringExtra("product_name"));
+                    intent.putExtra(DescriptionActivity.PRODUCT_LONG_DESCRIPTION,thisIntent.getStringExtra("product_long_description"));
+                    intent.putExtra(DescriptionActivity.PRODUCT_SHORT_DESCRIPTION,thisIntent.getStringExtra("product_short_description"));
+                    intent.putExtra(DescriptionActivity.PRODUCT_NAME,thisIntent.getStringExtra("product_name"));
                     startActivity(intent);
 
                 }
@@ -387,9 +387,9 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
 
-
-
-
+    /**
+     * Manages loading of product gallery images into mini slideshow
+     */
     public static class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder>{
 
         private List<String> mImageUriList;
@@ -406,7 +406,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                         Intent intent = new Intent(mContext,ProductDetailsImageSlider.class);
                         String[] arr = new String[mImageUriList.size()];
                         mImageUriList.toArray(arr);
-                        intent.putExtra("imageUris",arr);
+                        intent.putExtra(ProductDetailsImageSlider.IMAGE_URIS,arr);
                         mContext.startActivity(intent);
                     }
                 });

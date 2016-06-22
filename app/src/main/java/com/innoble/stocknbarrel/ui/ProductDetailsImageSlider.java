@@ -20,6 +20,8 @@ import java.util.List;
 
 public class ProductDetailsImageSlider extends AppCompatActivity {
 
+    public static final String IMAGE_URIS = "ImageUris";
+
     private ViewPager mPager;
     private String[] imageUris;
 
@@ -35,7 +37,7 @@ public class ProductDetailsImageSlider extends AppCompatActivity {
 
         // Instantiate a ViewPager and a PagerAdapter.
 
-        imageUris = getIntent().getStringArrayExtra("imageUris");
+        imageUris = getIntent().getStringArrayExtra(IMAGE_URIS);
         mPager = (ViewPager) findViewById(R.id.details_gallerySlider);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
@@ -84,11 +86,11 @@ public class ProductDetailsImageSlider extends AppCompatActivity {
 
 
     public static class ProductDetailsGalleryFragment extends Fragment{
-
+        private static final String IMAGE_URI = "ImageUri";
 
         public void setImageUri(String imageUri) {
             Bundle bundle = new Bundle();
-            bundle.putString("imageUri",imageUri);
+            bundle.putString(IMAGE_URI,imageUri);
             setArguments(bundle);
         }
 
@@ -100,7 +102,7 @@ public class ProductDetailsImageSlider extends AppCompatActivity {
 
             ImageView image = (ImageView)rootView.findViewById(R.id.details_gallerySlider_image);
             Picasso.with(getContext())
-                    .load(getArguments().getString("imageUri"))
+                    .load(getArguments().getString(IMAGE_URI))
                     .error(R.drawable.empty_photo)
                     .placeholder(R.drawable.progress_animation)
                     .fit()

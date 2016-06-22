@@ -13,7 +13,14 @@ import android.widget.TextView;
 
 import com.innoble.stocknbarrel.R;
 
+/**
+ * Generates View displaying product description in detail
+ */
 public class DescriptionActivity extends AppCompatActivity {
+
+    public static final String PRODUCT_NAME = "PRODUCT_NAME";
+    public static final String PRODUCT_SHORT_DESCRIPTION = "SHORT_DESCRIPTION";
+    public static final String PRODUCT_LONG_DESCRIPTION = "LONG_DESCRIPTION";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -44,10 +51,10 @@ public class DescriptionActivity extends AppCompatActivity {
             TextView itemName = (TextView)root.findViewById(R.id.details_item_name);
 
 
-            itemName.setText(activityIntent.getStringExtra("PRODUCT_NAME"));
-            sDescription.setText(activityIntent.getStringExtra("SHORT_DESCRIPTION"));
+            itemName.setText(activityIntent.getStringExtra(PRODUCT_NAME));
+            sDescription.setText(activityIntent.getStringExtra(PRODUCT_SHORT_DESCRIPTION));
 
-            String descriptionText = activityIntent.getStringExtra(Intent.EXTRA_TEXT);
+            String descriptionText = activityIntent.getStringExtra(PRODUCT_LONG_DESCRIPTION);
             //By default these links will appear but not
             // respond to user input.  To make them active, you need to
             // call setMovementMethod() on the TextView object.
