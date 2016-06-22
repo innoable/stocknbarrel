@@ -76,15 +76,9 @@ public class ProductDetailsImageSlider extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
-
-
-
+    /**
+     * View pager fragment ( Loads visual for single page in viewpager)
+     */
     public static class ProductDetailsGalleryFragment extends Fragment{
         private static final String IMAGE_URI = "ImageUri";
 

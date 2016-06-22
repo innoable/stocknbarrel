@@ -83,6 +83,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
         return false;
     }
 
+
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
@@ -132,8 +133,15 @@ public class StockNBarrelContentProvider extends ContentProvider {
     }
 
 
-
-
+    /**
+     * Executes raw queries for specified requests
+     * @param uri
+     * @param projection
+     * @param selection
+     * @param selectionArgs
+     * @param sortOrder
+     * @return
+     */
     private Cursor executeRawQueryIfAvailable(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder){
         int uriType = sURIMatcher.match(uri);
         switch (uriType) {

@@ -39,6 +39,7 @@ import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 import com.innoble.stocknbarrel.model.ShoppingList;
 import com.innoble.stocknbarrel.model.ShoppingListItem;
 import com.innoble.stocknbarrel.provider.Images;
+import com.innoble.stocknbarrel.provider.ProductDetailParcelable;
 import com.innoble.stocknbarrel.provider.StockNBarrelContentProvider;
 import com.squareup.picasso.Picasso;
 
@@ -59,7 +60,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         setContentView(R.layout.content_main);
 
         Fragment viewFragment;
-        if(getIntent().getStringExtra("cart_item_id")!= null )
+        ProductDetailParcelable data = getIntent().getParcelableExtra(Intent.EXTRA_TEXT);
+        if(data.itemCartID!= null )
             viewFragment = new ProductEditRemoveFragment();
 
         else{
@@ -73,7 +75,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
 
     /**
-     * ProductEditRemoveFragment displays product details fragment with interaction icons specific
+     * ProductEditRemoveFragment displays product details fragment with interaction controls specific
      * to editing and removal for items currently held in users cart
      *
      * @Author Kemron Glasgow
@@ -104,7 +106,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             switch (item.getItemId()){
                 case R.id.confirm:
                     Uri uri = shoppingListItemUri.buildUpon()
-                            .appendPath(thisIntent.getStringExtra("cart_item_id"))
+                            .appendPath(data.itemCartID)
                             .build();
 
                     ContentResolver resolver = mActivity.getContentResolver();
@@ -124,14 +126,14 @@ public class ProductDetailActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = super.onCreateView(inflater, container, savedInstanceState);
-            qty = thisIntent.getIntExtra("qty",1);
+            qty = data.qty;
             actionBtn.setText("Remove From Cart");
             actionBtn.setTextColor(getResources().getColor(holo_red_light));
             actionBtn.setBackgroundColor(Color.TRANSPARENT);
 
             actionBtn.setCompoundDrawablesWithIntrinsicBounds(actionIcon,null,null,null);
             qtyEdit.setText(Integer.toString(qty));
-            BigDecimal cost = new BigDecimal(qty * thisIntent.getDoubleExtra("price",0.00), MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
+            BigDecimal cost = new BigDecimal(qty * data.price, MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
             totalCostTxt.setText("$"+cost.toString());
 
             // Display removal confirmation dialog
@@ -146,7 +148,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     Uri uri = shoppingListItemUri.buildUpon()
-                                            .appendPath(thisIntent.getStringExtra("cart_item_id"))
+                                            .appendPath(data.itemCartID)
                                             .build();
                                     mActivity.getContentResolver().delete(uri,null,null);
 
@@ -170,7 +172,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
 
     /**
-     * ProductAddFragment displays products product details view with controls specific for reviewing
+     * ProductAddFragment displays  product details view with controls specific for reviewing
      * items and adding them to the user's cart.
      * @Author Kemron Glasgow
      */
@@ -180,7 +182,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view =  super.onCreateView(inflater, container, savedInstanceState);
 
-            qty = thisIntent.getIntExtra("qty",1);
+            qty = data.qty;
             actionBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -192,7 +194,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     shoppingListCurr.moveToFirst();
                     long shoppingListID = shoppingListCurr.getLong(shoppingListCurr.getColumnIndex(ShoppingList.COLUMN_ID));
 
-                    ShoppingListItem shoppingListItem = new ShoppingListItem(shoppingListID,thisIntent.getLongExtra("grocery_stock_item_id",1),qty);
+                    ShoppingListItem shoppingListItem = new ShoppingListItem(shoppingListID,data.groceryStockItemId,qty);
                     shoppingListItem.insert(new StockNBarrelDatabaseHelper(mActivity).getWritableDatabase());
                     Toast.makeText(mActivity,"Item has been added to shopping list",Toast.LENGTH_SHORT).show();
                      shoppingListCurr.close();
@@ -212,7 +214,7 @@ public class ProductDetailActivity extends AppCompatActivity {
      * @Author Kemron Glasgow
      */
     public abstract static class ProductFragment extends android.support.v4.app.Fragment{
-        protected Intent thisIntent;
+        protected ProductDetailParcelable data;
         protected TextView prodNameTxt;
         protected TextView retailerTxt;
         protected TextView totalCostTxt;
@@ -234,7 +236,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             mActivity = (AppCompatActivity)getActivity();
-            thisIntent = mActivity.getIntent();
+            data = mActivity.getIntent().getParcelableExtra(Intent.EXTRA_TEXT);
         }
 
         @Nullable
@@ -252,17 +254,17 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
 
             prodNameTxt = (TextView)view.findViewById(R.id.produt_detail_name);
-            prodNameTxt.setText(thisIntent.getStringExtra("product_name"));
+            prodNameTxt.setText(data.productName);
 
             retailerTxt = (TextView)view.findViewById(R.id.product_detail_retailer);
-            retailerTxt.setText(thisIntent.getStringExtra("grocery_name"));
+            retailerTxt.setText(data.vendorName);
 
             totalCostTxt = (TextView)view.findViewById(R.id.produt_detail_cost);
-            final BigDecimal totalCost = new BigDecimal(thisIntent.getDoubleExtra("price",0.00),MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
+            final BigDecimal totalCost = new BigDecimal(data.price,MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
             totalCostTxt.setText("$"+ totalCost.toString());
 
             descTextView = (TextView)view.findViewById(R.id.descriptTextView);
-            descTextView.setText(thisIntent.getStringExtra("product_short_description"));
+            descTextView.setText(data.shortDescription);
 
             actionBtn = (Button)view.findViewById(R.id.add_to_cart_btn);
 
@@ -270,7 +272,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             qty = Integer.parseInt(qtyEdit.getText().toString());
 
             unitText = (TextView)view.findViewById(R.id.unitTextView);
-            unitText.setText(English.plural(thisIntent.getStringExtra("unit"),qty));
+            unitText.setText(English.plural(data.unit,qty));
 
 
 
@@ -279,18 +281,17 @@ public class ProductDetailActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mActivity,DescriptionActivity.class);
-                    intent.putExtra(DescriptionActivity.PRODUCT_LONG_DESCRIPTION,thisIntent.getStringExtra("product_long_description"));
-                    intent.putExtra(DescriptionActivity.PRODUCT_SHORT_DESCRIPTION,thisIntent.getStringExtra("product_short_description"));
-                    intent.putExtra(DescriptionActivity.PRODUCT_NAME,thisIntent.getStringExtra("product_name"));
+                    intent.putExtra(DescriptionActivity.PRODUCT_LONG_DESCRIPTION,data.longDescription);
+                    intent.putExtra(DescriptionActivity.PRODUCT_SHORT_DESCRIPTION,data.shortDescription);
+                    intent.putExtra(DescriptionActivity.PRODUCT_NAME,data.productName);
                     startActivity(intent);
 
                 }
             });
 
             vendorPhone = (Button)view.findViewById(R.id.details_vendorPhone);
-            String vendorNum = thisIntent.getStringExtra("vendor_phone");
-            if(vendorNum!=null && vendorNum.length() > 0){
-                vendorPhone.setText(vendorNum);
+            if(data.vendorPhone!=null && data.vendorPhone.length() > 0){
+                vendorPhone.setText(data.vendorPhone);
             }
 
 
@@ -299,13 +300,12 @@ public class ProductDetailActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(Intent.ACTION_CALL);
 
-                    String phoneNum = thisIntent.getStringExtra("vendor_phone");
-                    if(phoneNum == null || phoneNum.length() == 0){
+                    if(data.vendorPhone == null || data.vendorPhone.length() == 0){
                         Toast.makeText(mActivity,"No phone number is registered for this vendor",Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    intent.setData(Uri.parse("tel:"+thisIntent.getStringExtra("vendor_phone")));
+                    intent.setData(Uri.parse("tel:"+data.vendorPhone));
                     try{
                         startActivity(intent);
                     }
@@ -319,19 +319,17 @@ public class ProductDetailActivity extends AppCompatActivity {
 
 
             vendorLocation = (Button)view.findViewById(R.id.details_vendorLocation);
-            String vendorLocal = thisIntent.getStringExtra("vendor_location");
-            if(vendorLocal!=null && vendorLocal.length() > 0){
-                vendorLocation.setText(vendorLocal);
+            if(data.vendorLocation!=null && data.vendorLocation.length() > 0){
+                vendorLocation.setText(data.vendorLocation);
             }
             vendorLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String location =  thisIntent.getStringExtra("vendor_location");
-                    if(location == null || location.length() == 0){
+                    if(data.vendorLocation == null || data.vendorLocation.length() == 0){
                         Toast.makeText(mActivity,"No geo-location is registered for this vendor",Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    Uri gmmIntentUri = Uri.parse("geo:0,0?q="+location);
+                    Uri gmmIntentUri = Uri.parse("geo:0,0?q="+data.vendorLocation);
                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                     mapIntent.setPackage("com.google.android.apps.maps");
                     startActivity(mapIntent);
@@ -376,9 +374,9 @@ public class ProductDetailActivity extends AppCompatActivity {
                     }
                     else{
                         qty = Integer.parseInt(qtyTxt);
-                        total = new BigDecimal(qty * thisIntent.getDoubleExtra("price",0.00), MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
+                        total = new BigDecimal(qty * data.price, MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
                         totalCostTxt.setText("$"+total.toString());
-                        unitText.setText(English.plural(thisIntent.getStringExtra("unit"),qty));
+                        unitText.setText(English.plural(data.unit,qty));
                     }
                 }
             });

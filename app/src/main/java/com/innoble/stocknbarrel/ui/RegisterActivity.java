@@ -15,6 +15,11 @@ import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity implements RegisterFragment.Callback {
 
+    public static final String USERNAME = "USER_NAME";
+    public static final String EMAIL = "USER_EMAIL";
+    public static final String BUDGET = "USER_BUDGET";
+
+
     private StockNBarrelDatabaseHelper db;
     private Tracker mTracker;
     private String name;
@@ -48,9 +53,9 @@ public class RegisterActivity extends AppCompatActivity implements RegisterFragm
     public void onUserRegister(Map<String, String> data) {
         if(data == null) return;
         //Do something with the data once it has been returned ( Persist data to local db)
-        final String name = data.get("name");
-        final String email = data.get("email");
-        final double budget = Double.parseDouble(data.get("budget"));
+        final String name = data.get(USERNAME);
+        final String email = data.get(EMAIL);
+        final double budget = Double.parseDouble(data.get(BUDGET));
 
 
         AsyncTask<Void,Void,Boolean> userRegisterTask = new AsyncTask<Void, Void, Boolean>() {

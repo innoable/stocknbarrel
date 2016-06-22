@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         mDb = new StockNBarrelDatabaseHelper(this);
         User user = mDb.getUser();
+        // if user is not registered then show registration screen
         if(user == null){
             Intent iLogin = new Intent(this,RegisterActivity.class);
             startActivity(iLogin);

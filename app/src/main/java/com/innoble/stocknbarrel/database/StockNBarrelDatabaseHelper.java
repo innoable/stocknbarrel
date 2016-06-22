@@ -257,7 +257,11 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-
+    /**
+     * Checks if there is registered user in database
+     *
+     * @return true if registered user exists and false otherwise
+     */
     public boolean userExsits( )
     {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -272,6 +276,10 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         return cursor.getCount() > 0;
     }
 
+    /**
+     * Retrieves registered user from database
+     * @return returns first registered user in database
+     */
     public User getUser( )
     {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -294,6 +302,10 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * Retrieves user's shopping cart items
+     * @return Shopping cart Cursor
+     */
     public Cursor getShoppingList( )
     {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -312,6 +324,14 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    /**
+     * Adds new user to database
+     * @param name - user's name
+     * @param email - user's email address
+     * @param budget - user's budget
+     *
+     * @return returns true if insertion was successful and false otherwise
+     */
     public boolean addUser(String name, String email, double budget )
     {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -332,6 +352,12 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+
+    /**
+     * Removes user from database
+     * @param id - Id of user to be removed
+     * @return - Returns true if at least one record was removed
+     */
     public boolean deleteUserById(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
         int result = db.delete("user", "_id=?", new String[]{id + ""});
@@ -339,6 +365,11 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Retrieves  user from database given a specific email address
+     * @param email - email address of user to be retrieved
+     * @return User model containing first matched record. Returns null if not record was found
+     */
     public User getUserByEmail(String email) {
 
         SQLiteDatabase db = this.getReadableDatabase();

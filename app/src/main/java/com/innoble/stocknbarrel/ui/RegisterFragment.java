@@ -24,9 +24,9 @@ public  class RegisterFragment extends android.support.v4.app.Fragment implement
 
     @Override
     public void onClick(View v) {
-        userData.put("name",((EditText)rootView.findViewById(R.id.register_name)).getText().toString());
-        userData.put("email",((EditText)rootView.findViewById(R.id.register_email)).getText().toString());
-        userData.put("budget",((EditText)rootView.findViewById(R.id.register_budget)).getText().toString());
+        userData.put(RegisterActivity.USERNAME,((EditText)rootView.findViewById(R.id.register_name)).getText().toString());
+        userData.put(RegisterActivity.EMAIL,((EditText)rootView.findViewById(R.id.register_email)).getText().toString());
+        userData.put(RegisterActivity.BUDGET,((EditText)rootView.findViewById(R.id.register_budget)).getText().toString());
         ((Callback)getActivity()).onUserRegister(userData);
     }
 

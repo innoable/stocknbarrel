@@ -27,6 +27,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.innoble.stocknbarrel.R;
+import com.innoble.stocknbarrel.provider.ProductDetailParcelable;
 import com.innoble.stocknbarrel.provider.StockNBarrelContentProvider;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 import com.innoble.stocknbarrel.model.ShoppingListItem;
@@ -102,9 +103,9 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Budget");
 
-                // Set up the input
+                // Set up the dialog input
                 final EditText input = (EditText) viewInflated.findViewById(R.id.input);
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                //Specify layout to use for dialog
                 builder.setView(viewInflated);
 
 
@@ -146,22 +147,27 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
+
+
                 Intent intent = new Intent(getActivity(),ProductDetailActivity.class);
                 Cursor cur = cursorAdapter.getCursor();
                 cur.moveToPosition(position);
-                intent.putExtra("product_name",cur.getString(cur.getColumnIndex("product_name")));
-                intent.putExtra("price",cur.getDouble(cur.getColumnIndex("price")));
-                intent.putExtra("unit",cur.getString(cur.getColumnIndex("unit")));
-                intent.putExtra("grocery_name",cur.getString(cur.getColumnIndex("vendor_name")));
-                intent.putExtra("cart_item_id",cur.getString(cur.getColumnIndex("_id")));
-                intent.putExtra("qty",cur.getInt(cur.getColumnIndex("quantity")));
-                intent.putExtra("product_short_description",cur.getString(cur.getColumnIndex("short_description")));
-                intent.putExtra("product_long_description",cur.getString(cur.getColumnIndex("long_description")));
-                intent.putExtra("vendor_phone",cur.getString(cur.getColumnIndex("vendor_phone")));
-                intent.putExtra("vendor_location",cur.getString(cur.getColumnIndex("vendor_location")));
-                intent.putExtra("product_thumbnail",cur.getString(cur.getColumnIndex("vendor_location")));
 
 
+                ProductDetailParcelable parcelable = new ProductDetailParcelable();
+
+                parcelable.shortDescription = cur.getString(cur.getColumnIndex("short_description"));
+                parcelable.longDescription = cur.getString(cur.getColumnIndex("long_description"));
+                parcelable.productName = cur.getString(cur.getColumnIndex("product_name"));
+                parcelable.price = cur.getDouble(cur.getColumnIndex("price"));
+                parcelable.unit = cur.getString(cur.getColumnIndex("unit"));
+                parcelable.vendorName = cur.getString(cur.getColumnIndex("vendor_name"));
+                parcelable.vendorPhone = cur.getString(cur.getColumnIndex("vendor_phone"));
+                parcelable.vendorLocation = cur.getString(cur.getColumnIndex("vendor_location"));
+                parcelable.productThumbnail = cur.getString(cur.getColumnIndex("product_thumbnail"));
+                parcelable.itemCartID = cur.getString(cur.getColumnIndex("_id"));
+                parcelable.qty = cur.getInt(cur.getColumnIndex("quantity"));
+                intent.putExtra(Intent.EXTRA_TEXT,parcelable);
 
                 startActivity(intent);
             }

@@ -23,6 +23,7 @@ public class SearchResultListAdapter extends CursorAdapter{
         super(context, cursor, 0);
     }
 
+    // Inflate view layout items
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         View view = LayoutInflater.from(context).inflate(R.layout.search_result_item,parent,false);
@@ -35,6 +36,7 @@ public class SearchResultListAdapter extends CursorAdapter{
         return view;
     }
 
+    // Attach data to view layout items
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 

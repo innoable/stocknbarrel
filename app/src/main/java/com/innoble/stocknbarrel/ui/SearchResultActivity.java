@@ -22,10 +22,11 @@ import android.widget.ListView;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.innoble.stocknbarrel.utils.AsyncTracker;
 import com.innoble.stocknbarrel.R;
-import com.innoble.stocknbarrel.utils.TrackedApplication;
+import com.innoble.stocknbarrel.provider.ProductDetailParcelable;
 import com.innoble.stocknbarrel.provider.StockNBarrelContentProvider;
+import com.innoble.stocknbarrel.utils.AsyncTracker;
+import com.innoble.stocknbarrel.utils.TrackedApplication;
 
 public class SearchResultActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -202,16 +203,20 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
 
 
     private void packageIntentData(Intent intent, Cursor cur){
-        intent.putExtra("product_short_description",cur.getString(cur.getColumnIndex("product_short_description")));
-        intent.putExtra("product_long_description",cur.getString(cur.getColumnIndex("product_long_description")));
-        intent.putExtra("product_name",cur.getString(cur.getColumnIndex("product_name")));
-        intent.putExtra("price",cur.getDouble(cur.getColumnIndex("price")));
-        intent.putExtra("unit",cur.getString(cur.getColumnIndex("unit")));
-        intent.putExtra("grocery_name",cur.getString(cur.getColumnIndex("grocery_name")));
-        intent.putExtra("grocery_stock_item_id",cur.getLong(cur.getColumnIndex("grocery_stock_item_id")));
-        intent.putExtra("vendor_phone",cur.getString(cur.getColumnIndex("vendor_phone")));
-        intent.putExtra("vendor_location",cur.getString(cur.getColumnIndex("vendor_location")));
-        intent.putExtra("product_thumbnail",cur.getString(cur.getColumnIndex("vendor_location")));
+
+        ProductDetailParcelable parcelable = new ProductDetailParcelable();
+        parcelable.shortDescription = cur.getString(cur.getColumnIndex("product_short_description"));
+        parcelable.longDescription = cur.getString(cur.getColumnIndex("product_long_description"));
+        parcelable.productName = cur.getString(cur.getColumnIndex("product_name"));
+        parcelable.price = cur.getDouble(cur.getColumnIndex("price"));
+        parcelable.unit = cur.getString(cur.getColumnIndex("unit"));
+        parcelable.vendorName = cur.getString(cur.getColumnIndex("grocery_name"));
+        parcelable.groceryStockItemId  = cur.getLong(cur.getColumnIndex("grocery_stock_item_id"));
+        parcelable.vendorPhone = cur.getString(cur.getColumnIndex("vendor_phone"));
+        parcelable.vendorLocation = cur.getString(cur.getColumnIndex("vendor_location"));
+        parcelable.productThumbnail = cur.getString(cur.getColumnIndex("product_thumbnail"));
+        parcelable.qty = 1;
+        intent.putExtra(Intent.EXTRA_TEXT,parcelable);
     }
 
 

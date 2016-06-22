@@ -56,7 +56,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
     }
 
 
-
+// Attach data to inflated view items
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
