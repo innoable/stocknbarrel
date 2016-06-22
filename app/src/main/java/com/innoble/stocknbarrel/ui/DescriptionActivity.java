@@ -33,22 +33,22 @@ public class DescriptionActivity extends AppCompatActivity {
         setContentView(R.layout.content_main);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content,new DescriptionFragment())
+                .replace(R.id.content, new DescriptionFragment())
                 .commit();
 
     }
 
 
-    public static class DescriptionFragment extends android.support.v4.app.Fragment{
+    public static class DescriptionFragment extends android.support.v4.app.Fragment {
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View root = inflater.inflate(R.layout.activity_description,container,false);
+            View root = inflater.inflate(R.layout.activity_description, container, false);
 
             Intent activityIntent = getActivity().getIntent();
-            TextView lDescription = (TextView)root.findViewById(R.id.details_long_description);
-            TextView sDescription = (TextView)root.findViewById(R.id.details_short_description);
-            TextView itemName = (TextView)root.findViewById(R.id.details_item_name);
+            TextView lDescription = (TextView) root.findViewById(R.id.details_long_description);
+            TextView sDescription = (TextView) root.findViewById(R.id.details_short_description);
+            TextView itemName = (TextView) root.findViewById(R.id.details_item_name);
 
 
             itemName.setText(activityIntent.getStringExtra(PRODUCT_NAME));

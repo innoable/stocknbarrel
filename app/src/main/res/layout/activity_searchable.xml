@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:fitsSystemWindows="true"
-tools:context=".ui.MainActivity">
-
-<include layout="@layout/app_bar_layout"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_width="match_parent" />
+    android:fitsSystemWindows="true"
+    tools:context=".ui.MainActivity">
+
+    <include
+        layout="@layout/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <ListView
+        android:id="@+id/search_result_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/search_result_list"
         android:layout_gravity="center_horizontal"
-        android:padding="@dimen/search_result_list_view_padding"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="50dp"
+        android:padding="@dimen/search_result_list_view_padding" />
 
 
 </android.support.design.widget.CoordinatorLayout>

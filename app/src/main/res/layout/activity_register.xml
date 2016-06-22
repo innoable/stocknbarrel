@@ -10,10 +10,10 @@
     tools:context=".ui.RegisterActivity">
 
     <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/place_holder"
         class="com.innoble.stocknbarrel.ui.RegisterFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         tools:layout="@layout/register_fragment"></fragment>
 
 </RelativeLayout>

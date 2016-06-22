@@ -8,8 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.innoble.stocknbarrel.R;
-import com.innoble.stocknbarrel.utils.TrackedApplication;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
+import com.innoble.stocknbarrel.utils.TrackedApplication;
 
 import java.util.Map;
 
@@ -32,7 +32,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterFragm
         TrackedApplication application = (TrackedApplication) getApplication();
         mTracker = application.getDefaultTracker();
 
-        this.db =  new StockNBarrelDatabaseHelper(this);
+        this.db = new StockNBarrelDatabaseHelper(this);
         setContentView(R.layout.activity_register);
 
     }
@@ -51,26 +51,26 @@ public class RegisterActivity extends AppCompatActivity implements RegisterFragm
      */
     @Override
     public void onUserRegister(Map<String, String> data) {
-        if(data == null) return;
+        if (data == null) return;
         //Do something with the data once it has been returned ( Persist data to local db)
         final String name = data.get(USERNAME);
         final String email = data.get(EMAIL);
         final double budget = Double.parseDouble(data.get(BUDGET));
 
 
-        AsyncTask<Void,Void,Boolean> userRegisterTask = new AsyncTask<Void, Void, Boolean>() {
+        AsyncTask<Void, Void, Boolean> userRegisterTask = new AsyncTask<Void, Void, Boolean>() {
             @Override
             protected Boolean doInBackground(Void... params) {
-                return db.addUser(name,email,budget);
+                return db.addUser(name, email, budget);
             }
 
             @Override
             protected void onPostExecute(Boolean result) {
-                if(!result) throw new IllegalStateException("Could not initialize user");
+                if (!result) throw new IllegalStateException("Could not initialize user");
 
                 else {
 
-                    mTracker.set("&uid", email );
+                    mTracker.set("&uid", email);
 
                     // This hit will be sent with the User ID value and be visible in
                     // User-ID-enabled views (profiles).

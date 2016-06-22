@@ -5,11 +5,25 @@ import android.os.Parcelable;
 
 /**
  * Data serializer for ProductDetailActivity
+ *
  * @Author Kemron Glasgow
  * Created by Kemron on 22/06/2016.
  */
 public class ProductDetailParcelable implements Parcelable {
 
+    public static final Parcelable.Creator<ProductDetailParcelable> CREATOR =
+            new Parcelable.Creator<ProductDetailParcelable>() {
+
+                @Override
+                public ProductDetailParcelable createFromParcel(Parcel source) {
+                    return new ProductDetailParcelable(source);
+                }
+
+                @Override
+                public ProductDetailParcelable[] newArray(int size) {
+                    return new ProductDetailParcelable[size];
+                }
+            };
     public String itemCartID;
     public String productName;
     public int qty;
@@ -24,26 +38,25 @@ public class ProductDetailParcelable implements Parcelable {
     public String productThumbnail;
 
 
-    public ProductDetailParcelable(){
+    public ProductDetailParcelable() {
 
     }
 
 
-    public ProductDetailParcelable(Parcel in){
+    public ProductDetailParcelable(Parcel in) {
         itemCartID = in.readString();
-        productName  = in.readString();
+        productName = in.readString();
         qty = in.readInt();
         unit = in.readString();
         price = in.readDouble();
-        shortDescription  = in.readString();
+        shortDescription = in.readString();
         longDescription = in.readString();
-        vendorName  = in.readString();
-        groceryStockItemId  = in.readLong();
-        vendorPhone  = in.readString();
-        vendorLocation  = in.readString();
+        vendorName = in.readString();
+        groceryStockItemId = in.readLong();
+        vendorPhone = in.readString();
+        vendorLocation = in.readString();
         productThumbnail = in.readString();
     }
-
 
     @Override
     public int describeContents() {
@@ -65,18 +78,4 @@ public class ProductDetailParcelable implements Parcelable {
         dest.writeString(vendorLocation);
         dest.writeString(productThumbnail);
     }
-
-    public static final Parcelable.Creator<ProductDetailParcelable>  CREATOR =
-            new Parcelable.Creator<ProductDetailParcelable>(){
-
-                @Override
-                public ProductDetailParcelable createFromParcel(Parcel source) {
-                    return new ProductDetailParcelable(source);
-                }
-
-                @Override
-                public ProductDetailParcelable[] newArray(int size) {
-                    return new ProductDetailParcelable[size];
-                }
-            };
 }

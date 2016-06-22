@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
  */
 public class DataEntity {
 
+    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_NAME = "name";
     private long _id;
 
     public long getId() {
@@ -18,11 +20,7 @@ public class DataEntity {
         this._id = id;
     }
 
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_NAME = "name";
-
-
-    public void insert (SQLiteDatabase database) {
+    public void insert(SQLiteDatabase database) {
 
     }
 

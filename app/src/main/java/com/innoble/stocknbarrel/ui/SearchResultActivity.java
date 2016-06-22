@@ -28,7 +28,7 @@ import com.innoble.stocknbarrel.provider.StockNBarrelContentProvider;
 import com.innoble.stocknbarrel.utils.AsyncTracker;
 import com.innoble.stocknbarrel.utils.TrackedApplication;
 
-public class SearchResultActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class SearchResultActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int DIRECT_SEARCH_LOADER_ID = 1;
     private Uri PRODUCT_OPTIONS_URI = StockNBarrelContentProvider.CONTENT_URI.buildUpon()
@@ -42,7 +42,6 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
     private SearchResultListAdapter resultListAdapter;
 
     private String query;
-
 
 
     @Override
@@ -72,19 +71,16 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
         SharedPreferences queryPref = getPreferences(Context.MODE_PRIVATE);
 
 
-
-
         if (Intent.ACTION_VIEW.equals(thisIntent.getAction())) {
             query = thisIntent.getDataString();
             aTracker.trackEvent("Search Results", "Product", "Action View", query);
-            queryPref.edit().putString("query",query).commit();
+            queryPref.edit().putString("query", query).commit();
         }
 
-        if(thisIntent.getStringExtra(SearchManager.QUERY) !=null){
+        if (thisIntent.getStringExtra(SearchManager.QUERY) != null) {
             query = thisIntent.getStringExtra(SearchManager.QUERY);
-            queryPref.edit().putString("query",query).commit();
-        }
-       else query = queryPref.getString("query","");
+            queryPref.edit().putString("query", query).commit();
+        } else query = queryPref.getString("query", "");
 
 
         // Obtain the shared Analytics Tracker instance.
@@ -99,9 +95,9 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
     protected void onResume() {
         super.onResume();
 
-            // Search Calls mActivity with String Extra  SearchManager.QUERY when user clicks search button
-            resultList.setOnItemClickListener(new SearchResultClickListener(this));
-             aTracker.trackEvent("Search Results", "Product", "Action Search", query);
+        // Search Calls mActivity with String Extra  SearchManager.QUERY when user clicks search button
+        resultList.setOnItemClickListener(new SearchResultClickListener(this));
+        aTracker.trackEvent("Search Results", "Product", "Action Search", query);
     }
 
     @Override
@@ -127,24 +123,22 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
 
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             query = intent.getDataString();
-        }
-        else if(intent.getStringExtra(SearchManager.QUERY) !=null){
+        } else if (intent.getStringExtra(SearchManager.QUERY) != null) {
             query = intent.getStringExtra(SearchManager.QUERY);
-            queryPref.edit().putString("query",query).commit();
-        }
-        else {
+            queryPref.edit().putString("query", query).commit();
+        } else {
             query = queryPref.getString("query", "");
         }
 
 
-            getLoaderManager().restartLoader(DIRECT_SEARCH_LOADER_ID, null, this);
+        getLoaderManager().restartLoader(DIRECT_SEARCH_LOADER_ID, null, this);
 
 
-            mTracker.send(new HitBuilders.EventBuilder()
-                    .setCategory("Product")
-                    .setAction("Action View")
-                    .setLabel(query)
-                    .build());
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Product")
+                .setAction("Action View")
+                .setLabel(query)
+                .build());
 
         thisIntent = intent;
     }
@@ -152,7 +146,7 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
 
-        if(id ==DIRECT_SEARCH_LOADER_ID) {
+        if (id == DIRECT_SEARCH_LOADER_ID) {
             Uri uri = PRODUCT_OPTIONS_URI.buildUpon()
                     .appendPath(query)
                     .build();
@@ -171,7 +165,7 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-            resultListAdapter.swapCursor(data);
+        resultListAdapter.swapCursor(data);
 
 
     }
@@ -179,30 +173,11 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
 
     @Override
     public void onLoaderReset(Loader loader) {
-        resultListAdapter.swapCursor( null );
+        resultListAdapter.swapCursor(null);
 
     }
 
-
-    private class SearchResultClickListener implements AdapterView.OnItemClickListener{
-
-        private Context context;
-        SearchResultClickListener(Context context){
-            this.context = context;
-        }
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Cursor cur = resultListAdapter.getCursor();
-            Intent detailIntent = new Intent(context,ProductDetailActivity.class);
-            packageIntentData(detailIntent,cur);
-
-            startActivity(detailIntent);
-        }
-    }
-
-
-
-    private void packageIntentData(Intent intent, Cursor cur){
+    private void packageIntentData(Intent intent, Cursor cur) {
 
         ProductDetailParcelable parcelable = new ProductDetailParcelable();
         parcelable.shortDescription = cur.getString(cur.getColumnIndex("product_short_description"));
@@ -211,15 +186,31 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
         parcelable.price = cur.getDouble(cur.getColumnIndex("price"));
         parcelable.unit = cur.getString(cur.getColumnIndex("unit"));
         parcelable.vendorName = cur.getString(cur.getColumnIndex("grocery_name"));
-        parcelable.groceryStockItemId  = cur.getLong(cur.getColumnIndex("grocery_stock_item_id"));
+        parcelable.groceryStockItemId = cur.getLong(cur.getColumnIndex("grocery_stock_item_id"));
         parcelable.vendorPhone = cur.getString(cur.getColumnIndex("vendor_phone"));
         parcelable.vendorLocation = cur.getString(cur.getColumnIndex("vendor_location"));
         parcelable.productThumbnail = cur.getString(cur.getColumnIndex("product_thumbnail"));
         parcelable.qty = 1;
-        intent.putExtra(Intent.EXTRA_TEXT,parcelable);
+        intent.putExtra(Intent.EXTRA_TEXT, parcelable);
     }
 
+    private class SearchResultClickListener implements AdapterView.OnItemClickListener {
 
+        private Context context;
+
+        SearchResultClickListener(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Cursor cur = resultListAdapter.getCursor();
+            Intent detailIntent = new Intent(context, ProductDetailActivity.class);
+            packageIntentData(detailIntent, cur);
+
+            startActivity(detailIntent);
+        }
+    }
 
 
 }

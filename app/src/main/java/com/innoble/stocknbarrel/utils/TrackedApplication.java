@@ -15,11 +15,12 @@
  */
 
 package com.innoble.stocknbarrel.utils;
-        import android.app.Application;
 
-        import com.google.android.gms.analytics.GoogleAnalytics;
-        import com.google.android.gms.analytics.Tracker;
-        import com.innoble.stocknbarrel.R;
+import android.app.Application;
+
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
+import com.innoble.stocknbarrel.R;
 
 /**
  * This is a subclass of {@link Application} used to provide shared objects for this app, such as
@@ -30,6 +31,7 @@ public class TrackedApplication extends Application {
 
     /**
      * Gets the default {@link Tracker} for this {@link Application}.
+     *
      * @return tracker
      */
     synchronized public Tracker getDefaultTracker() {

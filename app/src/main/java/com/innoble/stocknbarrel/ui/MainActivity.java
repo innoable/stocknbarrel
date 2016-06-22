@@ -14,9 +14,9 @@ import android.view.MenuItem;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.innoble.stocknbarrel.R;
-import com.innoble.stocknbarrel.utils.TrackedApplication;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 import com.innoble.stocknbarrel.model.User;
+import com.innoble.stocknbarrel.utils.TrackedApplication;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,21 +38,21 @@ public class MainActivity extends AppCompatActivity {
         mDb = new StockNBarrelDatabaseHelper(this);
         User user = mDb.getUser();
         // if user is not registered then show registration screen
-        if(user == null){
-            Intent iLogin = new Intent(this,RegisterActivity.class);
+        if (user == null) {
+            Intent iLogin = new Intent(this, RegisterActivity.class);
             startActivity(iLogin);
             // to prevent back button from navigating back here from login screen
             finish();
         }
 
-        mTracker.set("&uid", user.getEmail() );
+        mTracker.set("&uid", user.getEmail());
         setContentView(R.layout.activity_main);
         // Set toolbar view as ActionBar in Activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content,new ShoppingListFragment())
+                .replace(R.id.content, new ShoppingListFragment())
                 .commit();
 
     }
@@ -64,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
         mTracker.setScreenName(name);
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
-
-
 
 
     @Override
@@ -89,10 +87,9 @@ public class MainActivity extends AppCompatActivity {
     /*
             TODO: Return true if user is registered and false otherwise
      */
-    private boolean isRegistered(){
-            return true;
+    private boolean isRegistered() {
+        return true;
     }
-
 
 
 }

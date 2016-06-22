@@ -61,14 +61,14 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         Fragment viewFragment;
         ProductDetailParcelable data = getIntent().getParcelableExtra(Intent.EXTRA_TEXT);
-        if(data.itemCartID!= null )
+        if (data.itemCartID != null)
             viewFragment = new ProductEditRemoveFragment();
 
-        else{
+        else {
             viewFragment = new ProductAddFragment();
         }
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content,viewFragment)
+                .replace(R.id.content, viewFragment)
                 .commit();
 
     }
@@ -80,7 +80,7 @@ public class ProductDetailActivity extends AppCompatActivity {
      *
      * @Author Kemron Glasgow
      */
-    public static class ProductEditRemoveFragment extends ProductFragment{
+    public static class ProductEditRemoveFragment extends ProductFragment {
         private final Uri shoppingListItemUri = StockNBarrelContentProvider.CONTENT_URI.buildUpon()
                 .appendPath(StockNBarrelContentProvider.SHOPPING_LIST_ITEMS_PATH)
                 .build();
@@ -91,19 +91,19 @@ public class ProductDetailActivity extends AppCompatActivity {
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setHasOptionsMenu(true);
-            actionIcon = ResourcesCompat.getDrawable(getResources(),android.R.drawable.ic_menu_delete, null);
+            actionIcon = ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_menu_delete, null);
             actionIcon.setColorFilter(Color.argb(230, 255, 0, 0), PorterDuff.Mode.SRC_ATOP);
         }
 
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            inflater.inflate(R.menu.product_edit,menu);
+            inflater.inflate(R.menu.product_edit, menu);
             super.onCreateOptionsMenu(menu, inflater);
         }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
-            switch (item.getItemId()){
+            switch (item.getItemId()) {
                 case R.id.confirm:
                     Uri uri = shoppingListItemUri.buildUpon()
                             .appendPath(data.itemCartID)
@@ -111,9 +111,9 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                     ContentResolver resolver = mActivity.getContentResolver();
                     ContentValues values = new ContentValues();
-                    values.put(ShoppingListItem.COLUMN_QUANTITY,qty);
-                    resolver.update(uri,values,null,null);
-                    resolver.notifyChange(shoppingListItemUri,null);
+                    values.put(ShoppingListItem.COLUMN_QUANTITY, qty);
+                    resolver.update(uri, values, null, null);
+                    resolver.notifyChange(shoppingListItemUri, null);
                     mActivity.finish();
                     return true;
 
@@ -131,10 +131,10 @@ public class ProductDetailActivity extends AppCompatActivity {
             actionBtn.setTextColor(getResources().getColor(holo_red_light));
             actionBtn.setBackgroundColor(Color.TRANSPARENT);
 
-            actionBtn.setCompoundDrawablesWithIntrinsicBounds(actionIcon,null,null,null);
+            actionBtn.setCompoundDrawablesWithIntrinsicBounds(actionIcon, null, null, null);
             qtyEdit.setText(Integer.toString(qty));
-            BigDecimal cost = new BigDecimal(qty * data.price, MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
-            totalCostTxt.setText("$"+cost.toString());
+            BigDecimal cost = new BigDecimal(qty * data.price, MathContext.DECIMAL64).setScale(2, BigDecimal.ROUND_CEILING);
+            totalCostTxt.setText("$" + cost.toString());
 
             // Display removal confirmation dialog
             actionBtn.setOnClickListener(new View.OnClickListener() {
@@ -143,21 +143,20 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mActivity);
                     dialogBuilder.setMessage("Are you sure you want to delete this entry?")
-                            .setNegativeButton("Cancel",null)
+                            .setNegativeButton("Cancel", null)
                             .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     Uri uri = shoppingListItemUri.buildUpon()
                                             .appendPath(data.itemCartID)
                                             .build();
-                                    mActivity.getContentResolver().delete(uri,null,null);
+                                    mActivity.getContentResolver().delete(uri, null, null);
 
-                                    Toast.makeText(mActivity,"Item has been removed from cart",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(mActivity, "Item has been removed from cart", Toast.LENGTH_SHORT).show();
                                     mActivity.finish();
 
                                 }
                             }).create().show();
-
 
 
                 }
@@ -167,20 +166,20 @@ public class ProductDetailActivity extends AppCompatActivity {
         }
 
 
-
     }
 
 
     /**
      * ProductAddFragment displays  product details view with controls specific for reviewing
      * items and adding them to the user's cart.
+     *
      * @Author Kemron Glasgow
      */
-    public static class ProductAddFragment extends  ProductFragment{
+    public static class ProductAddFragment extends ProductFragment {
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view =  super.onCreateView(inflater, container, savedInstanceState);
+            View view = super.onCreateView(inflater, container, savedInstanceState);
 
             qty = data.qty;
             actionBtn.setOnClickListener(new View.OnClickListener() {
@@ -190,20 +189,20 @@ public class ProductDetailActivity extends AppCompatActivity {
                             .appendPath(StockNBarrelContentProvider.SHOPPING_LISTS_PATH)
                             .build();
 
-                    Cursor shoppingListCurr = mActivity.getContentResolver().query(shoppingListUri,null,null,null,null);
+                    Cursor shoppingListCurr = mActivity.getContentResolver().query(shoppingListUri, null, null, null, null);
                     shoppingListCurr.moveToFirst();
                     long shoppingListID = shoppingListCurr.getLong(shoppingListCurr.getColumnIndex(ShoppingList.COLUMN_ID));
 
-                    ShoppingListItem shoppingListItem = new ShoppingListItem(shoppingListID,data.groceryStockItemId,qty);
+                    ShoppingListItem shoppingListItem = new ShoppingListItem(shoppingListID, data.groceryStockItemId, qty);
                     shoppingListItem.insert(new StockNBarrelDatabaseHelper(mActivity).getWritableDatabase());
-                    Toast.makeText(mActivity,"Item has been added to shopping list",Toast.LENGTH_SHORT).show();
-                     shoppingListCurr.close();
+                    Toast.makeText(mActivity, "Item has been added to shopping list", Toast.LENGTH_SHORT).show();
+                    shoppingListCurr.close();
                     mActivity.finish();
 
                 }
             });
 
-            return  view;
+            return view;
         }
     }
 
@@ -211,9 +210,10 @@ public class ProductDetailActivity extends AppCompatActivity {
     /**
      * ProductFragment is manages loading and display of the fundamental items within the product
      * details view
+     *
      * @Author Kemron Glasgow
      */
-    public abstract static class ProductFragment extends android.support.v4.app.Fragment{
+    public abstract static class ProductFragment extends android.support.v4.app.Fragment {
         protected ProductDetailParcelable data;
         protected TextView prodNameTxt;
         protected TextView retailerTxt;
@@ -235,7 +235,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            mActivity = (AppCompatActivity)getActivity();
+            mActivity = (AppCompatActivity) getActivity();
             data = mActivity.getIntent().getParcelableExtra(Intent.EXTRA_TEXT);
         }
 
@@ -244,53 +244,52 @@ public class ProductDetailActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-            final View view = inflater.inflate(R.layout.activity_product_detail,container,false);
+            final View view = inflater.inflate(R.layout.activity_product_detail, container, false);
 
             Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
             mActivity.setSupportActionBar(toolbar);
-            if (mActivity.getSupportActionBar() != null){
+            if (mActivity.getSupportActionBar() != null) {
                 mActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 mActivity.getSupportActionBar().setDisplayShowHomeEnabled(true);
             }
 
-            prodNameTxt = (TextView)view.findViewById(R.id.produt_detail_name);
+            prodNameTxt = (TextView) view.findViewById(R.id.produt_detail_name);
             prodNameTxt.setText(data.productName);
 
-            retailerTxt = (TextView)view.findViewById(R.id.product_detail_retailer);
+            retailerTxt = (TextView) view.findViewById(R.id.product_detail_retailer);
             retailerTxt.setText(data.vendorName);
 
-            totalCostTxt = (TextView)view.findViewById(R.id.produt_detail_cost);
-            final BigDecimal totalCost = new BigDecimal(data.price,MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
-            totalCostTxt.setText("$"+ totalCost.toString());
+            totalCostTxt = (TextView) view.findViewById(R.id.produt_detail_cost);
+            final BigDecimal totalCost = new BigDecimal(data.price, MathContext.DECIMAL64).setScale(2, BigDecimal.ROUND_CEILING);
+            totalCostTxt.setText("$" + totalCost.toString());
 
-            descTextView = (TextView)view.findViewById(R.id.descriptTextView);
+            descTextView = (TextView) view.findViewById(R.id.descriptTextView);
             descTextView.setText(data.shortDescription);
 
-            actionBtn = (Button)view.findViewById(R.id.add_to_cart_btn);
+            actionBtn = (Button) view.findViewById(R.id.add_to_cart_btn);
 
-            qtyEdit  = (EditText)view.findViewById(R.id.qtyEditText);
+            qtyEdit = (EditText) view.findViewById(R.id.qtyEditText);
             qty = Integer.parseInt(qtyEdit.getText().toString());
 
-            unitText = (TextView)view.findViewById(R.id.unitTextView);
-            unitText.setText(English.plural(data.unit,qty));
+            unitText = (TextView) view.findViewById(R.id.unitTextView);
+            unitText.setText(English.plural(data.unit, qty));
 
 
-
-            longDescriptionLink = (TextView)view.findViewById(R.id.longDetailsLink);
+            longDescriptionLink = (TextView) view.findViewById(R.id.longDetailsLink);
             longDescriptionLink.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mActivity,DescriptionActivity.class);
-                    intent.putExtra(DescriptionActivity.PRODUCT_LONG_DESCRIPTION,data.longDescription);
-                    intent.putExtra(DescriptionActivity.PRODUCT_SHORT_DESCRIPTION,data.shortDescription);
-                    intent.putExtra(DescriptionActivity.PRODUCT_NAME,data.productName);
+                    Intent intent = new Intent(mActivity, DescriptionActivity.class);
+                    intent.putExtra(DescriptionActivity.PRODUCT_LONG_DESCRIPTION, data.longDescription);
+                    intent.putExtra(DescriptionActivity.PRODUCT_SHORT_DESCRIPTION, data.shortDescription);
+                    intent.putExtra(DescriptionActivity.PRODUCT_NAME, data.productName);
                     startActivity(intent);
 
                 }
             });
 
-            vendorPhone = (Button)view.findViewById(R.id.details_vendorPhone);
-            if(data.vendorPhone!=null && data.vendorPhone.length() > 0){
+            vendorPhone = (Button) view.findViewById(R.id.details_vendorPhone);
+            if (data.vendorPhone != null && data.vendorPhone.length() > 0) {
                 vendorPhone.setText(data.vendorPhone);
             }
 
@@ -300,43 +299,39 @@ public class ProductDetailActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent(Intent.ACTION_CALL);
 
-                    if(data.vendorPhone == null || data.vendorPhone.length() == 0){
-                        Toast.makeText(mActivity,"No phone number is registered for this vendor",Toast.LENGTH_SHORT).show();
+                    if (data.vendorPhone == null || data.vendorPhone.length() == 0) {
+                        Toast.makeText(mActivity, "No phone number is registered for this vendor", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    intent.setData(Uri.parse("tel:"+data.vendorPhone));
-                    try{
+                    intent.setData(Uri.parse("tel:" + data.vendorPhone));
+                    try {
                         startActivity(intent);
-                    }
-
-                    catch (android.content.ActivityNotFoundException ex){
-                        Toast.makeText(mActivity,"Could not find suitable communication application",Toast.LENGTH_SHORT).show();
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(mActivity, "Could not find suitable communication application", Toast.LENGTH_SHORT).show();
                     }
                 }
 
             });
 
 
-            vendorLocation = (Button)view.findViewById(R.id.details_vendorLocation);
-            if(data.vendorLocation!=null && data.vendorLocation.length() > 0){
+            vendorLocation = (Button) view.findViewById(R.id.details_vendorLocation);
+            if (data.vendorLocation != null && data.vendorLocation.length() > 0) {
                 vendorLocation.setText(data.vendorLocation);
             }
             vendorLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(data.vendorLocation == null || data.vendorLocation.length() == 0){
-                        Toast.makeText(mActivity,"No geo-location is registered for this vendor",Toast.LENGTH_SHORT).show();
+                    if (data.vendorLocation == null || data.vendorLocation.length() == 0) {
+                        Toast.makeText(mActivity, "No geo-location is registered for this vendor", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    Uri gmmIntentUri = Uri.parse("geo:0,0?q="+data.vendorLocation);
+                    Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + data.vendorLocation);
                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                     mapIntent.setPackage("com.google.android.apps.maps");
                     startActivity(mapIntent);
                 }
             });
-
-
 
 
             // specify an adapter (see also next example)
@@ -349,11 +344,11 @@ public class ProductDetailActivity extends AppCompatActivity {
             gallery.setItemAnimator(new DefaultItemAnimator());
             List<String> images = new LinkedList<>();
             Random random = new Random(System.currentTimeMillis());
-            for(int i = 0; i < 5; i++){
+            for (int i = 0; i < 5; i++) {
                 images.add(Images.imageUrls[random.nextInt(Images.imageUrls.length)]);
             }
 
-            galleryAdapter = new GalleryAdapter(mActivity,images);
+            galleryAdapter = new GalleryAdapter(mActivity, images);
             gallery.setAdapter(galleryAdapter);
             qtyEdit.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -369,14 +364,13 @@ public class ProductDetailActivity extends AppCompatActivity {
                 @Override
                 public void afterTextChanged(Editable s) {
                     String qtyTxt = s.toString();
-                    if(qtyTxt.length() == 0){
-                        totalCostTxt.setText("$"+0.00);
-                    }
-                    else{
+                    if (qtyTxt.length() == 0) {
+                        totalCostTxt.setText("$" + 0.00);
+                    } else {
                         qty = Integer.parseInt(qtyTxt);
-                        total = new BigDecimal(qty * data.price, MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
-                        totalCostTxt.setText("$"+total.toString());
-                        unitText.setText(English.plural(data.unit,qty));
+                        total = new BigDecimal(qty * data.price, MathContext.DECIMAL64).setScale(2, BigDecimal.ROUND_CEILING);
+                        totalCostTxt.setText("$" + total.toString());
+                        unitText.setText(English.plural(data.unit, qty));
                     }
                 }
             });
@@ -388,30 +382,12 @@ public class ProductDetailActivity extends AppCompatActivity {
     /**
      * Manages loading of product gallery images into mini slideshow
      */
-    public static class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder>{
+    public static class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
 
         private List<String> mImageUriList;
         private Context mContext;
 
-         class ViewHolder extends RecyclerView.ViewHolder{
-             private ImageView imageView;
-            public ViewHolder(View itemView) {
-                super(itemView);
-                imageView = (ImageView) itemView.findViewById(R.id.details_gallery_image);
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(mContext,ProductDetailsImageSlider.class);
-                        String[] arr = new String[mImageUriList.size()];
-                        mImageUriList.toArray(arr);
-                        intent.putExtra(ProductDetailsImageSlider.IMAGE_URIS,arr);
-                        mContext.startActivity(intent);
-                    }
-                });
-            }
-        }
-
-        public GalleryAdapter(Context context,List<String> imageUriList) {
+        public GalleryAdapter(Context context, List<String> imageUriList) {
             this.mImageUriList = imageUriList;
             this.mContext = context;
         }
@@ -419,7 +395,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.details_gallery_item,parent,false);
+                    .inflate(R.layout.details_gallery_item, parent, false);
 
             return new ViewHolder(itemView);
         }
@@ -439,12 +415,26 @@ public class ProductDetailActivity extends AppCompatActivity {
         public int getItemCount() {
             return mImageUriList.size();
         }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            private ImageView imageView;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                imageView = (ImageView) itemView.findViewById(R.id.details_gallery_image);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext, ProductDetailsImageSlider.class);
+                        String[] arr = new String[mImageUriList.size()];
+                        mImageUriList.toArray(arr);
+                        intent.putExtra(ProductDetailsImageSlider.IMAGE_URIS, arr);
+                        mContext.startActivity(intent);
+                    }
+                });
+            }
+        }
     }
-
-
-
-
-
 
 
 }

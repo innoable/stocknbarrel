@@ -6,11 +6,11 @@
     android:paddingRight="50dp">
 
     <EditText
+        android:id="@+id/input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:ems="10"
-        android:id="@+id/input"
         android:layout_gravity="center_horizontal"
+        android:ems="10"
+        android:inputType="numberDecimal"
         android:maxLength="7" />
 </LinearLayout>

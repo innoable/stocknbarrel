@@ -29,13 +29,12 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, 1); //db will be created when constructor is called
     }
 
-    private boolean databaseExist()
-    {
+    private boolean databaseExist() {
         File dbFile = new File(DATABASE_PATH + DATABASE_NAME);
         return dbFile.exists();
     }
 
-    private void seedData(SQLiteDatabase db){
+    private void seedData(SQLiteDatabase db) {
 
         Random random = new Random(System.currentTimeMillis());
         //create user
@@ -105,46 +104,46 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
                 "Terms of Use: http://www.gameloft.com/conditions/\n" +
                 "End-User License Agreement: http://www.gameloft.com/eula/?lang=en");
         insertData(db, product);
-        GroceryStockItem groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 65.99, "tin", 1000);
+        GroceryStockItem groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 65.99, "tin", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(),1, 70.99, "tin", 1000);
+        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 70.99, "tin", 1000);
         insertData(db, groceryStockItem);
 
         product.setName("Axe (Excite) Body Spray");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 25.99, "can", 1000);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 25.99, "can", 1000);
         insertData(db, groceryStockItem);
 
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(),1, 30.99, "can", 1000);
+        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 30.99, "can", 1000);
         insertData(db, groceryStockItem);
 
-        ShoppingListItem  shoppingListItem = new ShoppingListItem(shoppingList.getId(), groceryStockItem.getId(), 1);
+        ShoppingListItem shoppingListItem = new ShoppingListItem(shoppingList.getId(), groceryStockItem.getId(), 1);
         insertData(db, shoppingListItem);
 
         product.setName("Panadol Hot Rem");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 19.99, "box", 1000);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 19.99, "box", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(),1, 25.99, "can", 1000);
+        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 25.99, "can", 1000);
         insertData(db, groceryStockItem);
 
 
         product.setName("Gullon Sugar Free Vanilla Wafer");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),6, 15.99, "pack", 1000);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 6, 15.99, "pack", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(),1, 20.99, "can", 1000);
+        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 20.99, "can", 1000);
         insertData(db, groceryStockItem);
 
         product.setName("Irish Spring Body Wash (Original)");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 26.00, "bottle", 1000);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 26.00, "bottle", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(),1, 31.99, "can", 1000);
+        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 31.99, "can", 1000);
         insertData(db, groceryStockItem);
         shoppingListItem = new ShoppingListItem(shoppingList.getId(), groceryStockItem.getId(), 1);
         insertData(db, shoppingListItem);
@@ -152,17 +151,17 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         product.setName("Protox Insecticide Spray");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 16.00, "can", 1000);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 16.00, "can", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(),1, 21.99, "can", 1000);
+        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 21.99, "can", 1000);
         insertData(db, groceryStockItem);
 
         product.setName("Airwick Airfreshener 4in1");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 23.00, "can", 1000);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 23.00, "can", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(),1, 28.99, "can", 1000);
+        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 28.99, "can", 1000);
         insertData(db, groceryStockItem);
         shoppingListItem = new ShoppingListItem(shoppingList.getId(), groceryStockItem.getId(), 1);
         insertData(db, shoppingListItem);
@@ -170,9 +169,9 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         product.setName("Kiss Whole Grain Loaf ");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 13.00, "loaf", 1000);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 13.00, "loaf", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(),1, 17.99, "can", 1000);
+        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 17.99, "can", 1000);
         insertData(db, groceryStockItem);
         shoppingListItem = new ShoppingListItem(shoppingList.getId(), groceryStockItem.getId(), 1);
         insertData(db, shoppingListItem);
@@ -180,9 +179,9 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         product.setName("Dole Pineapple Juice Unsweetened");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 9.00, "tin", 1000);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 9.00, "tin", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(),1, 14.99, "can", 1000);
+        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 14.99, "can", 1000);
         insertData(db, groceryStockItem);
         shoppingListItem = new ShoppingListItem(shoppingList.getId(), groceryStockItem.getId(), 1);
         insertData(db, shoppingListItem);
@@ -190,17 +189,17 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         product.setName("Kiss Cakes Orange Cupcakes");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 3.50, "pack", 1000);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 3.50, "pack", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(),1, 8.99, "can", 1000);
+        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 8.99, "can", 1000);
         insertData(db, groceryStockItem);
 
         product.setName("Bermudez Wheat Crisps");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(),1, 3.00, "pack", 1000);
+        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 3.00, "pack", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(),1, 8.99, "can", 1000);
+        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 8.99, "can", 1000);
         insertData(db, groceryStockItem);
 
 
@@ -214,13 +213,13 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-            Grocery.onCreate(db);
-            User.onCreate(db);
-            Product.onCreate(db);
-            ShoppingList.onCreate(db);
-            GroceryStockItem.onCreate(db);
-            ShoppingListItem.onCreate(db);
-            seedData(db);
+        Grocery.onCreate(db);
+        User.onCreate(db);
+        Product.onCreate(db);
+        ShoppingList.onCreate(db);
+        GroceryStockItem.onCreate(db);
+        ShoppingListItem.onCreate(db);
+        seedData(db);
 
     }
 
@@ -235,23 +234,21 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         seedData(db);
     }
 
-    public boolean insertData(SQLiteDatabase db, DataEntity entity){
+    public boolean insertData(SQLiteDatabase db, DataEntity entity) {
         //SQLiteDatabase db = this.getWritableDatabase();
         entity.insert(db);
         return true;
     }
 
 
-    public Cursor getAllData()
-    {
+    public Cursor getAllData() {
         SQLiteDatabase db = this.getWritableDatabase();
         //Cursor result = db.rawQuery("select * from " + TABLE_NAME, null);
         //return result;
         return null;
     }
 
-    public boolean  updateData(String Id, String name, String surname, String marks)
-    {
+    public boolean updateData(String Id, String name, String surname, String marks) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         return true;
@@ -262,8 +259,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
      *
      * @return true if registered user exists and false otherwise
      */
-    public boolean userExsits( )
-    {
+    public boolean userExsits() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from user limit 1;", null);
         // make sure that potential listeners are getting notified
@@ -278,10 +274,10 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Retrieves registered user from database
+     *
      * @return returns first registered user in database
      */
-    public User getUser( )
-    {
+    public User getUser() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from user limit 1;", null);
         // make sure that potential listeners are getting notified
@@ -290,7 +286,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         } else if (!cursor.moveToFirst()) {
             cursor.close();
             return null;
-        }else if(cursor.getCount() > 0){
+        } else if (cursor.getCount() > 0) {
             User user = new User();
             user.setId(cursor.getLong(0));
             user.setName(cursor.getString(1));
@@ -304,16 +300,16 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Retrieves user's shopping cart items
+     *
      * @return Shopping cart Cursor
      */
-    public Cursor getShoppingList( )
-    {
+    public Cursor getShoppingList() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select sli._id as _id, p.name as product_name, p.short_description as short_description,  p.long_description as long_description, p.thumbnail as product_thumbnail, gsi.price as price, sli.quantity as quantity, gsi.unit as unit, vendor.name as vendor_name,"
                 + " vendor.phone as vendor_phone, vendor.location as vendor_location from " + ShoppingListItem.TABLE_SHOPPING_LIST_ITEM + " as sli "
                 + " inner join " + GroceryStockItem.TABLE_GROCERY_STOCK_ITEM + " as gsi on sli." + ShoppingListItem.COLUMN_GROCERY_STOCK_ITEM_ID + "=gsi." + GroceryStockItem.COLUMN_ID
                 + " inner join " + Product.TABLE_PRODUCT + " as p on gsi." + GroceryStockItem.COLUMN_PRODUCT_ID + "=p." + Product.COLUMN_ID
-                + " inner join "+Grocery.TABLE_GROCERY+ " as vendor on gsi."+GroceryStockItem.COLUMN_GROCERY_ID + "=vendor."+Grocery.COLUMN_ID+";", null);
+                + " inner join " + Grocery.TABLE_GROCERY + " as vendor on gsi." + GroceryStockItem.COLUMN_GROCERY_ID + "=vendor." + Grocery.COLUMN_ID + ";", null);
 
         if (cursor == null) {
             return null;
@@ -326,14 +322,13 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Adds new user to database
-     * @param name - user's name
-     * @param email - user's email address
-     * @param budget - user's budget
      *
+     * @param name   - user's name
+     * @param email  - user's email address
+     * @param budget - user's budget
      * @return returns true if insertion was successful and false otherwise
      */
-    public boolean addUser(String name, String email, double budget )
-    {
+    public boolean addUser(String name, String email, double budget) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("select * from user where email=?", new String[]{email});
@@ -355,6 +350,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Removes user from database
+     *
      * @param id - Id of user to be removed
      * @return - Returns true if at least one record was removed
      */
@@ -367,6 +363,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Retrieves  user from database given a specific email address
+     *
      * @param email - email address of user to be retrieved
      * @return User model containing first matched record. Returns null if not record was found
      */
@@ -380,7 +377,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         } else if (!cursor.moveToFirst()) {
             cursor.close();
             return null;
-        }else if(cursor.getCount() > 0){
+        } else if (cursor.getCount() > 0) {
             User user = new User();
             user.setId(cursor.getLong(0));
             user.setName(cursor.getString(1));

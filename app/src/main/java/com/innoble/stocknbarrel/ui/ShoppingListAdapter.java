@@ -21,34 +21,32 @@ import java.math.MathContext;
 /**
  * Created by Kemron on 27/05/2016.
  */
-public class ShoppingListAdapter extends CursorAdapter implements View.OnClickListener{
+public class ShoppingListAdapter extends CursorAdapter implements View.OnClickListener {
     private Context context;
     private ItemBtnClickListener mItemBtnClickListener;
     private ItemTotalChangeListener mItemTotalChangeListener;
 
-    public ShoppingListAdapter(Context context, Cursor cursor,ItemBtnClickListener mItemBtnClickListener,ItemTotalChangeListener tcListener){
-        super(context,cursor,0);
+    public ShoppingListAdapter(Context context, Cursor cursor, ItemBtnClickListener mItemBtnClickListener, ItemTotalChangeListener tcListener) {
+        super(context, cursor, 0);
         this.context = context;
         this.mItemBtnClickListener = mItemBtnClickListener;
         this.mItemTotalChangeListener = tcListener;
     }
 
 
-
-
     @Override
     // Executed when a new view is being created (should setup ViewHolder pattern initalization here)
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         this.context = context;
-        View view =  LayoutInflater.from(context).inflate(R.layout.shopping_list_item,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.shopping_list_item, parent, false);
         ViewHolder holder;
         holder = new ViewHolder();
         holder.itemTitle = (TextView) view.findViewById(R.id.shopping_item_name);
         holder.itemTotal = (TextView) view.findViewById(R.id.shopping_item_cost_textView);
         holder.txtQty = (TextView) view.findViewById(R.id.qty_txtView);
-        holder.vendorTitle = (TextView)view.findViewById(R.id.shopping_item_vendor);
-        holder.unitText = (TextView)view.findViewById(R.id.unitTxtView);
-        holder.thumbnail =(ImageView) view.findViewById(R.id.cart_thumbnail);
+        holder.vendorTitle = (TextView) view.findViewById(R.id.shopping_item_vendor);
+        holder.unitText = (TextView) view.findViewById(R.id.unitTxtView);
+        holder.thumbnail = (ImageView) view.findViewById(R.id.cart_thumbnail);
         holder.position = cursor.getPosition();
         holder.txtQty.setOnFocusChangeListener(new OnQtyChangeListener(holder));
         view.setTag(holder);
@@ -56,7 +54,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
     }
 
 
-// Attach data to inflated view items
+    // Attach data to inflated view items
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
@@ -65,7 +63,7 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
         String title = cursor.getString(cursor.getColumnIndex("product_name"));
         double cost = cursor.getDouble(cursor.getColumnIndex("price"));
         int qty = cursor.getInt(cursor.getColumnIndex("quantity"));
-        qty = qty >=0 ? qty : 1;
+        qty = qty >= 0 ? qty : 1;
 
         holder.txtQty.setText(Integer.toString(qty));
 
@@ -73,11 +71,11 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
 
         String unitText = cursor.getString(cursor.getColumnIndex("unit"));
 
-        holder.unitText.setText(English.plural(unitText,qty));
+        holder.unitText.setText(English.plural(unitText, qty));
 
         holder.itemTotal.setText(new StringBuilder().append("$")
-                .append(new BigDecimal(qty*cost, MathContext.DECIMAL64)
-                        .setScale(2,BigDecimal.ROUND_CEILING)
+                .append(new BigDecimal(qty * cost, MathContext.DECIMAL64)
+                        .setScale(2, BigDecimal.ROUND_CEILING)
                         .toString())
                 .toString());
 
@@ -89,15 +87,13 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
                 .into(holder.thumbnail);
 
 
-
-
     }
 
 
     @Override
     public void onClick(View v) {
-        if(mItemBtnClickListener!= null)
-            mItemBtnClickListener.onBtnClick((long)v.getTag());
+        if (mItemBtnClickListener != null)
+            mItemBtnClickListener.onBtnClick((long) v.getTag());
     }
 
 
@@ -106,9 +102,8 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
     }
 
     public interface ItemTotalChangeListener {
-        void onItemCostChange(BigDecimal oldVal, BigDecimal newVal,int newQty,int cursorIdx);
+        void onItemCostChange(BigDecimal oldVal, BigDecimal newVal, int newQty, int cursorIdx);
     }
-
 
 
     private class ViewHolder {
@@ -122,30 +117,29 @@ public class ShoppingListAdapter extends CursorAdapter implements View.OnClickLi
     }
 
 
-    private class OnQtyChangeListener implements View.OnFocusChangeListener{
+    private class OnQtyChangeListener implements View.OnFocusChangeListener {
 
         ViewHolder viewHolder;
-        OnQtyChangeListener(ViewHolder viewHolder){
+
+        OnQtyChangeListener(ViewHolder viewHolder) {
             this.viewHolder = viewHolder;
         }
 
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            if(!hasFocus){
-                String qtyStr = ((EditText)v).getText().toString();
-                if(qtyStr.length() > 0 ){
+            if (!hasFocus) {
+                String qtyStr = ((EditText) v).getText().toString();
+                if (qtyStr.length() > 0) {
                     int qty = Integer.parseInt(qtyStr);
-                    BigDecimal newCost = new BigDecimal(qty *((Double)v.getTag()).doubleValue(),MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
-                    BigDecimal oldCost = new BigDecimal(viewHolder.itemTotal.getText().toString().substring(1),MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING);
-                    viewHolder.itemTotal.setText("$"+newCost.toString());
-                    mItemTotalChangeListener.onItemCostChange(oldCost,newCost,qty,viewHolder.position);
+                    BigDecimal newCost = new BigDecimal(qty * ((Double) v.getTag()).doubleValue(), MathContext.DECIMAL64).setScale(2, BigDecimal.ROUND_CEILING);
+                    BigDecimal oldCost = new BigDecimal(viewHolder.itemTotal.getText().toString().substring(1), MathContext.DECIMAL64).setScale(2, BigDecimal.ROUND_CEILING);
+                    viewHolder.itemTotal.setText("$" + newCost.toString());
+                    mItemTotalChangeListener.onItemCostChange(oldCost, newCost, qty, viewHolder.position);
                 }
 
             }
         }
     }
-
-
 
 
 }

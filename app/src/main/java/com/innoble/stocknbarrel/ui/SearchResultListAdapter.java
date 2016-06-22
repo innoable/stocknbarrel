@@ -18,7 +18,7 @@ import java.math.MathContext;
 /**
  * Created by Kemron on 31/05/2016.
  */
-public class SearchResultListAdapter extends CursorAdapter{
+public class SearchResultListAdapter extends CursorAdapter {
     public SearchResultListAdapter(Context context, Cursor cursor) {
         super(context, cursor, 0);
     }
@@ -26,12 +26,12 @@ public class SearchResultListAdapter extends CursorAdapter{
     // Inflate view layout items
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.search_result_item,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.search_result_item, parent, false);
         ViewHolder holder = new ViewHolder();
-        holder.name = (TextView)view.findViewById(R.id.result_item_name_textView);
-        holder.price = (TextView)view.findViewById(R.id.result_item_price_textView);
-        holder.grocery = (TextView)view.findViewById(R.id.result_item_grocery_textView);
-        holder.thumbnail = (ImageView)view.findViewById(R.id.result_thumbnail);
+        holder.name = (TextView) view.findViewById(R.id.result_item_name_textView);
+        holder.price = (TextView) view.findViewById(R.id.result_item_price_textView);
+        holder.grocery = (TextView) view.findViewById(R.id.result_item_grocery_textView);
+        holder.thumbnail = (ImageView) view.findViewById(R.id.result_thumbnail);
         view.setTag(holder);
         return view;
     }
@@ -40,12 +40,12 @@ public class SearchResultListAdapter extends CursorAdapter{
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        ViewHolder holder = (ViewHolder)view.getTag();
+        ViewHolder holder = (ViewHolder) view.getTag();
         holder.name.setText(cursor.getString(cursor.getColumnIndex("product_name")));
 
         String unitCost = new StringBuilder()
                 .append("$")
-                .append(new BigDecimal(cursor.getDouble(cursor.getColumnIndex("price")), MathContext.DECIMAL64).setScale(2,BigDecimal.ROUND_CEILING).toString())
+                .append(new BigDecimal(cursor.getDouble(cursor.getColumnIndex("price")), MathContext.DECIMAL64).setScale(2, BigDecimal.ROUND_CEILING).toString())
                 .append(" per ")
                 .append(cursor.getString(cursor.getColumnIndex("unit")))
                 .toString();
@@ -58,8 +58,7 @@ public class SearchResultListAdapter extends CursorAdapter{
     }
 
 
-
-    class ViewHolder{
+    class ViewHolder {
         TextView name;
         TextView price;
         TextView grocery;

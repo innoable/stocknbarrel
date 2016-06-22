@@ -9,6 +9,18 @@ import android.database.sqlite.SQLiteDatabase;
 public class ShoppingList extends DataEntity {
 
 
+    // Database table
+    public static final String TABLE_SHOPPING_LIST = "shopping_list";
+    public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_USER_ID = "user_id";
+    private static final String DATABASE_CREATE = "create table "
+            + TABLE_SHOPPING_LIST
+            + "("
+            + COLUMN_ID + " integer primary key autoincrement, "
+            + COLUMN_USER_ID + " integer,"
+            + COLUMN_NAME + " text,"
+            + " FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES " + User.TABLE_USER + "(" + User.COLUMN_ID + ")"
+            + ");";
     private long userId;
     private String name;
 
@@ -19,9 +31,22 @@ public class ShoppingList extends DataEntity {
         this.userId = userId;
     }
 
+    public static void onCreate(SQLiteDatabase database) {
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LIST);
+        database.execSQL(DATABASE_CREATE);
+    }
+
+    public static void onUpgrade(SQLiteDatabase database, int oldVersion,
+                                 int newVersion) {
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LIST);
+        onCreate(database);
+    }
+
     public long getUserId() {
         return userId;
     }
+
+    // Database creation SQL statement
 
     public void setUserId(int userId) {
         this.userId = userId;
@@ -35,35 +60,8 @@ public class ShoppingList extends DataEntity {
         this.name = name;
     }
 
-    // Database table
-    public static final String TABLE_SHOPPING_LIST = "shopping_list";
-    public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_USER_ID = "user_id";
-
-    // Database creation SQL statement
-
-    private static final String DATABASE_CREATE = "create table "
-            + TABLE_SHOPPING_LIST
-            + "("
-            + COLUMN_ID + " integer primary key autoincrement, "
-            + COLUMN_USER_ID + " integer,"
-            + COLUMN_NAME + " text,"
-            + " FOREIGN KEY(" + COLUMN_USER_ID + ") REFERENCES "+ User.TABLE_USER + "(" + User.COLUMN_ID + ")"
-            + ");";
-
-    public static void onCreate(SQLiteDatabase database) {
-        database.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LIST);
-        database.execSQL(DATABASE_CREATE);
-    }
-
-    public static void onUpgrade(SQLiteDatabase database, int oldVersion,
-                                 int newVersion) {
-        database.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LIST);
-        onCreate(database);
-    }
-
     @Override
-    public void insert (SQLiteDatabase database) {
+    public void insert(SQLiteDatabase database) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, name);
         contentValues.put(COLUMN_USER_ID, userId);

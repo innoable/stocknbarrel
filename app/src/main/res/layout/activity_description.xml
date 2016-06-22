@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -11,51 +11,51 @@
     tools:context=".ui.DescriptionActivity">
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/scrollView"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_gravity="center_horizontal" >
+        android:layout_gravity="center_horizontal"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|enterAlways"
-            android:padding="10dp">
+            android:orientation="vertical"
+            android:padding="10dp"
+            app:layout_scrollFlags="scroll|enterAlways">
 
             <TextView
+                android:id="@+id/details_item_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Large Text"
-                android:id="@+id/details_item_name"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
+                android:elevation="4dp"
+                android:text="Large Text"
                 android:textAlignment="center"
-                android:elevation="4dp" />
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="short description"
-                android:lineSpacingExtra="10dp"
-                android:textStyle="normal"
                 android:id="@+id/details.short_description"
-                android:layout_gravity="center_horizontal"
-                android:paddingBottom="50dp"
-                android:textAlignment="center" />
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Long Description"
-                android:id="@+id/details.long_description"
-                android:textColor="@android:color/black"
-                android:lineSpacingExtra="10dp"
-                android:autoLink="all"
                 android:layout_gravity="center_horizontal"
+                android:lineSpacingExtra="10dp"
+                android:paddingBottom="50dp"
+                android:text="short description"
+                android:textAlignment="center"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/details.long_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:autoLink="all"
+                android:lineSpacingExtra="10dp"
                 android:singleLine="false"
+                android:text="Long Description"
+                android:textColor="@android:color/black"
                 android:textStyle="normal" />
 
         </LinearLayout>
