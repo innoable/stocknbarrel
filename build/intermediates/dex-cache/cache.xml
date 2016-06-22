@@ -1,3 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-analytics-impl\9.0.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="373cd65725af2781d100ddc193c7d3f14464a774">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-analytics-impl-9.0.0_f77229c3e8e0213732784651ce3721091fc54f3f.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.google.firebase\firebase-analytics\9.0.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="4ef8ab5fee042023018249474bc93bd4b2b9c17e">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-analytics-9.0.0_625d83427ae90d7e019cc03596e5b0f14e86e35e.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="de4db3785756bfb0915a9f59a9b3f2fea7407be4">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-23.4.0_473254886f26e3591f3cf0caa9bc81d680a2a3f9.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp\3.0.1\b34c1f2d993044656e87f88970b6818e99e886ba\okhttp-3.0.1.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="b34c1f2d993044656e87f88970b6818e99e886ba">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\okhttp-3.0.1_b82d1ea789f55256d37c00c17613da99efd17f2e.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\9.0.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="6f65c144283b31b4b9a70e6e7aa4c4a1c897d4b8">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-base-9.0.0_568d0fcd6c918c03e96ed83226288875a9dd84d5.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.google.firebase\firebase-iid\9.0.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="ea4b54dcbfe5ac05efb0a314105f07258118d3a7">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-iid-9.0.0_9d4443da639be8ca1d2e9d65c16ad0e185e3d45a.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\9.0.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="1941832901fc4e7a93300b53762e9f65d7650b99">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-tasks-9.0.0_0f4fa13da242c5749b28f9248a71ee0c68587bce.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-23.4.0_599ff1f23a2460a17b11200fedec6c8e996a1e0a.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.6.0\98476622f10715998eacf9240d6b479f12c66143\okio-1.6.0.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="98476622f10715998eacf9240d6b479f12c66143">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\okio-1.6.0_ec33c5c5122f8768e6b5bc29975c62808e0f3d44.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.android.support\design\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="5326d9a850d491714fef8cbfaa9ea3416f0bf0d2">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.android.support-design-23.4.0_52f60d2e5fc3e84e722149de62fb5e4537ad45fc.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\.gradle\caches\modules-2\files-2.1\com.squareup.picasso\picasso\2.5.2\7446d06ec8d4f7ffcc53f1da37c95f200dcb9387\picasso-2.5.2.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\picasso-2.5.2_319825eb819f79cda51ea93802af056e0f36b3a1.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.3.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="82ce13fd19cdfde0e392f03c27edeba8d4333648">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.android.support-cardview-v7-23.3.0_f28db7e9356ef1a8e20fc7ab92e6186690e262d1.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.4.0\support-annotations-23.4.0.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\support-annotations-23.4.0_f8e7525dd368166f2d625a95228996a8c0647748.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\9.0.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="cc178928721f3222b3b06bdfbd9497378ccb9792">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-basement-9.0.0_7bcdf8662e597ed6f124bfa29d29e079b33fb147.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\.gradle\caches\modules-2\files-2.1\org.atteo\evo-inflector\1.2.1\b9cdd1e7dc20a222db0853dfb152ef349c7d0eed\evo-inflector-1.2.1.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="b9cdd1e7dc20a222db0853dfb152ef349c7d0eed">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\evo-inflector-1.2.1_625f10ae275a5692f3f5c4b78d59083c822a1096.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="ec75036c3c52e451d0cde50a5aedaf5fd32354a0">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-23.4.0_9266f5970eaefbe8427381f0b65c9d07d409bea3.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="0ad72e96c065bc0cc49e0920bc65ab38228642a7">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\instant-run_dce01bc39690d661847e59f66e761607014b6c71.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.4.0_2fdaeb6fffe7c56a0d56a1daad4efe5519a9ffd4.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.4.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-23.4.0_998491973b12fa53bf35a35b4ba1e5917770dcd7.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-analytics\9.0.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="b8bedab61b3b5238cd9a07d3b04449d7fecdbc3b">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-analytics-9.0.0_9eb9f5ae39ac62f70accbdd812d04d9c4f786c95.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.google.firebase\firebase-common\9.0.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="42df48c7305b08b14fa0e84561091b0c24d70d26">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-common-9.0.0_c35de524d08b075fbc48ed097349a1b89f3c5ab2.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="cc6918c105cb971829f5107739baa022187f7f91">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\instant-run-bootstrap_e12fcb9e1955162bf9dfceb67902efd15b9a0aee.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\libs\internal_impl-23.4.0.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\internal_impl-23.4.0_7b9b650caa5758ec0a347b540bda5315cdf3a226.jar" />
+    </item>
+    <item
+        jar="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\exploded-aar\com.google.firebase\firebase-analytics-impl\9.0.0\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="0dc8ab07eeceda5e99b305c8069765056b6e5c9d">
+        <dex dex="C:\Users\Kemron\Documents\AndroidWorkspace\StockNBarrel\app\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-analytics-impl-9.0.0_c3f992c46d232bef67ceb3777fea559dd723e9c0.jar" />
+    </item>
+
+</items>

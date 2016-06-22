@@ -43,11 +43,12 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         insertData(db, user);
 
 
-        Grocery grocery = new Grocery("Massy Stores", "Chaguanas", "One Woodbrook Place, Damian St, Port of Spain");
+        Grocery grocery = new Grocery("Massy Stores", "Port of Spain", "One Woodbrook Place, Damian St, Port of Spain");
         grocery.setPhone("868-361-7406");
         insertData(db, grocery);
 
-        Grocery grocery2 = new Grocery("Extra Foods ", "Grand Bazzar", "Grand Bazzar");
+        Grocery grocery2 = new Grocery("Extra Foods ", "Grand Bazaar", "Grand Bazaar, Bamboo Village, Tunapuna-Piarco");
+        grocery2.setPhone("868-326-9324");
         insertData(db, grocery2);
 
         ShoppingList shoppingList = new ShoppingList("Monthly Grocery List", user.getId());
