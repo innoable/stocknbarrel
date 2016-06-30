@@ -15,7 +15,11 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            buildConfigField('String','REMOTE_ADDRESS',RemoteServer)
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            buildConfigField('String','REMOTE_ADDRESS',RemoteServer)
         }
     }
 }

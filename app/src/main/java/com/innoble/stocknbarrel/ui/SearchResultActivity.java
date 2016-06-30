@@ -24,15 +24,15 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.innoble.stocknbarrel.R;
 import com.innoble.stocknbarrel.provider.ProductDetailParcelable;
-import com.innoble.stocknbarrel.provider.StockNBarrelContentProvider;
+import com.innoble.stocknbarrel.provider.RemoteContentProvider;
 import com.innoble.stocknbarrel.utils.AsyncTracker;
 import com.innoble.stocknbarrel.utils.TrackedApplication;
 
 public class SearchResultActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int DIRECT_SEARCH_LOADER_ID = 1;
-    private Uri PRODUCT_OPTIONS_URI = StockNBarrelContentProvider.CONTENT_URI.buildUpon()
-            .appendPath(StockNBarrelContentProvider.GROCERY_STOCK_ITEM_PATH).build();
+    private Uri PRODUCT_OPTIONS_URI = RemoteContentProvider.CONTENT_URI.buildUpon()
+            .appendPath(RemoteContentProvider.GROCERY_STOCK_ITEM_PATH).build();
 
     private Tracker mTracker;
     private Intent thisIntent;

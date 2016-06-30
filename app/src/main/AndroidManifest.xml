@@ -42,6 +42,10 @@
             android:enabled="true"
             android:exported="true" />
 
+        <provider
+            android:authorities="com.innoble.stocknbarrel.remoteprovider"
+            android:name=".provider.RemoteContentProvider"/>
+
         <activity
             android:name=".ui.RegisterActivity"
             android:label="@string/title_register_activity" />
