@@ -84,7 +84,15 @@ public class ShoppingListItem extends DataEntity {
         contentValues.put(COLUMN_GROCERY_STOCK_ITEM_ID, groceryStockItemId);
         contentValues.put(COLUMN_QUANTITY, quantity);
         contentValues.put(COLUMN_SHOPPING_LIST_ID, shoppingListId);
-        long result = database.insert(TABLE_SHOPPING_LIST_ITEM, null, contentValues);
-        setId(result);
+
+        if(getId() != 0){
+            contentValues.put(COLUMN_ID,getId());
+            long result = database.insert(TABLE_SHOPPING_LIST_ITEM, null, contentValues);
+        }
+        else{
+            long result = database.insert(TABLE_SHOPPING_LIST_ITEM, null, contentValues);
+            setId(result);
+        }
+
     }
 }

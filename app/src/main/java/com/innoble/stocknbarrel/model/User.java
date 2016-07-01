@@ -97,8 +97,15 @@ public class User extends DataEntity {
         contentValues.put(COLUMN_NAME, name);
         contentValues.put(COLUMN_EMAIL, email);
         contentValues.put(COLUMN_BUDGET, budget);
-        long result = database.insert(TABLE_USER, null, contentValues);
-        setId(result);
+
+        if(getId() != 0){
+            contentValues.put(COLUMN_ID,getId());
+            long result = database.insert(TABLE_USER, null, contentValues);
+        }
+        else{
+            long result = database.insert(TABLE_USER, null, contentValues);
+            setId(result);
+        }
     }
 
     public void update(SQLiteDatabase database) {

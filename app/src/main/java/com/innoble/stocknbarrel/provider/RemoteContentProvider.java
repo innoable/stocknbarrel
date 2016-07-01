@@ -11,6 +11,7 @@ import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 
 import com.innoble.stocknbarrel.BuildConfig;
+import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,6 +36,11 @@ public class RemoteContentProvider extends ContentProvider {
     private static final int PRODUCT_SEARCH = 25;
     private static final int VENDOR_ITEMS = 50;
 
+
+    private StockNBarrelDatabaseHelper db;
+    private OkHttpClient httpClient;
+    private static final int HTTP_RESPONSE_DISK_CACHE_MAX_SIZE = 10 * 1024 * 1024;
+
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
 
@@ -49,14 +55,24 @@ public class RemoteContentProvider extends ContentProvider {
 
 
 
+
+
+
+
     static {
         sURIMatcher.addURI(AUTHORITY, PRODUCTS_PATH + "/search_suggest_query/*", PRODUCT_SEARCH);
         sURIMatcher.addURI(AUTHORITY, GROCERY_STOCK_ITEM_PATH + "/*", VENDOR_ITEMS);
     }
 
 
+
+
+
+
     @Override
     public boolean onCreate() {
+        db = new StockNBarrelDatabaseHelper(getContext());
+        httpClient = new OkHttpClient();
         return false;
     }
 
@@ -109,6 +125,7 @@ public class RemoteContentProvider extends ContentProvider {
                 "product_short_description",
                 "product_long_description",
                 "product_thumbnail",
+                "grocery_id",
                 "grocery_name",
                 "grocery_branch",
                 "vendor_location",
@@ -123,23 +140,24 @@ public class RemoteContentProvider extends ContentProvider {
                 .buildUpon()
                 .appendPath(name)
                 .build();
-        OkHttpClient client = new OkHttpClient();
+
         Request request = new Request.Builder().url(uri.toString()).build();
         MatrixCursor cursor = new MatrixCursor(columns);
         try {
-            Response response = client.newCall(request).execute();
+            Response response = httpClient.newCall(request).execute();
             String jsonString = response.body().string();
             JSONArray jsonArray = new JSONArray(jsonString);
 
             for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject item = jsonArray.getJSONObject(i);
+                final JSONObject item = jsonArray.getJSONObject(i);
                 cursor.addRow(new Object[]{
                         item.getLong("ProductID"),
                         item.getString("Name"),
                         item.getString("LongDescription"),
                         item.getString("ShortDescription"),
                         item.getString("Thumbnail"),
-                        item.getString("Vendor"),
+                        item.getString("VendorID"),
+                        item.getString("VendorName"),
                         item.getString("VendorBranch"),
                         item.getString("VendorLocation"),
                         item.getString("VendorPhone"),
@@ -147,6 +165,7 @@ public class RemoteContentProvider extends ContentProvider {
                         item.getString("Unit"),
                         item.getLong("VendorItemID")
                 });
+
             }
 
         } catch (Exception e) {
@@ -162,7 +181,6 @@ public class RemoteContentProvider extends ContentProvider {
                 .buildUpon()
                 .appendPath(query)
                 .build();
-        OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(uri.toString()).build();
         MatrixCursor cursor = new MatrixCursor(
                 new String[]{
@@ -173,7 +191,7 @@ public class RemoteContentProvider extends ContentProvider {
         );
 
         try {
-            Response response = client.newCall(request).execute();
+            Response response = httpClient.newCall(request).execute();
             String jsonString = response.body().string();
             JSONArray jsonArray = new JSONArray(jsonString);
 
@@ -189,6 +207,10 @@ public class RemoteContentProvider extends ContentProvider {
         }
         return cursor;
     }
+
+
+
+
 
 
 }

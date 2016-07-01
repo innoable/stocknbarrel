@@ -161,7 +161,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
                 parcelable.vendorPhone = cur.getString(cur.getColumnIndex("vendor_phone"));
                 parcelable.vendorLocation = cur.getString(cur.getColumnIndex("vendor_location"));
                 parcelable.productThumbnail = cur.getString(cur.getColumnIndex("product_thumbnail"));
-                parcelable.itemCartID = cur.getString(cur.getColumnIndex("_id"));
+                parcelable.itemCartID = cur.getLong(cur.getColumnIndex("_id"));
                 parcelable.qty = cur.getInt(cur.getColumnIndex("quantity"));
                 intent.putExtra(Intent.EXTRA_TEXT, parcelable);
 

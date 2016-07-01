@@ -180,16 +180,21 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
     private void packageIntentData(Intent intent, Cursor cur) {
 
         ProductDetailParcelable parcelable = new ProductDetailParcelable();
+        parcelable.productID = cur.getLong(cur.getColumnIndex("_id"));
+        parcelable.productName = cur.getString(cur.getColumnIndex("product_name"));
         parcelable.shortDescription = cur.getString(cur.getColumnIndex("product_short_description"));
         parcelable.longDescription = cur.getString(cur.getColumnIndex("product_long_description"));
-        parcelable.productName = cur.getString(cur.getColumnIndex("product_name"));
+        parcelable.productThumbnail = cur.getString(cur.getColumnIndex("product_thumbnail"));
+        parcelable.vendorID = cur.getLong(cur.getColumnIndex("grocery_id"));
+        parcelable.vendorName = cur.getString(cur.getColumnIndex("grocery_name"));
+        parcelable.vendorBranch = cur.getString(cur.getColumnIndex("grocery_branch"));
+        parcelable.vendorLocation = cur.getString(cur.getColumnIndex("vendor_location"));
+        parcelable.vendorPhone = cur.getString(cur.getColumnIndex("vendor_phone"));
         parcelable.price = cur.getDouble(cur.getColumnIndex("price"));
         parcelable.unit = cur.getString(cur.getColumnIndex("unit"));
-        parcelable.vendorName = cur.getString(cur.getColumnIndex("grocery_name"));
         parcelable.groceryStockItemId = cur.getLong(cur.getColumnIndex("grocery_stock_item_id"));
-        parcelable.vendorPhone = cur.getString(cur.getColumnIndex("vendor_phone"));
-        parcelable.vendorLocation = cur.getString(cur.getColumnIndex("vendor_location"));
-        parcelable.productThumbnail = cur.getString(cur.getColumnIndex("product_thumbnail"));
+
+
         parcelable.qty = 1;
         intent.putExtra(Intent.EXTRA_TEXT, parcelable);
     }

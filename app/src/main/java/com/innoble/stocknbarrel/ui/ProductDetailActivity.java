@@ -36,6 +36,9 @@ import android.widget.Toast;
 
 import com.innoble.stocknbarrel.R;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
+import com.innoble.stocknbarrel.model.Grocery;
+import com.innoble.stocknbarrel.model.GroceryStockItem;
+import com.innoble.stocknbarrel.model.Product;
 import com.innoble.stocknbarrel.model.ShoppingList;
 import com.innoble.stocknbarrel.model.ShoppingListItem;
 import com.innoble.stocknbarrel.provider.Images;
@@ -50,6 +53,8 @@ import java.math.MathContext;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static android.R.color.holo_red_light;
 
@@ -61,7 +66,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         Fragment viewFragment;
         ProductDetailParcelable data = getIntent().getParcelableExtra(Intent.EXTRA_TEXT);
-        if (data.itemCartID != null)
+        if (data.itemCartID >0)
             viewFragment = new ProductEditRemoveFragment();
 
         else {
@@ -106,7 +111,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.confirm:
                     Uri uri = shoppingListItemUri.buildUpon()
-                            .appendPath(data.itemCartID)
+                            .appendPath(String.valueOf(data.itemCartID))
                             .build();
 
                     ContentResolver resolver = mActivity.getContentResolver();
@@ -148,7 +153,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     Uri uri = shoppingListItemUri.buildUpon()
-                                            .appendPath(data.itemCartID)
+                                            .appendPath(String.valueOf(data.itemCartID))
                                             .build();
                                     mActivity.getContentResolver().delete(uri, null, null);
 
@@ -176,12 +181,21 @@ public class ProductDetailActivity extends AppCompatActivity {
      * @Author Kemron Glasgow
      */
     public static class ProductAddFragment extends ProductFragment {
+        private ExecutorService executorService = Executors.newSingleThreadExecutor();
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = super.onCreateView(inflater, container, savedInstanceState);
 
             qty = data.qty;
+            executorService.submit(new Runnable() {
+                @Override
+                public void run() {
+                    persistResponseModels(database,data);
+                }
+            });
+
+
             actionBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -203,6 +217,40 @@ public class ProductDetailActivity extends AppCompatActivity {
             });
 
             return view;
+        }
+
+        private void persistResponseModels(StockNBarrelDatabaseHelper db,ProductDetailParcelable item) {
+
+            Grocery grocery = new Grocery(
+                    item.vendorName,
+                    item.vendorBranch,
+                    item.vendorLocation
+            );
+            grocery.setPhone(item.vendorPhone);
+            grocery.setId(item.vendorID);
+
+            db.insertData(db.getWritableDatabase(),grocery);
+
+            Product product = new Product(item.productName);
+            product.setId(item.productID);
+            product.setShortDescription(item.shortDescription);
+            product.setLongDescription(item.longDescription);
+            product.setThumbnailUri(item.productThumbnail);
+
+            db.insertData(db.getWritableDatabase(),product);
+
+
+            GroceryStockItem gsi = new GroceryStockItem(
+                    item.vendorID,
+                    item.productID,
+                    0.0,
+                    item.price,
+                    item.unit,
+                    0
+            );
+            gsi.setId(item.groceryStockItemId);
+
+            db.insertData(db.getWritableDatabase(),gsi);
         }
     }
 
@@ -230,6 +278,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         protected GalleryAdapter galleryAdapter;
         protected Button vendorPhone;
         protected Button vendorLocation;
+        protected StockNBarrelDatabaseHelper database;
 
 
         @Override
@@ -237,6 +286,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             mActivity = (AppCompatActivity) getActivity();
             data = mActivity.getIntent().getParcelableExtra(Intent.EXTRA_TEXT);
+            database = new StockNBarrelDatabaseHelper(mActivity);
         }
 
         @Nullable

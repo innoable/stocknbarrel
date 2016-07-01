@@ -96,8 +96,16 @@ public class Product extends DataEntity {
         contentValues.put(COLUMN_LONG_DESCRIPTION, longDescription);
         contentValues.put(COLUMN_SHORT_DESCRIPTION, shortDescription);
         contentValues.put(COLUMN_THUMBNAIL, thumbnailUri);
-        Long result = database.insert(TABLE_PRODUCT, null, contentValues);
-        setId(result);
+
+        if(getId() != 0){
+            contentValues.put(COLUMN_ID,getId());
+            long result = database.insert(TABLE_PRODUCT, null, contentValues);
+        }
+        else{
+            long result = database.insert(TABLE_PRODUCT, null, contentValues);
+            setId(result);
+        }
+
     }
 
 

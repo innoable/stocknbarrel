@@ -116,8 +116,16 @@ public class GroceryStockItem extends DataEntity {
         contentValues.put(COLUMN_QUANTITY_IN_STOCK, quantityInStock);
         contentValues.put(COLUMN_SIZE, size);
         contentValues.put(COLUMN_UNIT, unit);
-        long result = database.insert(TABLE_GROCERY_STOCK_ITEM, null, contentValues);
-        setId(result);
+
+        if(getId() != 0){
+            contentValues.put(COLUMN_ID,getId());
+            long result = database.insert(TABLE_GROCERY_STOCK_ITEM, null, contentValues);
+        }
+        else{
+            long result = database.insert(TABLE_GROCERY_STOCK_ITEM, null, contentValues);
+            setId(result);
+        }
+
     }
 
 }

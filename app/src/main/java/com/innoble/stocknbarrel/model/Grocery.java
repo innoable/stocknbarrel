@@ -88,8 +88,15 @@ public class Grocery extends DataEntity {
         contentValues.put(COLUMN_LOCATION, location);
         contentValues.put(COLUMN_BRANCH, branch);
         contentValues.put(COLUMN_PHONE, phone);
-        long result = database.insert(TABLE_GROCERY, null, contentValues);
-        setId(result);
+        if(getId() != 0){
+            contentValues.put(COLUMN_ID,getId());
+            long result = database.insert(TABLE_GROCERY, null, contentValues);
+        }
+        else{
+            long result = database.insert(TABLE_GROCERY, null, contentValues);
+            setId(result);
+        }
+
     }
 }
 

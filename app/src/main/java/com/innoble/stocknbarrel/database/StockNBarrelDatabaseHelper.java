@@ -12,7 +12,6 @@ import com.innoble.stocknbarrel.model.Product;
 import com.innoble.stocknbarrel.model.ShoppingList;
 import com.innoble.stocknbarrel.model.ShoppingListItem;
 import com.innoble.stocknbarrel.model.User;
-import com.innoble.stocknbarrel.provider.Images;
 
 import java.io.File;
 import java.util.Random;
@@ -42,19 +41,19 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         insertData(db, user);
 
 
-        Grocery grocery = new Grocery("Massy Stores", "Port of Spain", "One Woodbrook Place, Damian St, Port of Spain");
-        grocery.setPhone("868-361-7406");
-        insertData(db, grocery);
+       // Grocery grocery = new Grocery("Massy Stores", "Port of Spain", "One Woodbrook Place, Damian St, Port of Spain");
+      //  grocery.setPhone("868-361-7406");
+     //   insertData(db, grocery);
 
-        Grocery grocery2 = new Grocery("Extra Foods ", "Grand Bazaar", "Grand Bazaar, Bamboo Village, Tunapuna-Piarco");
-        grocery2.setPhone("868-326-9324");
-        insertData(db, grocery2);
+      //  Grocery grocery2 = new Grocery("Extra Foods ", "Grand Bazaar", "Grand Bazaar, Bamboo Village, Tunapuna-Piarco");
+     //   grocery2.setPhone("868-326-9324");
+      //  insertData(db, grocery2);
 
         ShoppingList shoppingList = new ShoppingList("Monthly Grocery List", user.getId());
         insertData(db, shoppingList);
 
         //db = this.getWritableDatabase();
-        Product product = new Product("Planters Unsalted Mixed Nuts");
+       /* Product product = new Product("Planters Unsalted Mixed Nuts");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         product.setShortDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient.");
         product.setLongDescription("CELEBRATE THE 2016 EUROPEAN TOURNAMENT IN ASPHALT 8! DEDICATED LIMITED-TIME EVENTS, EXCLUSIVE PROMOTIONS, AWESOME REWARDS... STAND UP & REPRESENT YOUR NATION!\n" +
@@ -200,7 +199,7 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 3.00, "pack", 1000);
         insertData(db, groceryStockItem);
         groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 8.99, "can", 1000);
-        insertData(db, groceryStockItem);
+        insertData(db, groceryStockItem);*/
 
 
         Product.createNameIndex(db);
