@@ -36,11 +36,11 @@ import android.widget.Toast;
 
 import com.innoble.stocknbarrel.R;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
-import com.innoble.stocknbarrel.model.Grocery;
-import com.innoble.stocknbarrel.model.GroceryStockItem;
+import com.innoble.stocknbarrel.model.Branch;
+import com.innoble.stocknbarrel.model.BranchStockItem;
 import com.innoble.stocknbarrel.model.Product;
-import com.innoble.stocknbarrel.model.ShoppingList;
-import com.innoble.stocknbarrel.model.ShoppingListItem;
+import com.innoble.stocknbarrel.model.ShoppingCart;
+import com.innoble.stocknbarrel.model.ShoppingCartItem;
 import com.innoble.stocknbarrel.provider.Images;
 import com.innoble.stocknbarrel.provider.ProductDetailParcelable;
 import com.innoble.stocknbarrel.provider.StockNBarrelContentProvider;
@@ -50,6 +50,7 @@ import org.atteo.evo.inflector.English;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -116,7 +117,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                     ContentResolver resolver = mActivity.getContentResolver();
                     ContentValues values = new ContentValues();
-                    values.put(ShoppingListItem.COLUMN_QUANTITY, qty);
+                    values.put(ShoppingCartItem.COLUMN_QUANTITY, qty);
                     resolver.update(uri, values, null, null);
                     resolver.notifyChange(shoppingListItemUri, null);
                     mActivity.finish();
@@ -205,10 +206,10 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                     Cursor shoppingListCurr = mActivity.getContentResolver().query(shoppingListUri, null, null, null, null);
                     shoppingListCurr.moveToFirst();
-                    long shoppingListID = shoppingListCurr.getLong(shoppingListCurr.getColumnIndex(ShoppingList.COLUMN_ID));
+                    long shoppingListID = shoppingListCurr.getLong(shoppingListCurr.getColumnIndex(ShoppingCart.COLUMN_ID));
 
-                    ShoppingListItem shoppingListItem = new ShoppingListItem(shoppingListID, data.groceryStockItemId, qty);
-                    shoppingListItem.insert(new StockNBarrelDatabaseHelper(mActivity).getWritableDatabase());
+                    ShoppingCartItem shoppingCartItem = new ShoppingCartItem(shoppingListID, data.groceryStockItemId, qty);
+                    shoppingCartItem.insert(new StockNBarrelDatabaseHelper(mActivity).getWritableDatabase());
                     Toast.makeText(mActivity, "Item has been added to shopping list", Toast.LENGTH_SHORT).show();
                     shoppingListCurr.close();
                     mActivity.finish();
@@ -221,15 +222,15 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         private void persistResponseModels(StockNBarrelDatabaseHelper db,ProductDetailParcelable item) {
 
-            Grocery grocery = new Grocery(
+            Branch branch = new Branch(
                     item.vendorName,
                     item.vendorBranch,
                     item.vendorLocation
             );
-            grocery.setPhone(item.vendorPhone);
-            grocery.setId(item.vendorID);
+            branch.setPhone(item.vendorPhone);
+            branch.setId(item.vendorID);
 
-            db.insertData(db.getWritableDatabase(),grocery);
+            db.insertData(db.getWritableDatabase(), branch);
 
             Product product = new Product(item.productName);
             product.setId(item.productID);
@@ -237,16 +238,20 @@ public class ProductDetailActivity extends AppCompatActivity {
             product.setLongDescription(item.longDescription);
             product.setThumbnailUri(item.productThumbnail);
 
-            db.insertData(db.getWritableDatabase(),product);
+            db.insertData(db.getWritableDatabase(), product);
 
+            Calendar c = Calendar.getInstance();
 
-            GroceryStockItem gsi = new GroceryStockItem(
+            c.add(Calendar.DATE, 10);
+
+            BranchStockItem gsi = new BranchStockItem(
                     item.vendorID,
                     item.productID,
                     0.0,
                     item.price,
                     item.unit,
-                    0
+                    0,
+                    c.getTime()
             );
             gsi.setId(item.groceryStockItemId);
 

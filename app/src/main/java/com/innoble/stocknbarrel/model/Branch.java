@@ -6,14 +6,14 @@ import android.database.sqlite.SQLiteDatabase;
 /**
  * Created by At3r on 5/19/2016.
  */
-public class Grocery extends DataEntity {
+public class Branch extends DataEntity {
     // Database table
-    public static final String TABLE_GROCERY = "grocery";
-    public static final String COLUMN_BRANCH = "branch";
+    public static final String TABLE_BRANCH = "branch";
+    public static final String COLUMN_BRANCH = "branchName";
     public static final String COLUMN_LOCATION = "location";
     public static final String COLUMN_PHONE = "phone";
     private static final String DATABASE_CREATE = "create table "
-            + TABLE_GROCERY
+            + TABLE_BRANCH
             + "("
             + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_NAME + " text, "
@@ -22,28 +22,28 @@ public class Grocery extends DataEntity {
             + COLUMN_PHONE + " text"
             + ");";
     private String name;
-    private String branch;
+    private String branchName;
     private String location;
     private String phone;
 
-    public Grocery(String name, String branch, String location) {
+    public Branch(String name, String branchName, String location) {
         super();
 
         this.name = name;
-        this.branch = branch;
+        this.branchName = branchName;
         this.location = location;
         this.phone = "";
 
     }
 
     public static void onCreate(SQLiteDatabase database) {
-        database.execSQL("DROP TABLE IF EXISTS " + TABLE_GROCERY);
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_BRANCH);
         database.execSQL(DATABASE_CREATE);
     }
 
     public static void onUpgrade(SQLiteDatabase database, int oldVersion,
                                  int newVersion) {
-        database.execSQL("DROP TABLE IF EXISTS " + TABLE_GROCERY);
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_BRANCH);
         onCreate(database);
     }
 
@@ -63,14 +63,14 @@ public class Grocery extends DataEntity {
         this.name = name;
     }
 
-    public String getBranch() {
-        return branch;
+    public String getBranchName() {
+        return branchName;
     }
 
     // Database creation SQL statement
 
-    public void setBranch(String branch) {
-        this.branch = branch;
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
     }
 
     public String getLocation() {
@@ -86,14 +86,14 @@ public class Grocery extends DataEntity {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_NAME, name);
         contentValues.put(COLUMN_LOCATION, location);
-        contentValues.put(COLUMN_BRANCH, branch);
+        contentValues.put(COLUMN_BRANCH, branchName);
         contentValues.put(COLUMN_PHONE, phone);
         if(getId() != 0){
             contentValues.put(COLUMN_ID,getId());
-            long result = database.insert(TABLE_GROCERY, null, contentValues);
+            long result = database.insert(TABLE_BRANCH, null, contentValues);
         }
         else{
-            long result = database.insert(TABLE_GROCERY, null, contentValues);
+            long result = database.insert(TABLE_BRANCH, null, contentValues);
             setId(result);
         }
 

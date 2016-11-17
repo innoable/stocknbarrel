@@ -11,11 +11,11 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
-import com.innoble.stocknbarrel.model.Grocery;
-import com.innoble.stocknbarrel.model.GroceryStockItem;
+import com.innoble.stocknbarrel.model.Branch;
+import com.innoble.stocknbarrel.model.BranchStockItem;
 import com.innoble.stocknbarrel.model.Product;
-import com.innoble.stocknbarrel.model.ShoppingList;
-import com.innoble.stocknbarrel.model.ShoppingListItem;
+import com.innoble.stocknbarrel.model.ShoppingCart;
+import com.innoble.stocknbarrel.model.ShoppingCartItem;
 import com.innoble.stocknbarrel.model.User;
 
 /**
@@ -169,10 +169,10 @@ public class StockNBarrelContentProvider extends ContentProvider {
         SQLiteDatabase db = database.getWritableDatabase();
         switch (uriType) {
             case SHOPPING_LIST_ITEM_ID:
-                count = ShoppingListItem.removeById(db, Long.parseLong(uri.getLastPathSegment()));
+                count = ShoppingCartItem.removeById(db, Long.parseLong(uri.getLastPathSegment()));
                 break;
             case SHOPPING_LIST_ITEMS:
-                db.delete(ShoppingListItem.TABLE_SHOPPING_LIST_ITEM, selection, selectionArgs);
+                db.delete(ShoppingCartItem.TABLE_SHOPPING_CART_ITEM, selection, selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI" + uri);
@@ -188,7 +188,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
         Uri notifyUri = null;
         switch (uriType) {
             case SHOPPING_LIST_ITEM_ID:
-                count = ShoppingListItem.updateRow(
+                count = ShoppingCartItem.updateRow(
                         database.getWritableDatabase(),
                         Long.parseLong(uri.getLastPathSegment()),
                         values);
@@ -282,29 +282,29 @@ public class StockNBarrelContentProvider extends ContentProvider {
                     break;
 
                 case SHOPPING_LIST_ITEM_ID:
-                    tableName = ShoppingListItem.TABLE_SHOPPING_LIST_ITEM;
+                    tableName = ShoppingCartItem.TABLE_SHOPPING_CART_ITEM;
                     isTable = DatabaseQueryType.ROW;
-                    tableIdColumnName = ShoppingListItem.COLUMN_ID;
+                    tableIdColumnName = ShoppingCartItem.COLUMN_ID;
                     rowId = uri.getLastPathSegment();
                     break;
 
                 case SHOPPING_LISTS:
-                    tableName = ShoppingList.TABLE_SHOPPING_LIST;
+                    tableName = ShoppingCart.TABLE_SHOPPING_CART;
                     break;
 
                 case NAMED_GROCERY_STOCK_ITEMS:
                     StringBuilder builder = new StringBuilder();
-                    tableName = builder.append(Grocery.TABLE_GROCERY)
+                    tableName = builder.append(Branch.TABLE_BRANCH)
                             .append(" INNER JOIN ")
-                            .append(GroceryStockItem.TABLE_GROCERY_STOCK_ITEM)
+                            .append(BranchStockItem.TABLE_BRANCH_STOCK_ITEM)
                             .append(" ON ")
-                            .append(Grocery.TABLE_GROCERY + "." + Grocery.COLUMN_ID)
+                            .append(Branch.TABLE_BRANCH + "." + Branch.COLUMN_ID)
                             .append(" = ")
-                            .append(GroceryStockItem.TABLE_GROCERY_STOCK_ITEM + "." + GroceryStockItem.COLUMN_GROCERY_ID)
+                            .append(BranchStockItem.TABLE_BRANCH_STOCK_ITEM + "." + BranchStockItem.COLUMN_BRANCH_ID)
                             .append(" INNER JOIN ")
                             .append(Product.TABLE_PRODUCT)
                             .append(" ON ")
-                            .append(GroceryStockItem.TABLE_GROCERY_STOCK_ITEM + "." + GroceryStockItem.COLUMN_PRODUCT_ID)
+                            .append(BranchStockItem.TABLE_BRANCH_STOCK_ITEM + "." + BranchStockItem.COLUMN_PRODUCT_ID)
                             .append(" = ")
                             .append(Product.TABLE_PRODUCT + "." + Product.COLUMN_ID)
                             .toString();
@@ -315,13 +315,13 @@ public class StockNBarrelContentProvider extends ContentProvider {
                             Product.TABLE_PRODUCT + "." + Product.COLUMN_SHORT_DESCRIPTION + " as product_short_description",
                             Product.TABLE_PRODUCT + "." + Product.COLUMN_LONG_DESCRIPTION + " as product_long_description",
                             Product.TABLE_PRODUCT + "." + Product.COLUMN_THUMBNAIL + " as product_thumbnail",
-                            Grocery.TABLE_GROCERY + "." + Grocery.COLUMN_NAME + " as grocery_name",
-                            Grocery.TABLE_GROCERY + "." + Grocery.COLUMN_BRANCH + " as grocery_branch",
-                            Grocery.TABLE_GROCERY + "." + Grocery.COLUMN_LOCATION + " as vendor_location",
-                            Grocery.TABLE_GROCERY + "." + Grocery.COLUMN_PHONE + " as vendor_phone",
-                            GroceryStockItem.TABLE_GROCERY_STOCK_ITEM + "." + GroceryStockItem.COLUMN_PRICE + " as price",
-                            GroceryStockItem.TABLE_GROCERY_STOCK_ITEM + "." + GroceryStockItem.COLUMN_UNIT + " as unit",
-                            GroceryStockItem.TABLE_GROCERY_STOCK_ITEM + "." + GroceryStockItem.COLUMN_ID + " as grocery_stock_item_id",
+                            Branch.TABLE_BRANCH + "." + Branch.COLUMN_NAME + " as grocery_name",
+                            Branch.TABLE_BRANCH + "." + Branch.COLUMN_BRANCH + " as grocery_branch",
+                            Branch.TABLE_BRANCH + "." + Branch.COLUMN_LOCATION + " as vendor_location",
+                            Branch.TABLE_BRANCH + "." + Branch.COLUMN_PHONE + " as vendor_phone",
+                            BranchStockItem.TABLE_BRANCH_STOCK_ITEM + "." + BranchStockItem.COLUMN_PRICE + " as price",
+                            BranchStockItem.TABLE_BRANCH_STOCK_ITEM + "." + BranchStockItem.COLUMN_UNIT + " as unit",
+                            BranchStockItem.TABLE_BRANCH_STOCK_ITEM + "." + BranchStockItem.COLUMN_ID + " as grocery_stock_item_id",
 
 
                     };

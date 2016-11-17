@@ -28,7 +28,7 @@ import android.widget.TextView;
 
 import com.innoble.stocknbarrel.R;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
-import com.innoble.stocknbarrel.model.ShoppingListItem;
+import com.innoble.stocknbarrel.model.ShoppingCartItem;
 import com.innoble.stocknbarrel.model.User;
 import com.innoble.stocknbarrel.provider.ProductDetailParcelable;
 import com.innoble.stocknbarrel.provider.StockNBarrelContentProvider;
@@ -288,7 +288,7 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
 
         ContentResolver resolver = getActivity().getContentResolver();
         ContentValues values = new ContentValues();
-        values.put(ShoppingListItem.COLUMN_QUANTITY, newQty);
+        values.put(ShoppingCartItem.COLUMN_QUANTITY, newQty);
         resolver.update(uri, values, null, null);
         resolver.notifyChange(shoppingListItemQuery, null);
     }

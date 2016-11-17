@@ -5,12 +5,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.innoble.stocknbarrel.model.Branch;
+import com.innoble.stocknbarrel.model.BranchStockItem;
 import com.innoble.stocknbarrel.model.DataEntity;
-import com.innoble.stocknbarrel.model.Grocery;
-import com.innoble.stocknbarrel.model.GroceryStockItem;
 import com.innoble.stocknbarrel.model.Product;
-import com.innoble.stocknbarrel.model.ShoppingList;
-import com.innoble.stocknbarrel.model.ShoppingListItem;
+import com.innoble.stocknbarrel.model.ShoppingCart;
+import com.innoble.stocknbarrel.model.ShoppingCartItem;
 import com.innoble.stocknbarrel.model.User;
 
 import java.io.File;
@@ -41,16 +41,16 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         insertData(db, user);
 
 
-       // Grocery grocery = new Grocery("Massy Stores", "Port of Spain", "One Woodbrook Place, Damian St, Port of Spain");
+       // Branch grocery = new Branch("Massy Stores", "Port of Spain", "One Woodbrook Place, Damian St, Port of Spain");
       //  grocery.setPhone("868-361-7406");
      //   insertData(db, grocery);
 
-      //  Grocery grocery2 = new Grocery("Extra Foods ", "Grand Bazaar", "Grand Bazaar, Bamboo Village, Tunapuna-Piarco");
+      //  Branch grocery2 = new Branch("Extra Foods ", "Grand Bazaar", "Grand Bazaar, Bamboo Village, Tunapuna-Piarco");
      //   grocery2.setPhone("868-326-9324");
       //  insertData(db, grocery2);
 
-        ShoppingList shoppingList = new ShoppingList("Monthly Grocery List", user.getId());
-        insertData(db, shoppingList);
+        ShoppingCart shoppingCart = new ShoppingCart("Monthly Branch List", user.getId());
+        insertData(db, shoppingCart);
 
         //db = this.getWritableDatabase();
        /* Product product = new Product("Planters Unsalted Mixed Nuts");
@@ -103,102 +103,102 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
                 "Terms of Use: http://www.gameloft.com/conditions/\n" +
                 "End-User License Agreement: http://www.gameloft.com/eula/?lang=en");
         insertData(db, product);
-        GroceryStockItem groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 65.99, "tin", 1000);
+        BranchStockItem groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 65.99, "tin", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 70.99, "tin", 1000);
+        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 70.99, "tin", 1000);
         insertData(db, groceryStockItem);
 
         product.setName("Axe (Excite) Body Spray");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 25.99, "can", 1000);
+        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 25.99, "can", 1000);
         insertData(db, groceryStockItem);
 
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 30.99, "can", 1000);
+        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 30.99, "can", 1000);
         insertData(db, groceryStockItem);
 
-        ShoppingListItem shoppingListItem = new ShoppingListItem(shoppingList.getId(), groceryStockItem.getId(), 1);
+        ShoppingCartItem shoppingListItem = new ShoppingCartItem(shoppingCart.getId(), groceryStockItem.getId(), 1);
         insertData(db, shoppingListItem);
 
         product.setName("Panadol Hot Rem");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 19.99, "box", 1000);
+        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 19.99, "box", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 25.99, "can", 1000);
+        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 25.99, "can", 1000);
         insertData(db, groceryStockItem);
 
 
         product.setName("Gullon Sugar Free Vanilla Wafer");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 6, 15.99, "pack", 1000);
+        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 6, 15.99, "pack", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 20.99, "can", 1000);
+        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 20.99, "can", 1000);
         insertData(db, groceryStockItem);
 
         product.setName("Irish Spring Body Wash (Original)");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 26.00, "bottle", 1000);
+        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 26.00, "bottle", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 31.99, "can", 1000);
+        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 31.99, "can", 1000);
         insertData(db, groceryStockItem);
-        shoppingListItem = new ShoppingListItem(shoppingList.getId(), groceryStockItem.getId(), 1);
+        shoppingListItem = new ShoppingCartItem(shoppingCart.getId(), groceryStockItem.getId(), 1);
         insertData(db, shoppingListItem);
 
         product.setName("Protox Insecticide Spray");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 16.00, "can", 1000);
+        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 16.00, "can", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 21.99, "can", 1000);
+        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 21.99, "can", 1000);
         insertData(db, groceryStockItem);
 
         product.setName("Airwick Airfreshener 4in1");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 23.00, "can", 1000);
+        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 23.00, "can", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 28.99, "can", 1000);
+        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 28.99, "can", 1000);
         insertData(db, groceryStockItem);
-        shoppingListItem = new ShoppingListItem(shoppingList.getId(), groceryStockItem.getId(), 1);
+        shoppingListItem = new ShoppingCartItem(shoppingCart.getId(), groceryStockItem.getId(), 1);
         insertData(db, shoppingListItem);
 
         product.setName("Kiss Whole Grain Loaf ");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 13.00, "loaf", 1000);
+        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 13.00, "loaf", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 17.99, "can", 1000);
+        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 17.99, "can", 1000);
         insertData(db, groceryStockItem);
-        shoppingListItem = new ShoppingListItem(shoppingList.getId(), groceryStockItem.getId(), 1);
+        shoppingListItem = new ShoppingCartItem(shoppingCart.getId(), groceryStockItem.getId(), 1);
         insertData(db, shoppingListItem);
 
         product.setName("Dole Pineapple Juice Unsweetened");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 9.00, "tin", 1000);
+        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 9.00, "tin", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 14.99, "can", 1000);
+        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 14.99, "can", 1000);
         insertData(db, groceryStockItem);
-        shoppingListItem = new ShoppingListItem(shoppingList.getId(), groceryStockItem.getId(), 1);
+        shoppingListItem = new ShoppingCartItem(shoppingCart.getId(), groceryStockItem.getId(), 1);
         insertData(db, shoppingListItem);
 
         product.setName("Kiss Cakes Orange Cupcakes");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 3.50, "pack", 1000);
+        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 3.50, "pack", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 8.99, "can", 1000);
+        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 8.99, "can", 1000);
         insertData(db, groceryStockItem);
 
         product.setName("Bermudez Wheat Crisps");
         product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
         insertData(db, product);
-        groceryStockItem = new GroceryStockItem(grocery.getId(), product.getId(), 1, 3.00, "pack", 1000);
+        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 3.00, "pack", 1000);
         insertData(db, groceryStockItem);
-        groceryStockItem = new GroceryStockItem(grocery2.getId(), product.getId(), 1, 8.99, "can", 1000);
+        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 8.99, "can", 1000);
         insertData(db, groceryStockItem);*/
 
 
@@ -212,24 +212,24 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        Grocery.onCreate(db);
+        Branch.onCreate(db);
         User.onCreate(db);
         Product.onCreate(db);
-        ShoppingList.onCreate(db);
-        GroceryStockItem.onCreate(db);
-        ShoppingListItem.onCreate(db);
+        ShoppingCart.onCreate(db);
+        BranchStockItem.onCreate(db);
+        ShoppingCartItem.onCreate(db);
         seedData(db);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Grocery.onUpgrade(db, oldVersion, newVersion);
+        Branch.onUpgrade(db, oldVersion, newVersion);
         User.onUpgrade(db, oldVersion, newVersion);
         Product.onUpgrade(db, oldVersion, newVersion);
-        ShoppingList.onUpgrade(db, oldVersion, newVersion);
-        GroceryStockItem.onUpgrade(db, oldVersion, newVersion);
-        ShoppingListItem.onUpgrade(db, oldVersion, newVersion);
+        ShoppingCart.onUpgrade(db, oldVersion, newVersion);
+        BranchStockItem.onUpgrade(db, oldVersion, newVersion);
+        ShoppingCartItem.onUpgrade(db, oldVersion, newVersion);
         seedData(db);
     }
 
@@ -305,10 +305,10 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
     public Cursor getShoppingList() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select sli._id as _id, p.name as product_name, p.short_description as short_description,  p.long_description as long_description, p.thumbnail as product_thumbnail, gsi.price as price, sli.quantity as quantity, gsi.unit as unit, vendor.name as vendor_name,"
-                + " vendor.phone as vendor_phone, vendor.location as vendor_location from " + ShoppingListItem.TABLE_SHOPPING_LIST_ITEM + " as sli "
-                + " inner join " + GroceryStockItem.TABLE_GROCERY_STOCK_ITEM + " as gsi on sli." + ShoppingListItem.COLUMN_GROCERY_STOCK_ITEM_ID + "=gsi." + GroceryStockItem.COLUMN_ID
-                + " inner join " + Product.TABLE_PRODUCT + " as p on gsi." + GroceryStockItem.COLUMN_PRODUCT_ID + "=p." + Product.COLUMN_ID
-                + " inner join " + Grocery.TABLE_GROCERY + " as vendor on gsi." + GroceryStockItem.COLUMN_GROCERY_ID + "=vendor." + Grocery.COLUMN_ID + ";", null);
+                + " vendor.phone as vendor_phone, vendor.location as vendor_location from " + ShoppingCartItem.TABLE_SHOPPING_CART_ITEM + " as sli "
+                + " inner join " + BranchStockItem.TABLE_BRANCH_STOCK_ITEM + " as gsi on sli." + ShoppingCartItem.COLUMN_BRANCH_STOCK_ITEM_ID + "=gsi." + BranchStockItem.COLUMN_ID
+                + " inner join " + Product.TABLE_PRODUCT + " as p on gsi." + BranchStockItem.COLUMN_PRODUCT_ID + "=p." + Product.COLUMN_ID
+                + " inner join " + Branch.TABLE_BRANCH + " as vendor on gsi." + BranchStockItem.COLUMN_BRANCH_ID + "=vendor." + Branch.COLUMN_ID + ";", null);
 
         if (cursor == null) {
             return null;

@@ -14,6 +14,7 @@ public class Product extends DataEntity {
     public static final String COLUMN_LONG_DESCRIPTION = "long_description";
     public static final String COLUMN_SHORT_DESCRIPTION = "short_description";
     public static final String COLUMN_THUMBNAIL = "thumbnail";
+    public static final String COLUMN_PRODUCT_RATING = "rating";
     private static final String DATABASE_CREATE = "create table "
             + TABLE_PRODUCT
             + "("
@@ -21,6 +22,7 @@ public class Product extends DataEntity {
             + COLUMN_NAME + " text collate nocase,"
             + COLUMN_SHORT_DESCRIPTION + " text,"
             + COLUMN_LONG_DESCRIPTION + " text,"
+            + COLUMN_PRODUCT_RATING + " integer,"
             + COLUMN_THUMBNAIL + " text"
             + ");";
     private static final String PRODUCT_INDEX = "create index product_name_index on product (name collate nocase);";
@@ -28,6 +30,7 @@ public class Product extends DataEntity {
     private String longDescription;
     private String shortDescription;
     private String thumbnailUri;
+    private int rating;
 
     public Product() {
 
@@ -89,6 +92,14 @@ public class Product extends DataEntity {
         this.thumbnailUri = thumbnailUri;
     }
 
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
     @Override
     public void insert(SQLiteDatabase database) {
         ContentValues contentValues = new ContentValues();
@@ -96,6 +107,7 @@ public class Product extends DataEntity {
         contentValues.put(COLUMN_LONG_DESCRIPTION, longDescription);
         contentValues.put(COLUMN_SHORT_DESCRIPTION, shortDescription);
         contentValues.put(COLUMN_THUMBNAIL, thumbnailUri);
+        contentValues.put(COLUMN_PRODUCT_RATING, rating);
 
         if(getId() != 0){
             contentValues.put(COLUMN_ID,getId());

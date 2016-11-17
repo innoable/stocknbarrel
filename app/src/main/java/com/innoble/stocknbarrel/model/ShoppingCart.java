@@ -6,15 +6,15 @@ import android.database.sqlite.SQLiteDatabase;
 /**
  * Created by At3r on 5/19/2016.
  */
-public class ShoppingList extends DataEntity {
+public class ShoppingCart extends DataEntity {
 
 
     // Database table
-    public static final String TABLE_SHOPPING_LIST = "shopping_list";
+    public static final String TABLE_SHOPPING_CART = "shopping_cart";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_USER_ID = "user_id";
     private static final String DATABASE_CREATE = "create table "
-            + TABLE_SHOPPING_LIST
+            + TABLE_SHOPPING_CART
             + "("
             + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_USER_ID + " integer,"
@@ -24,7 +24,7 @@ public class ShoppingList extends DataEntity {
     private long userId;
     private String name;
 
-    public ShoppingList(String name, long userId) {
+    public ShoppingCart(String name, long userId) {
         super();
 
         this.name = name;
@@ -32,13 +32,13 @@ public class ShoppingList extends DataEntity {
     }
 
     public static void onCreate(SQLiteDatabase database) {
-        database.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LIST);
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_CART);
         database.execSQL(DATABASE_CREATE);
     }
 
     public static void onUpgrade(SQLiteDatabase database, int oldVersion,
                                  int newVersion) {
-        database.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LIST);
+        database.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_CART);
         onCreate(database);
     }
 
@@ -68,10 +68,10 @@ public class ShoppingList extends DataEntity {
 
         if(getId() != 0){
             contentValues.put(COLUMN_ID,getId());
-            long result = database.insert(TABLE_SHOPPING_LIST, null, contentValues);
+            long result = database.insert(TABLE_SHOPPING_CART, null, contentValues);
         }
         else{
-            long result = database.insert(TABLE_SHOPPING_LIST, null, contentValues);
+            long result = database.insert(TABLE_SHOPPING_CART, null, contentValues);
             setId(result);
         }
 
