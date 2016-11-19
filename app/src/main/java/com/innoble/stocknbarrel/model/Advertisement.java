@@ -10,10 +10,19 @@ import java.util.Date;
  */
 public class Advertisement extends DataEntity {
 
+    public enum AdTypeEnum {
+        NORMAL, FULL_IMAGE, DISCOUNT, DEAL, POLL
+    }
+
+    public enum AdSize {
+        SMALL, MEDIUM, LARGE
+    }
+
     public static final String TABLE_ADVERTISMENT = "advertisement";
     public static final String COLUMN_AD_TITLE = "ad_title";
     public static final String COLUMN_AD_IMAGE_PATH = "ad_image_path";
     public static final String COLUMN_AD_DESCRIPTION = "ad_description";
+    public static final String COLUMN_AD_ATTENTION_GRABBER = "attention_grabber";
     public static final String COLUMN_AD_TYPE = "ad_type";
     public static final String COLUMN_AD_POST_DATE = "ad_post_date";
     public static final String COLUMN_AD_EXPIRATION_DATE = "ad_expiration_date";
@@ -32,8 +41,12 @@ public class Advertisement extends DataEntity {
     private String title;
     private String path;
     private String description;
+    private String attentionGrabber;
+    private AdTypeEnum adType;
+    private AdSize adSize;
     private Date postedDate;
     private Date expirationDate;
+    private String duration;
 
 
     public Advertisement(String title, String path, String description, Date postedDate, Date expirationDate) {

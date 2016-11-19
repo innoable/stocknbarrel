@@ -317,7 +317,7 @@ public class StockNBarrelContentProvider extends ContentProvider {
                             Product.TABLE_PRODUCT + "." + Product.COLUMN_THUMBNAIL + " as product_thumbnail",
                             Branch.TABLE_BRANCH + "." + Branch.COLUMN_NAME + " as grocery_name",
                             Branch.TABLE_BRANCH + "." + Branch.COLUMN_BRANCH + " as grocery_branch",
-                            Branch.TABLE_BRANCH + "." + Branch.COLUMN_LOCATION + " as vendor_location",
+                            Branch.TABLE_BRANCH + "." + Branch.COLUMN_ADDRESS + " as vendor_location",
                             Branch.TABLE_BRANCH + "." + Branch.COLUMN_PHONE + " as vendor_phone",
                             BranchStockItem.TABLE_BRANCH_STOCK_ITEM + "." + BranchStockItem.COLUMN_PRICE + " as price",
                             BranchStockItem.TABLE_BRANCH_STOCK_ITEM + "." + BranchStockItem.COLUMN_UNIT + " as unit",

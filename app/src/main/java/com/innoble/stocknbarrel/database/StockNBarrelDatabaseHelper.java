@@ -9,8 +9,10 @@ import com.innoble.stocknbarrel.model.Branch;
 import com.innoble.stocknbarrel.model.BranchStockItem;
 import com.innoble.stocknbarrel.model.DataEntity;
 import com.innoble.stocknbarrel.model.Product;
+import com.innoble.stocknbarrel.model.Promotion;
 import com.innoble.stocknbarrel.model.ShoppingCart;
 import com.innoble.stocknbarrel.model.ShoppingCartItem;
+import com.innoble.stocknbarrel.model.Store;
 import com.innoble.stocknbarrel.model.User;
 
 import java.io.File;
@@ -39,187 +41,22 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
         //create user
         User user = new User("Random Shopper", "testuser@gmail.com", 2000.0f);
         insertData(db, user);
-
-
-       // Branch grocery = new Branch("Massy Stores", "Port of Spain", "One Woodbrook Place, Damian St, Port of Spain");
-      //  grocery.setPhone("868-361-7406");
-     //   insertData(db, grocery);
-
-      //  Branch grocery2 = new Branch("Extra Foods ", "Grand Bazaar", "Grand Bazaar, Bamboo Village, Tunapuna-Piarco");
-     //   grocery2.setPhone("868-326-9324");
-      //  insertData(db, grocery2);
-
         ShoppingCart shoppingCart = new ShoppingCart("Monthly Branch List", user.getId());
         insertData(db, shoppingCart);
-
-        //db = this.getWritableDatabase();
-       /* Product product = new Product("Planters Unsalted Mixed Nuts");
-        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
-        product.setShortDescription("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient.");
-        product.setLongDescription("CELEBRATE THE 2016 EUROPEAN TOURNAMENT IN ASPHALT 8! DEDICATED LIMITED-TIME EVENTS, EXCLUSIVE PROMOTIONS, AWESOME REWARDS... STAND UP & REPRESENT YOUR NATION!\n" +
-                "200 MILLION PLAYERS CAN’T BE WRONG!\n" +
-                "TAKE A SPIN WITH THE FRONTRUNNER AMONG MOBILE RACING GAMES!\n" +
-                "\n" +
-                "** The fully installed game requires at least 1.8 GB of free space in your internal storage. **\n" +
-                "\n" +
-                "ACCLAIMED BY PLAYERS & THE PRESS!\n" +
-                "WINNER: **2015 MWC Best Mobile Game App**\n" +
-                "WINNER: **Winner of 2014 Pocket Gamer Best Sports/Racing Game Award**\n" +
-                "PERFECT SCORE: ** 5/5 – TouchArcade**\n" +
-                "PERFECT SCORE: ** 5/5 – AppSpy**\n" +
-                "PERFECT SCORE: ** 5/5 – Slide to Play**\n" +
-                "PERFECT SCORE: ** 100/100 – GameReactor**\n" +
-                "PERFECT SCORE: ** 5/5 – MacLife**\n" +
-                "\n" +
-                "LEAVE GRAVITY IN THE DUST!\n" +
-                "• 140+ OFFICIAL SPEED MACHINES: Ferrari, Lamborghini, McLaren, Bugatti, Mercedes, Audi, Ford, Chevrolet… We got ‘em all! \n" +
-                "• STUNNING GRAPHICS: Interactions between the vehicles, environments & tracks are a fully physics-based experience! \n" +
-                "• ARCADE GAMEPLAY AT ITS FINEST: Feel the thrill of gravity-defying racing across 40+ high-speed tracks!\n" +
-                "• THE ULTIMATE MULTIPLAYER RACING EXPERIENCE: Race in real-time multiplayer action for up to 12 opponents & dare your friends to ghost races!\n" +
-                "• WIN BIG: Participate in our Limited-Time Events to stack up amazing & exclusive rewards! \n" +
-                "• MASSIVE CONTENT DEPTH: 400+ career events, 1,500 car mastery challenges, 5 unique game modes, car collections. An endless stream of single-player content!\n" +
-                "• CUSTOMIZE & UPGRADE YOUR RIDES: With over 2,300 decals, take down your opponents with style!\n" +
-                "\n" +
-                "JOIN OUR RACER COMMUNITY!\n" +
-                "• FACEBOOK: facebook.com/AsphaltGame \n" +
-                "• YOUTUBE: youtube.com/c/AsphaltGames\n" +
-                "• TWITTER: twitter.com/Asphalt\n" +
-                "• INSTAGRAM: instagram.com/asphalt8\n" +
-                "\n" +
-                "A game for fans of extreme arcade racing, with real dream cars and phenomenal graphics that will also please racing simulation enthusiasts.\n" +
-                "\n" +
-                "_____________________________________________\n" +
-                "\n" +
-                "Visit our official site at http://www.gameloft.com\n" +
-                "Follow us on Twitter at http://glft.co/GameloftonTwitter or like us on Facebook at http://facebook.com/Gameloft to get more info about all our upcoming titles.\n" +
-                "Check out our videos and game trailers on http://www.youtube.com/Gameloft \n" +
-                "Discover our blog at http://glft.co/Gameloft_Official_Blog for the inside scoop on everything Gameloft.\n" +
-                "\n" +
-                "_____________________________________________\n" +
-                "\n" +
-                "This app allows you to purchase virtual items within the app.\n" +
-                "\n" +
-                "Privacy Policy: http://www.gameloft.com/privacy-notice/\n" +
-                "Terms of Use: http://www.gameloft.com/conditions/\n" +
-                "End-User License Agreement: http://www.gameloft.com/eula/?lang=en");
-        insertData(db, product);
-        BranchStockItem groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 65.99, "tin", 1000);
-        insertData(db, groceryStockItem);
-        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 70.99, "tin", 1000);
-        insertData(db, groceryStockItem);
-
-        product.setName("Axe (Excite) Body Spray");
-        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
-        insertData(db, product);
-        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 25.99, "can", 1000);
-        insertData(db, groceryStockItem);
-
-        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 30.99, "can", 1000);
-        insertData(db, groceryStockItem);
-
-        ShoppingCartItem shoppingListItem = new ShoppingCartItem(shoppingCart.getId(), groceryStockItem.getId(), 1);
-        insertData(db, shoppingListItem);
-
-        product.setName("Panadol Hot Rem");
-        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
-        insertData(db, product);
-        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 19.99, "box", 1000);
-        insertData(db, groceryStockItem);
-        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 25.99, "can", 1000);
-        insertData(db, groceryStockItem);
-
-
-        product.setName("Gullon Sugar Free Vanilla Wafer");
-        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
-        insertData(db, product);
-        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 6, 15.99, "pack", 1000);
-        insertData(db, groceryStockItem);
-        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 20.99, "can", 1000);
-        insertData(db, groceryStockItem);
-
-        product.setName("Irish Spring Body Wash (Original)");
-        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
-        insertData(db, product);
-        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 26.00, "bottle", 1000);
-        insertData(db, groceryStockItem);
-        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 31.99, "can", 1000);
-        insertData(db, groceryStockItem);
-        shoppingListItem = new ShoppingCartItem(shoppingCart.getId(), groceryStockItem.getId(), 1);
-        insertData(db, shoppingListItem);
-
-        product.setName("Protox Insecticide Spray");
-        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
-        insertData(db, product);
-        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 16.00, "can", 1000);
-        insertData(db, groceryStockItem);
-        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 21.99, "can", 1000);
-        insertData(db, groceryStockItem);
-
-        product.setName("Airwick Airfreshener 4in1");
-        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
-        insertData(db, product);
-        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 23.00, "can", 1000);
-        insertData(db, groceryStockItem);
-        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 28.99, "can", 1000);
-        insertData(db, groceryStockItem);
-        shoppingListItem = new ShoppingCartItem(shoppingCart.getId(), groceryStockItem.getId(), 1);
-        insertData(db, shoppingListItem);
-
-        product.setName("Kiss Whole Grain Loaf ");
-        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
-        insertData(db, product);
-        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 13.00, "loaf", 1000);
-        insertData(db, groceryStockItem);
-        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 17.99, "can", 1000);
-        insertData(db, groceryStockItem);
-        shoppingListItem = new ShoppingCartItem(shoppingCart.getId(), groceryStockItem.getId(), 1);
-        insertData(db, shoppingListItem);
-
-        product.setName("Dole Pineapple Juice Unsweetened");
-        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
-        insertData(db, product);
-        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 9.00, "tin", 1000);
-        insertData(db, groceryStockItem);
-        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 14.99, "can", 1000);
-        insertData(db, groceryStockItem);
-        shoppingListItem = new ShoppingCartItem(shoppingCart.getId(), groceryStockItem.getId(), 1);
-        insertData(db, shoppingListItem);
-
-        product.setName("Kiss Cakes Orange Cupcakes");
-        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
-        insertData(db, product);
-        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 3.50, "pack", 1000);
-        insertData(db, groceryStockItem);
-        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 8.99, "can", 1000);
-        insertData(db, groceryStockItem);
-
-        product.setName("Bermudez Wheat Crisps");
-        product.setThumbnailUri(Images.imageThumbUrls[random.nextInt(Images.imageThumbUrls.length)]);
-        insertData(db, product);
-        groceryStockItem = new BranchStockItem(grocery.getId(), product.getId(), 1, 3.00, "pack", 1000);
-        insertData(db, groceryStockItem);
-        groceryStockItem = new BranchStockItem(grocery2.getId(), product.getId(), 1, 8.99, "can", 1000);
-        insertData(db, groceryStockItem);*/
-
-
         Product.createNameIndex(db);
-
-        // Create a shopping list
-
-        //Create a shopping list items
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        Store.onCreate(db);
         Branch.onCreate(db);
+        Promotion.onCreate(db);
         User.onCreate(db);
         Product.onCreate(db);
         ShoppingCart.onCreate(db);
         BranchStockItem.onCreate(db);
         ShoppingCartItem.onCreate(db);
         seedData(db);
-
     }
 
     @Override
@@ -385,5 +222,19 @@ public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
             return user;
         }
         return null;
+    }
+
+
+    public Cursor executeQuery(String query) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) {
+            cursor.close();
+            return null;
+        }
+        return cursor;
     }
 }

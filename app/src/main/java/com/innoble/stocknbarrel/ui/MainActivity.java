@@ -1,5 +1,7 @@
 package com.innoble.stocknbarrel.ui;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,29 +13,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
+//import com.google.android.gms.analytics.HitBuilders;
+//import com.google.android.gms.analytics.Tracker;
 import com.innoble.stocknbarrel.R;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 import com.innoble.stocknbarrel.model.User;
-import com.innoble.stocknbarrel.utils.TrackedApplication;
+import com.innoble.stocknbarrel.service.AlarmService;
+import com.innoble.stocknbarrel.service.NearbyStoreAlarmReceiver;
 
 public class MainActivity extends AppCompatActivity {
 
     private StockNBarrelDatabaseHelper mDb;
-    private Tracker mTracker;
+    //private Tracker mTracker;
     private String name;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        // Obtain the shared Analytics Tracker instance.
-        TrackedApplication application = (TrackedApplication) getApplication();
-        mTracker = application.getDefaultTracker();
-
 
         mDb = new StockNBarrelDatabaseHelper(this);
         User user = mDb.getUser();
@@ -45,15 +42,16 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-        mTracker.set("&uid", user.getEmail());
         setContentView(R.layout.activity_main);
         // Set toolbar view as ActionBar in Activity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content, new ShoppingListFragment())
+                .replace(R.id.content, new AllStoresFragment())
                 .commit();
+
+        AlarmService.scheduleAlarm(this);
 
     }
 
@@ -61,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         name = "Main Screen";
-        mTracker.setScreenName(name);
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
 
@@ -90,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean isRegistered() {
         return true;
     }
+
+
 
 
 }

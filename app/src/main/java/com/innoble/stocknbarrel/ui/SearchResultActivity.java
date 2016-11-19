@@ -20,13 +20,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
+//import com.google.android.gms.analytics.HitBuilders;
+//import com.google.android.gms.analytics.Tracker;
 import com.innoble.stocknbarrel.R;
 import com.innoble.stocknbarrel.provider.ProductDetailParcelable;
 import com.innoble.stocknbarrel.provider.RemoteContentProvider;
-import com.innoble.stocknbarrel.utils.AsyncTracker;
-import com.innoble.stocknbarrel.utils.TrackedApplication;
 
 public class SearchResultActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -34,10 +32,10 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
     private Uri PRODUCT_OPTIONS_URI = RemoteContentProvider.CONTENT_URI.buildUpon()
             .appendPath(RemoteContentProvider.GROCERY_STOCK_ITEM_PATH).build();
 
-    private Tracker mTracker;
+    //private Tracker mTracker;
     private Intent thisIntent;
 
-    private AsyncTracker aTracker;
+
     private ListView resultList;
     private SearchResultListAdapter resultListAdapter;
 
@@ -48,9 +46,8 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        TrackedApplication application = (TrackedApplication) getApplication();
-        mTracker = application.getDefaultTracker();
-        aTracker = new AsyncTracker(mTracker, "");
+        //mTracker = application.getDefaultTracker();
+        //aTracker = new AsyncTracker(mTracker, "");
 
         setContentView(R.layout.activity_searchable);
 
@@ -73,7 +70,6 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
 
         if (Intent.ACTION_VIEW.equals(thisIntent.getAction())) {
             query = thisIntent.getDataString();
-            aTracker.trackEvent("Search Results", "Product", "Action View", query);
             queryPref.edit().putString("query", query).commit();
         }
 
@@ -97,7 +93,7 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
 
         // Search Calls mActivity with String Extra  SearchManager.QUERY when user clicks search button
         resultList.setOnItemClickListener(new SearchResultClickListener(this));
-        aTracker.trackEvent("Search Results", "Product", "Action Search", query);
+
     }
 
     @Override
@@ -133,13 +129,13 @@ public class SearchResultActivity extends AppCompatActivity implements LoaderMan
 
         getLoaderManager().restartLoader(DIRECT_SEARCH_LOADER_ID, null, this);
 
-
+        /*
         mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory("Product")
                 .setAction("Action View")
                 .setLabel(query)
                 .build());
-
+        */
         thisIntent = intent;
     }
 
