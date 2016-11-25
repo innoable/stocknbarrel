@@ -168,6 +168,7 @@ public class NearbyStoreService extends IntentService implements GoogleApiClient
                     .build();
         }
     }
+    
 
 
 
