@@ -20,6 +20,7 @@ import android.support.v4.app.NotificationCompat.Builder;
 
 import com.bluelinelabs.logansquare.LoganSquare;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.innoble.stocknbarrel.BuildConfig;
@@ -38,6 +39,7 @@ public class NearbyStoreService extends IntentService implements GoogleApiClient
 //public class NearbyStoreService extends IntentService {
     public static final String PREF_NAME = "COLFIRE AFFINITY";
     public static final String PREF_KEY = "NearbyNotifications";
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private GoogleApiClient mGoogleApiClient = null;
     private Location mLastLocation = null;
     private Builder mBuilder = null;
@@ -160,7 +162,7 @@ public class NearbyStoreService extends IntentService implements GoogleApiClient
 
         android.os.Debug.waitForDebugger();
         // Create an instance of GoogleAPIClient.
-        if (mGoogleApiClient == null) {
+        if (mGoogleApiClient == null && playServicesAvailable()) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
@@ -168,9 +170,13 @@ public class NearbyStoreService extends IntentService implements GoogleApiClient
                     .build();
         }
     }
-    
 
 
+    @Override
+    public void onStart(Intent intent, int startId) {
+        super.onStart(intent, startId);
+        mGoogleApiClient.connect();
+    }
 
     @Override
     public void onDestroy() {
@@ -185,7 +191,7 @@ public class NearbyStoreService extends IntentService implements GoogleApiClient
 
     //@Override
     public void onConnectionSuspended(int i) {
-
+        Log.i("NearbyStoreService", "Connection to Google Services API Suspended");
     }
 
     //@Override
@@ -201,5 +207,25 @@ public class NearbyStoreService extends IntentService implements GoogleApiClient
         return LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
 
+    }
+
+    /**
+     * Check the device to make sure it has the Google Play Services APK. If
+     * it doesn't, display a dialog that allows users to download the APK from
+     * the Google Play Store or enable it in the device's system settings.
+     */
+    private boolean playServicesAvailable() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        Log.i("NearbyStoreService", String.format("PS Package: %s |  PS Version: %d", GoogleApiAvailability.GOOGLE_PLAY_SERVICES_PACKAGE, GoogleApiAvailability.GOOGLE_PLAY_SERVICES_VERSION_CODE));
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                Log.i("NearbyStoreService", String.format("Error finding service. Result Code: %d", resultCode));
+            } else {
+                Log.i("NearbyStoreService", "This device is not supported.");
+            }
+            return false;
+        }
+        return true;
     }
 }
