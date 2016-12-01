@@ -34,7 +34,7 @@
         jumboMode="true"
         optimize="true"
         revision="23.0.2"
-        sha1="c755740f2b940f5644c92f60379b8b8bb9ed049d">
+        sha1="28217158eda7d39612016a9381d6847aea703f49">
         <dex dex="D:\innoble\stocknbarrel\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_051eccb32dca5dc402cc5d523551d7c075e50d0b\classes.dex" />
     </item>
     <item
@@ -57,21 +57,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="G:\Users\development\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.0.0\support-annotations-24.0.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.2"
-        sha1="2943c74db6d4346ab8c6531adac91fa05c137c40">
-        <dex dex="D:\innoble\stocknbarrel\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-24.0.0_e638c559e74420d049b5ca53380a7f3dcbe29cc1\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="D:\innoble\stocknbarrel\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\9.8.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="23.0.2"
         sha1="bf2e1838e4428616c1aa26edf43de72b5b99bf84">
         <dex dex="D:\innoble\stocknbarrel\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-tasks-9.8.0_a778fd9f9b4f58b07ee7bb268683e3dd12d73eaa\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="G:\Users\development\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.0.0\support-annotations-24.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="2943c74db6d4346ab8c6531adac91fa05c137c40">
+        <dex dex="D:\innoble\stocknbarrel\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-24.0.0_e638c559e74420d049b5ca53380a7f3dcbe29cc1\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -178,7 +178,7 @@
         jumboMode="true"
         optimize="true"
         revision="23.0.2"
-        sha1="51fb395b991da22606b7a67952b819eb1a7b4bb0">
+        sha1="373db30ceb803245f45f96d802b6403a83d9875f">
         <dex dex="D:\innoble\stocknbarrel\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_c5652e938eea9cab6e491073345d29310bdba6a6\classes.dex" />
     </item>
     <item
@@ -192,21 +192,21 @@
     </item>
     <item
         is-multidex="true"
-        jar="D:\innoble\stocknbarrel\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.0.0\jars\libs\internal_impl-24.0.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.2"
-        sha1="fcaf463e10e69c1923ccf1edeba3b4196d239e00">
-        <dex dex="D:\innoble\stocknbarrel\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.0.0_c93073268e2326fbaee59eef0691182ebbc877d3\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="C:\Users\At3r\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.6.0\98476622f10715998eacf9240d6b479f12c66143\okio-1.6.0.jar"
         jumboMode="true"
         optimize="true"
         revision="23.0.2"
         sha1="98476622f10715998eacf9240d6b479f12c66143">
         <dex dex="D:\innoble\stocknbarrel\app\build\intermediates\transforms\dex\debug\folders\1000\10\okio-1.6.0_46e87c509fc1ed66ef1bf733f41da47286b4a102\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\innoble\stocknbarrel\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.0.0\jars\libs\internal_impl-24.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="fcaf463e10e69c1923ccf1edeba3b4196d239e00">
+        <dex dex="D:\innoble\stocknbarrel\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.0.0_c93073268e2326fbaee59eef0691182ebbc877d3\classes.dex" />
     </item>
     <item
         is-multidex="true"

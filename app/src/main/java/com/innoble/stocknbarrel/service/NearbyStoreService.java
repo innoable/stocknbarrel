@@ -11,6 +11,8 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.WakefulBroadcastReceiver;
@@ -22,6 +24,7 @@ import com.bluelinelabs.logansquare.LoganSquare;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
+
 import com.google.android.gms.location.LocationServices;
 import com.innoble.stocknbarrel.BuildConfig;
 import com.innoble.stocknbarrel.R;
@@ -36,7 +39,7 @@ import java.util.Date;
  * Created by At3r on 11/19/2016.
  */
 public class NearbyStoreService extends IntentService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-//public class NearbyStoreService extends IntentService {
+    //public class NearbyStoreService extends IntentService {
     public static final String PREF_NAME = "COLFIRE AFFINITY";
     public static final String PREF_KEY = "NearbyNotifications";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -59,7 +62,7 @@ public class NearbyStoreService extends IntentService implements GoogleApiClient
         if (!jsonString.trim().isEmpty()) {
             try {
                 notifications = LoganSquare.parse(jsonString, NearbyStoresNotification.class);
-                if (notifications.previousDate.equals(today) == false ) {
+                if (notifications.previousDate.equals(today) == false) {
                     notifications = new NearbyStoresNotification();
                 }
             } catch (IOException e) {
@@ -71,7 +74,19 @@ public class NearbyStoreService extends IntentService implements GoogleApiClient
         }
         notifications.counter++;
         notifications.previousDate = today;
-        mLastLocation = getCurrentLocation();
+        try {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            int count = 0;
+            while ((mGoogleApiClient.isConnected() == false || LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient).isLocationAvailable() == false) && count < 20) {
+                Thread.sleep(1000);
+                count++;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(mLastLocation == null) mLastLocation = getCurrentLocation();
         if(mLastLocation != null)
         {
             Location oldPosition = new Location("");
@@ -160,7 +175,7 @@ public class NearbyStoreService extends IntentService implements GoogleApiClient
 
         super.onCreate();
 
-        android.os.Debug.waitForDebugger();
+        //android.os.Debug.waitForDebugger();
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null && playServicesAvailable()) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -174,8 +189,8 @@ public class NearbyStoreService extends IntentService implements GoogleApiClient
 
     @Override
     public void onStart(Intent intent, int startId) {
-        super.onStart(intent, startId);
         mGoogleApiClient.connect();
+        super.onStart(intent, startId);
     }
 
     @Override
@@ -200,12 +215,14 @@ public class NearbyStoreService extends IntentService implements GoogleApiClient
     }
 
     private Location getCurrentLocation(){
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return null;
         }
 
-        return LocationServices.FusedLocationApi.getLastLocation(
+        final Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
+
+        return lastLocation;
 
     }
 
@@ -228,4 +245,5 @@ public class NearbyStoreService extends IntentService implements GoogleApiClient
         }
         return true;
     }
+
 }
