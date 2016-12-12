@@ -16,6 +16,9 @@ import com.google.android.gms.location.LocationListener;
 
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.support.v7.app.NotificationCompat;
@@ -41,7 +44,7 @@ import java.util.Date;
 /**
  * Created by At3r on 11/19/2016.
  */
-public class NearbyStoreService extends IntentService implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class NearbyStoreService extends IntentService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     //public class NearbyStoreService extends IntentService {
     public static final String PREF_NAME = "COLFIRE AFFINITY";
     public static final String PREF_KEY = "NearbyNotifications";
@@ -50,94 +53,133 @@ public class NearbyStoreService extends IntentService implements LocationListene
     private Location mLastLocation = null;
     private Builder mBuilder = null;
     private boolean mRequestingLocationUpdates;
-    private LocationRequest mLocationRequest = null;
+    //private LocationRequest mLocationRequest = null;
+
+
+    public class UpdateHandler implements Runnable, LocationListener {
+
+        private LocationRequest mLocationRequest = null;
+        private GoogleApiClient mGoogleApiClient = null;
+        private Context mContext = null;
+        private Location knownLocation = null;
+
+        public Location getKnownLocation() {
+            return knownLocation;
+        }
+
+        public void setKnownLocation(Location knownLocation) {
+            this.knownLocation = knownLocation;
+        }
+
+
+
+        public UpdateHandler(GoogleApiClient mGoogleApiClient, Context mContext) {
+            this.mGoogleApiClient = mGoogleApiClient;
+            this.mContext = mContext;
+            createLocationRequest();
+        }
+
+        protected void createLocationRequest() {
+            mLocationRequest = new LocationRequest();
+            mLocationRequest.setInterval(5000);
+            mLocationRequest.setFastestInterval(2000);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        }
+
+        protected void startLocationUpdates() {
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, this);
+
+            Log.i("NearbyStoreService", "Requested location updates");
+        }
+
+        @Override
+        public void onLocationChanged(Location location) {
+            knownLocation = location;
+        }
+
+        @Override
+        public void run() {
+            Looper.prepare();
+            Log.d("NearbyStoreService", "inside location thread");
+
+            startLocationUpdates();
+            /*Handler mHandler = new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    // process incoming messages here
+                    startLocationUpdates();
+                }
+            };*/
+
+
+
+            Log.d("NearbyStoreService", "run of location thread ending");
+            Looper.loop(); //  <--- this was the fix
+        }
+
+
+        public void removeLocationUpdates() {
+            Log.d("NearbyStoreService", "Removing location updates");
+            LocationServices.FusedLocationApi.removeLocationUpdates(
+                    mGoogleApiClient, this);
+        }
+    }
+
 
     public NearbyStoreService() {
         super("Nearby Affinity Store Service");
     }
 
-    protected void onHandleIntent(Intent intent)
-    {
+    protected void onHandleIntent(Intent intent) {
         Log.i("NearbyStoreService", "Secondary thread proceeding to wait");
+
+        boolean connected = mGoogleApiClient.isConnected();
+
         try {
             int count = 0;
-            while (count < 60) {
+            while ( connected == false && count < 5) {
                 Thread.sleep(1000);
                 count++;
+                connected = mGoogleApiClient.isConnected();
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Log.d("NearbyStoreService", "Interrupted exception while waiting for api to connect");
         }
+
+        if(connected)
+        {
+            UpdateHandler update_handler = new UpdateHandler(mGoogleApiClient, this);
+            Thread update_handler_thread = new Thread(update_handler);
+            try {
+                Log.d("NearbyStoreService", "starting location thread");
+                update_handler_thread.start();
+                int count = 0;
+                mLastLocation = update_handler.getKnownLocation();
+
+                while (mLastLocation == null && count < 5) {
+                    Thread.sleep(1000);
+                    count++;
+                    mLastLocation = update_handler.getKnownLocation();
+                }
+            } catch (InterruptedException e) {
+                Log.d("NearbyStoreService", "Interrupted exception while trying to get location in next thread");
+                update_handler_thread.interrupt();
+            }
+
+
+            if(mLastLocation != null) doWork();
+            update_handler.removeLocationUpdates();
+            update_handler_thread.interrupt();
+        }
+
 
     }
 
-    /*
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        // Do the task here
-        SharedPreferences sharedPreferences = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        String jsonString = sharedPreferences.getString(PREF_KEY, "");
-        NearbyStoresNotification notifications = null;
-        String today = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-        if (!jsonString.trim().isEmpty()) {
-            try {
-                notifications = LoganSquare.parse(jsonString, NearbyStoresNotification.class);
-                if (notifications.previousDate.equals(today) == false) {
-                    notifications = new NearbyStoresNotification();
-                }
-            } catch (IOException e) {
-                notifications = new NearbyStoresNotification();
-                Log.e("NearbyStoreService", "Failed to deserialise 'Notification' from shared preferences");
-            }
-        } else {
-            notifications = new NearbyStoresNotification();
-        }
-        notifications.counter++;
-        notifications.previousDate = today;
-        try {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            int count = 0;
-            while ((mGoogleApiClient.isConnected() == false || LocationServices.FusedLocationApi.getLocationAvailability(mGoogleApiClient).isLocationAvailable() == false) && count < 20) {
-                Thread.sleep(1000);
-                count++;
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
-        if (mLastLocation == null) mLastLocation = getCurrentLocation();
-        if (mLastLocation != null) {
-            Location oldPosition = new Location("");
-            oldPosition.setLatitude(10.496730772222);
-            oldPosition.setLongitude(-61.37622710821168);
-            float radius = (float) 50.0; //10 metres
-            float[] results = new float[1];
-            Location.distanceBetween(oldPosition.getLatitude(), oldPosition.getLongitude(),
-                    mLastLocation.getLatitude(), mLastLocation.getLongitude(), results);
-
-            if (results[0] <= radius) {
-                Log.i("NearbyStoreService", "You are in range");
-                sendSystemNotification(results[0]);
-            } else {
-                Log.i("NearbyStoreService", "You are out of range");
-            }
-        }
-
-
-        try {
-            jsonString = LoganSquare.serialize(notifications);
-        } catch (IOException e) {
-            jsonString = "";
-            Log.e("NearbyStoreService", "Failed to serialise 'Notification' to shared preferences");
-        }
-        editor.putString(PREF_KEY, jsonString);
-        editor.commit();
-
-        Log.i("NearbyStoreService", String.format("Serving ran for %d occurrences", notifications.counter));
-    }*/
 
 
 
@@ -260,7 +302,7 @@ public class NearbyStoreService extends IntentService implements LocationListene
                     .build();
         }
 
-        createLocationRequest();
+
     }
 
 
@@ -273,17 +315,13 @@ public class NearbyStoreService extends IntentService implements LocationListene
     @Override
     public void onDestroy() {
         Log.i("NearbyStoreService", "Destroying Service");
-        LocationServices.FusedLocationApi.removeLocationUpdates(
-                mGoogleApiClient, this);
         mGoogleApiClient.disconnect();
         super.onDestroy();
     }
 
     //@Override
     public void onConnected(Bundle connectionHint) {
-            startLocationUpdates();
-
-        //mLastLocation = getCurrentLocation();
+        Log.i("NearbyStoreService", "Connected to Google Services API");
     }
 
     //@Override
@@ -296,17 +334,7 @@ public class NearbyStoreService extends IntentService implements LocationListene
         Log.i("NearbyStoreService", "Cannot to Google Services API Failed");
     }
 
-    private Location getCurrentLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return null;
-        }
 
-        final Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-
-        return lastLocation;
-
-    }
 
     /**
      * Check the device to make sure it has the Google Play Services APK. If
@@ -328,36 +356,9 @@ public class NearbyStoreService extends IntentService implements LocationListene
         return true;
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.i("NearbyStoreService", "Location changed");
-        mLastLocation = location;
-        doWork();
-    }
 
 
-    protected void startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
 
-        try {
 
-                Thread.sleep(3000);
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        Log.i("NearbyStoreService", "Requested location updates");
-    }
-
-    protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(5000);
-        mLocationRequest.setFastestInterval(2000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
 }
