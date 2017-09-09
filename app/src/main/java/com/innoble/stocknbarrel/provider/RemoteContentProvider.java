@@ -176,7 +176,7 @@ public class RemoteContentProvider extends ContentProvider {
     }
 
 
-    private Cursor getSuggestions(String query){
+    private Cursor  getSuggestions(String query){
         Uri uri = REMOTE_PRODUCT_SUGGESTION_URI
                 .buildUpon()
                 .appendPath(query)

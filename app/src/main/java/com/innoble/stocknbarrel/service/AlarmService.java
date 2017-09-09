@@ -11,7 +11,7 @@ import android.util.Log;
  */
 public class AlarmService {
 
-    // Setup a recurring alarm every half hour
+    // Setup a recurring alarm every ...
     public static void scheduleAlarm(Context context) {
 
         boolean alarmDoesNotExist = (PendingIntent.getBroadcast(context, NearbyStoreAlarmReceiver.REQUEST_CODE,
@@ -29,7 +29,8 @@ public class AlarmService {
             AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
             // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
-            alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis, 2*60*1000, pIntent);
+
+            alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis, 2*60*1000, pIntent); //I believe checks every two mins
         }
         else{
             Log.i("Sheldon", "Alarm already exists, look for log outputs");

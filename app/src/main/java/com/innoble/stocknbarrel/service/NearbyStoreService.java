@@ -180,9 +180,6 @@ public class NearbyStoreService extends IntentService implements GoogleApiClient
     }
 
 
-
-
-
     private void doWork(){
         // Do the task here
         SharedPreferences sharedPreferences = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -302,7 +299,6 @@ public class NearbyStoreService extends IntentService implements GoogleApiClient
                     .build();
         }
 
-
     }
 
 
@@ -355,10 +351,5 @@ public class NearbyStoreService extends IntentService implements GoogleApiClient
         }
         return true;
     }
-
-
-
-
-
 
 }

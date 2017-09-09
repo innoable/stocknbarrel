@@ -19,7 +19,7 @@ import com.innoble.stocknbarrel.model.ShoppingCartItem;
 import com.innoble.stocknbarrel.model.User;
 
 /**
- * Created by At3r on 5/19/2016.
+ * Created by At3r on 5/19/2016.`
  */
 public class StockNBarrelContentProvider extends ContentProvider {
 

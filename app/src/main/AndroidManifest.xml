@@ -76,7 +76,9 @@
             android:name=".service.NearbyStoreService"
             android:exported="false" />
 
-
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDSIoF33lLUo4UsFD5fsOp8vPmlDtxpwIQ"/>
     </application>
 
 </manifest>
