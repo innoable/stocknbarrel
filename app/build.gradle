@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '25.0.0'
+    //buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.innoble.stocknbarrel"
@@ -22,6 +22,7 @@ android {
             buildConfigField('String','REMOTE_ADDRESS',RemoteServer)
         }
     }
+    buildToolsVersion '26.0.2'
 }
 
 //apply plugin: 'com.neenbedankt.android-apt'

@@ -26,6 +26,7 @@ import android.widget.ListView;
 import com.innoble.stocknbarrel.R;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 import com.innoble.stocknbarrel.model.User;
+import com.innoble.stocknbarrel.service.NearbyPlacesService;
 import com.innoble.stocknbarrel.service.NearbyStoreAlarmReceiver;
 import com.innoble.stocknbarrel.service.NearbyStoreService;
 
@@ -110,8 +111,8 @@ public class AllStoresFragment extends Fragment {
                 AlarmManager alarm = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
                 alarm.cancel(pIntent);
                 pIntent.cancel();
-                SharedPreferences sharedPreferences = ctx.getSharedPreferences(NearbyStoreService.PREF_NAME, Context.MODE_PRIVATE);
-                sharedPreferences.edit().remove(NearbyStoreService.PREF_KEY);
+                SharedPreferences sharedPreferences = ctx.getSharedPreferences(NearbyPlacesService.PREF_NAME, Context.MODE_PRIVATE);
+                sharedPreferences.edit().remove(NearbyPlacesService.PREF_KEY);
                 sharedPreferences.edit().clear();
                 sharedPreferences.edit().commit();
                 return true;

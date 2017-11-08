@@ -20,7 +20,7 @@ public class AlarmService {
         {
             Log.i("Sheldon", "Creating alarm as it no exist");
             // Construct an intent that will execute the AlarmReceiver
-            Intent intent = new Intent(context, NearbyStoreAlarmReceiver.class);
+            Intent intent = new Intent(context, NearbyPlacesService.class);
             // Create a PendingIntent to be triggered when the alarm goes off
             final PendingIntent pIntent = PendingIntent.getBroadcast(context, NearbyStoreAlarmReceiver.REQUEST_CODE,
                     intent, PendingIntent.FLAG_UPDATE_CURRENT);

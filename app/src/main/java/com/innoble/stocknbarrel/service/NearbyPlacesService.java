@@ -27,10 +27,13 @@ import static android.content.ContentValues.TAG;
 
 public class NearbyPlacesService extends IntentService {
 
+    public static final String PREF_NAME = "COLFIRE AFFINITY";
+    public static final String PREF_KEY = "NearbyNotifications";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     protected PlaceDetectionClient mPlaceDetectionClient;
 
     public NearbyPlacesService() {
+
         super("Nearby Affinity Store Service Using Google Places API");
     }
 
