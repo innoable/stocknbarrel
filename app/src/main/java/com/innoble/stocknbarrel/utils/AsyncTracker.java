@@ -6,7 +6,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 /**
- * Created by At3r on 5/27/2016.
+ * Created by Sheldon Hall on 5/27/2016.
  */
 public class AsyncTracker {
 

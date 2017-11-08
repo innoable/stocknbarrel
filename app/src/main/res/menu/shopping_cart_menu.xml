@@ -6,4 +6,9 @@
         android:id="@+id/clear_cart"
         android:title="Clear Cart"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/stop_notifications"
+        android:title="Stop Notifications"
+        app:showAsAction="never" />
 </menu>

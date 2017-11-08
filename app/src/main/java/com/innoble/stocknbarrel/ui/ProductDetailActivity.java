@@ -83,7 +83,7 @@ public class ProductDetailActivity extends AppCompatActivity {
      * ProductEditRemoveFragment displays product details fragment with interaction controls specific
      * to editing and removal for items currently held in users cart
      *
-     * @Author Kemron Glasgow
+     * @Author Sheldon Hall
      */
     public static class ProductEditRemoveFragment extends ProductFragment {
         private final Uri shoppingListItemUri = StockNBarrelContentProvider.CONTENT_URI.buildUpon()
@@ -178,7 +178,7 @@ public class ProductDetailActivity extends AppCompatActivity {
      * ProductAddFragment displays  product details view with controls specific for reviewing
      * items and adding them to the user's cart.
      *
-     * @Author Kemron Glasgow
+     * @Author Sheldon Hall
      */
     public static class ProductAddFragment extends ProductFragment {
         private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -259,7 +259,7 @@ public class ProductDetailActivity extends AppCompatActivity {
      * ProductFragment is manages loading and display of the fundamental items within the product
      * details view
      *
-     * @Author Kemron Glasgow
+     * @Author Sheldon Hall
      */
     public abstract static class ProductFragment extends android.support.v4.app.Fragment {
         protected ProductDetailParcelable data;

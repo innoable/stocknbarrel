@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import com.innoble.stocknbarrel.R;
 
 /**
- * Created by Kemron on 15/06/2016.
+ * Created by Sheldon Hall on 15/06/2016.
  */
 public abstract class BasicToolbarActivity extends AppCompatActivity {
 

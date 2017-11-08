@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 
 /**
- * Created by Kemron on 31/05/2016.
+ * Created by Sheldon Hall on 31/05/2016.
  */
 public class SearchResultListAdapter extends CursorAdapter {
     public SearchResultListAdapter(Context context, Cursor cursor) {

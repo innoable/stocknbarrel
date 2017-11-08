@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 
 /**
- * Created by Kemron on 27/05/2016.
+ * Created by Sheldon Hall on 27/05/2016.
  */
 public class ShoppingListAdapter extends CursorAdapter implements View.OnClickListener {
     private Context context;

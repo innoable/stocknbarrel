@@ -17,7 +17,7 @@ import java.io.File;
 import java.util.Random;
 
 /**
- * Created by At3r on 5/17/2016.
+ * Created by Sheldon Hall on 5/17/2016.
  */
 public class StockNBarrelDatabaseHelper extends SQLiteOpenHelper {
 

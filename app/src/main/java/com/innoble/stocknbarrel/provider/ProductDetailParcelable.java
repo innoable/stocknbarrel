@@ -6,8 +6,8 @@ import android.os.Parcelable;
 /**
  * Data serializer for ProductDetailActivity
  *
- * @Author Kemron Glasgow
- * Created by Kemron on 22/06/2016.
+ * @Author Sheldon Hall
+ * Created by Sheldon on 22/06/2016.
  */
 public class ProductDetailParcelable implements Parcelable {
 

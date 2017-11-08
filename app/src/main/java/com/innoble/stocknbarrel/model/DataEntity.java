@@ -4,7 +4,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 
 /**
- * Created by At3r on 5/19/2016.
+ * Created by Sheldon Hall on 5/19/2016.
  */
 public class DataEntity {
 

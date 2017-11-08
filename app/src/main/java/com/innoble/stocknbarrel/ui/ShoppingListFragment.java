@@ -1,10 +1,14 @@
 package com.innoble.stocknbarrel.ui;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +36,8 @@ import com.innoble.stocknbarrel.model.ShoppingListItem;
 import com.innoble.stocknbarrel.model.User;
 import com.innoble.stocknbarrel.provider.ProductDetailParcelable;
 import com.innoble.stocknbarrel.provider.StockNBarrelContentProvider;
+import com.innoble.stocknbarrel.service.NearbyStoreAlarmReceiver;
+import com.innoble.stocknbarrel.service.NearbyStoreService;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -191,6 +197,19 @@ public class ShoppingListFragment extends android.support.v4.app.Fragment
                 getActivity().getContentResolver().delete(shoppingListItemQuery, null, null);
                 getLoaderManager().restartLoader(SHOPPING_LIST_LOADER_ID, null, this);
                 tcView.setTextColor(getResources().getColor(android.R.color.white));
+                return true;
+            case R.id.stop_notifications:
+                Context ctx = getActivity();
+                Intent intent = new Intent(ctx, NearbyStoreAlarmReceiver.class);
+                final PendingIntent pIntent = PendingIntent.getBroadcast(ctx, NearbyStoreAlarmReceiver.REQUEST_CODE,
+                        intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager alarm = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
+                alarm.cancel(pIntent);
+                pIntent.cancel();
+                SharedPreferences sharedPreferences = ctx.getSharedPreferences(NearbyStoreService.PREF_NAME, Context.MODE_PRIVATE);
+                sharedPreferences.edit().remove(NearbyStoreService.PREF_KEY);
+                sharedPreferences.edit().clear();
+                sharedPreferences.edit().commit();
                 return true;
 
             default:

@@ -21,7 +21,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Created by Kemron on 30/06/2016.
+ * Created by Sheldon Hall on 30/06/2016.
  */
 public class RemoteContentProvider extends ContentProvider {
 
@@ -53,19 +53,10 @@ public class RemoteContentProvider extends ContentProvider {
 
 
 
-
-
-
-
-
-
     static {
         sURIMatcher.addURI(AUTHORITY, PRODUCTS_PATH + "/search_suggest_query/*", PRODUCT_SEARCH);
         sURIMatcher.addURI(AUTHORITY, GROCERY_STOCK_ITEM_PATH + "/*", VENDOR_ITEMS);
     }
-
-
-
 
 
 
@@ -113,9 +104,6 @@ public class RemoteContentProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return 0;
     }
-
-
-
 
 
     private Cursor getVendorItemsByName(String name){
@@ -207,10 +195,5 @@ public class RemoteContentProvider extends ContentProvider {
         }
         return cursor;
     }
-
-
-
-
-
 
 }
