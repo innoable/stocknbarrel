@@ -131,6 +131,7 @@ public class NearbyStoreService extends IntentService implements GoogleApiClient
 
 
     public NearbyStoreService() {
+
         super("Nearby Affinity Store Service");
     }
 

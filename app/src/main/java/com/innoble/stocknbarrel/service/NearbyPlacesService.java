@@ -30,9 +30,12 @@ public class NearbyPlacesService extends IntentService {
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     protected PlaceDetectionClient mPlaceDetectionClient;
 
-    @Override
-    protected void onHandleIntent(@Nullable Intent intent) {
+    public NearbyPlacesService() {
+        super("Nearby Affinity Store Service Using Google Places API");
+    }
 
+    protected void onHandleIntent(Intent intent) {
+        Log.i("NearbyPlacesService", "handling the event");
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
 
 
@@ -64,20 +67,4 @@ public class NearbyPlacesService extends IntentService {
         });
 
     }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-
-
-    }
-
-    public NearbyPlacesService() {
-
-        super("Nearby Affinity Store Service Using Google Places API");
-
-
-    }
-
 }
