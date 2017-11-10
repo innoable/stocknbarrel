@@ -1,17 +1,35 @@
 {
   "project_info": {
     "project_number": "152136815953",
+    "firebase_url": "https://stocknbarrel-83cf6.firebaseio.com",
     "project_id": "stocknbarrel-83cf6"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:216505169119:android:8e4e95f86328bb71",
+        "mobilesdk_app_id": "1:152136815953:android:8e4e95f86328bb71",
         "android_client_info": {
           "package_name": "com.innoble.stocknbarrel"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "152136815953-dm4lrjf0ndrhp8u6trjrh7ovm0etsr7o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.innoble.stocknbarrel",
+            "certificate_hash": "730b987e7596592d8477c515d9dc22b13bc465b7"
+          }
+        },
+        {
+          "client_id": "152136815953-5a3j8h0l431mf5d6bcvdg62k45836sj7.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "152136815953-3jt6hktbrr6tvp5r0uogmvgjr90lb1n0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDSIoF33lLUo4UsFD5fsOp8vPmlDtxpwIQ"
@@ -29,7 +47,7 @@
           "other_platform_oauth_client": []
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }
