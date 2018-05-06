@@ -4,6 +4,11 @@
 
     <item
         android:id="@+id/stop_nearbystore_search"
-        android:title="Stop Searching"
+        android:title="@string/stop_nearbystore_search_menu_item"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/get_places"
+        android:title="@string/find_places_menu_item"
         app:showAsAction="never" />
 </menu>

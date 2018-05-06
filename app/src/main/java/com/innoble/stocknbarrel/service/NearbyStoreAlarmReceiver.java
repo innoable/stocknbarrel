@@ -8,7 +8,7 @@ import android.content.Intent;
  * Created by At3r on 11/19/2016.
  */
 public class NearbyStoreAlarmReceiver extends BroadcastReceiver {
-    public static final int REQUEST_CODE = 12345;
+    public static final int REQUEST_CODE = 12905;
     public static final String ACTION = "com.innoble.stocknbarrel.action.NearbyAffinityStoreAlarm";
 
     // Triggered by the Alarm periodically (starts the service to run task)

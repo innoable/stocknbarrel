@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse;
 import com.google.android.gms.location.places.Places;
@@ -30,15 +31,20 @@ public class NearbyPlacesService extends IntentService {
     public static final String PREF_NAME = "COLFIRE AFFINITY";
     public static final String PREF_KEY = "NearbyNotifications";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
+    protected GeoDataClient mGeoDataClient;
     protected PlaceDetectionClient mPlaceDetectionClient;
 
     public NearbyPlacesService() {
 
-        super("Nearby Affinity Store Service Using Google Places API");
+        super("NearbyPlace Affinity Store Service Using Google Places API");
+
     }
 
     protected void onHandleIntent(Intent intent) {
         Log.i("NearbyPlacesService", "handling the event");
+
+        mGeoDataClient = Places.getGeoDataClient(this, null);
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
 
 
@@ -52,22 +58,29 @@ public class NearbyPlacesService extends IntentService {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+        Log.i("NearbyPlacesService", "has permissions");
+
+
+
+
         Task<PlaceLikelihoodBufferResponse> placeResult = mPlaceDetectionClient.getCurrentPlace(null);
         placeResult.addOnCompleteListener(new OnCompleteListener<PlaceLikelihoodBufferResponse>() {
             @Override
             public void onComplete(@NonNull Task<PlaceLikelihoodBufferResponse> task) {
                 PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
+                if(likelyPlaces.getCount() > 0)
+                    Log.i("NearbyPlacesService", "has no places");
+                else
+                    Log.i("NearbyPlacesService", "has 1 or more places");
                 for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-                    Log.i(TAG, String.format("Place Name: '%s'%nLatLng: %s%nAddress: %s%nWebsite: %s%nLikelihood: %g",
+                    Log.i(TAG, String.format("NearbyPlace '%s' has likelihood: %g",
                             placeLikelihood.getPlace().getName(),
-                            placeLikelihood.getPlace().getLatLng().toString(),
-                            placeLikelihood.getPlace().getAddress(),
-                            placeLikelihood.getPlace().getWebsiteUri().toString(),
                             placeLikelihood.getLikelihood()));
                 }
                 likelyPlaces.release();
             }
         });
+
 
     }
 }

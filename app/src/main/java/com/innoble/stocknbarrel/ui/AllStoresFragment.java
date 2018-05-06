@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,12 +24,16 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApi;
+import com.google.android.gms.tasks.Task;
 import com.innoble.stocknbarrel.R;
 import com.innoble.stocknbarrel.database.StockNBarrelDatabaseHelper;
 import com.innoble.stocknbarrel.model.User;
 import com.innoble.stocknbarrel.service.NearbyPlacesService;
 import com.innoble.stocknbarrel.service.NearbyStoreAlarmReceiver;
-import com.innoble.stocknbarrel.service.NearbyStoreService;
+//import com.innoble.stocknbarrel.service.NearbyStoreService;
 
 
 /**
@@ -90,6 +95,17 @@ public class AllStoresFragment extends Fragment {
 
     @Override
     public void onResume() {
+        GoogleApiAvailability gApiInstance = GoogleApiAvailability.getInstance();
+        Context ctx = getActivity();
+        int status = gApiInstance.isGooglePlayServicesAvailable(ctx);
+        if(status == ConnectionResult.SUCCESS ) {
+            Log.i("NearbyStoreService", "Google Pay Services available");
+        }
+        else{
+            ConnectionResult cr = new ConnectionResult(status);
+            Log.i("NearbyStoreService", cr.getErrorMessage());
+        }
+
         super.onResume();
     }
 
@@ -116,6 +132,16 @@ public class AllStoresFragment extends Fragment {
                 sharedPreferences.edit().clear();
                 sharedPreferences.edit().commit();
                 return true;
+
+
+
+            case R.id.get_places:
+                Context context = getActivity();
+                Intent i = new Intent(context, NearbyPlacesService.class);
+                i.putExtra("foo", "bar");
+                context.startService(i);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
